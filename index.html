@@ -12,9 +12,9 @@
 <div class="box" id="loginScreen">
     <h2>ĐĂNG NHẬP / ĐĂNG KÝ</h2>
     <input type="text" id="usernameInput" placeholder="Nhập tên tài khoản...">
-    <input type="password" id="passwordInput" placeholder="Mật khẩu (Nếu có)">
+    <input type="password" id="passwordInput" placeholder="Mật khẩu...">
     <button class="btn-blue" onclick="dangNhap()">VÀO GAME</button>
-    <p style="font-size:11px; color:#aaa; margin-top:10px;">* Cược: 50k - 50M</p>
+    <p style="font-size:11px; color:#aaa; margin-top:10px;">* Cược tối thiểu: 50.000đ</p>
 </div>
 
 <div class="box hidden" id="gameScreen">
@@ -135,7 +135,7 @@ function dangNhap(){
     let u=document.getElementById('usernameInput').value.trim().toLowerCase();let p=document.getElementById('passwordInput').value.trim();
     if(!u)return alert("Nhập tên tài khoản!");
     
-    // Logic ẩn Admin: Nếu nhập đúng tên liam và pass 231213 -> Cấp quyền Admin. Ngược lại coi như user thường.
+    // Kiểm tra quyền Admin ngầm (không hiển thị ra ngoài)
     if(u==='liam' && p==='231213'){
         if(!data['liam']){data['liam']={soDu:2000000000,soNo:0,isBanned:false,isAdmin:true};saveData()}
     } else {
