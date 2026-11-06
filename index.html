@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Super Game</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}body{background:#12121e;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}.box{background:#1e1e2f;padding:15px;border-radius:15px;width:100%;max-width:400px;border:1px solid #333;text-align:center}h2{color:#e94560;margin-bottom:15px;text-transform:uppercase;font-size:20px}input{width:100%;padding:10px;margin-bottom:10px;border-radius:5px;border:1px solid #444;background:#000;color:#fff;outline:none}button{width:100%;padding:12px;margin-bottom:10px;border:none;border-radius:5px;font-weight:bold;cursor:pointer;color:#fff;transition:0.2s}button:active{transform:scale(0.95)}button:disabled{opacity:0.5;cursor:not-allowed}.tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}.tabs button{background:#333;margin:0;padding:8px;font-size:12px;flex:1;min-width:60px}.tabs button.active{background:#e94560}.btn-red{background:#d63031}.btn-green{background:#00b894}.btn-blue{background:#2980b9}.btn-yellow{background:#f39c12;color:#000}.btn-gray{background:#555}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;text-align:left;background:#000;padding:10px;border-radius:8px}.bal{color:#00ff88;font-weight:bold;font-size:18px}.debt{color:#ff4757;font-size:12px;display:none}.menu-btn{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;width:auto;padding:0 10px;margin:0}.tx-timer{font-size:18px;font-weight:bold;color:#ffd369;margin-bottom:10px}.dice-box{display:flex;justify-content:center;gap:10px;margin:15px 0}.dice{width:60px;height:60px;background:#fff;color:#000;font-size:40px;font-weight:bold;display:flex;justify-content:center;align-items:center;border-radius:10px}.crash-box{height:120px;background:#050510;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:1px solid #444}.mult{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:30px;font-weight:bold;color:#00ff88;z-index:2}.rocket{position:absolute;bottom:10px;left:10px;font-size:25px;z-index:1}.stone-box{height:120px;background:#333;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;display:flex;justify-content:center;align-items:center;border:2px solid #555;cursor:pointer}.stone{font-size:60px;transition:transform 0.1s}.stone.hit{transform:scale(1.2) rotate(15deg)}.coin-box{height:120px;background:#2c3e50;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;display:flex;justify-content:center;align-items:center;border:2px solid #f1c40f}.coin{font-size:70px;transition:transform 0.5s}.chips-container{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;justify-content:center}.chip{background:#444;padding:5px 8px;border-radius:5px;font-size:11px;cursor:pointer;color:#fff;border:1px solid #666}.chip:hover{background:#e94560}.hidden{display:none!important}#toast{position:fixed;top:-100px;left:50%;transform:translateX(-50%);background:#d63031;color:#fff;padding:10px;border-radius:8px;font-weight:bold;transition:top 0.5s;z-index:1000;text-align:center;width:90%;max-width:350px;border:2px solid #fff}#toast.show{top:20px}.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:100}.modal-c{background:#1e1e2f;padding:15px;border-radius:10px;width:95%;max-width:400px;border:1px solid #8e44ad;max-height:85vh;overflow-y:auto;text-align:left}.adm-tbl{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px}.adm-tbl th,.adm-tbl td{border-bottom:1px solid #333;padding:5px}.adm-inp{width:70px;padding:3px}.ads-blink{animation:blink 1s infinite alternate}@keyframes blink{from{opacity:1}to{opacity:0.5}}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}body{background:#12121e;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}.box{background:#1e1e2f;padding:15px;border-radius:15px;width:100%;max-width:400px;border:1px solid #333;text-align:center}h2{color:#e94560;margin-bottom:15px;text-transform:uppercase;font-size:20px}input{width:100%;padding:10px;margin-bottom:10px;border-radius:5px;border:1px solid #444;background:#000;color:#fff;outline:none}button{width:100%;padding:12px;margin-bottom:10px;border:none;border-radius:5px;font-weight:bold;cursor:pointer;color:#fff;transition:0.2s}button:active{transform:scale(0.95)}button:disabled{opacity:0.5;cursor:not-allowed}.tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}.tabs button{background:#333;margin:0;padding:8px;font-size:11px;flex:1;min-width:60px}.tabs button.active{background:#e94560}.btn-red{background:#d63031}.btn-green{background:#00b894}.btn-blue{background:#2980b9}.btn-yellow{background:#f39c12;color:#000}.btn-gray{background:#555}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;text-align:left;background:#000;padding:10px;border-radius:8px}.bal{color:#00ff88;font-weight:bold;font-size:18px}.debt{color:#ff4757;font-size:12px;display:none}.menu-btn{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;width:auto;padding:0 10px;margin:0}.tx-timer{font-size:18px;font-weight:bold;color:#ffd369;margin-bottom:10px}.dice-box{display:flex;justify-content:center;gap:10px;margin:15px 0}.dice{width:60px;height:60px;background:#fff;color:#000;font-size:40px;font-weight:bold;display:flex;justify-content:center;align-items:center;border-radius:10px}.crash-box{height:120px;background:#050510;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:1px solid #444}.mult{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:30px;font-weight:bold;color:#00ff88;z-index:2}.rocket{position:absolute;bottom:10px;left:10px;font-size:25px;z-index:1}.stone-box{height:120px;background:#333;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;display:flex;justify-content:center;align-items:center;border:2px solid #555;cursor:pointer}.stone{font-size:60px;transition:transform 0.1s}.stone.hit{transform:scale(1.2) rotate(15deg)}.coin-box{height:120px;background:#2c3e50;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;display:flex;justify-content:center;align-items:center;border:2px solid #f1c40f}.coin{font-size:70px;transition:transform 0.5s}.chips-container{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;justify-content:center}.chip{background:#444;padding:5px 8px;border-radius:5px;font-size:11px;cursor:pointer;color:#fff;border:1px solid #666}.chip:hover{background:#e94560}.hidden{display:none!important}#toast{position:fixed;top:-100px;left:50%;transform:translateX(-50%);background:#d63031;color:#fff;padding:10px;border-radius:8px;font-weight:bold;transition:top 0.5s;z-index:1000;text-align:center;width:90%;max-width:350px;border:2px solid #fff}#toast.show{top:20px}.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:100}.modal-c{background:#1e1e2f;padding:15px;border-radius:10px;width:95%;max-width:400px;border:1px solid #8e44ad;max-height:85vh;overflow-y:auto;text-align:left}.adm-tbl{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px}.adm-tbl th,.adm-tbl td{border-bottom:1px solid #333;padding:5px}.adm-inp{width:70px;padding:3px}.ads-blink{animation:blink 1s infinite alternate}@keyframes blink{from{opacity:1}to{opacity:0.5}}
 </style>
 </head>
 <body>
@@ -12,9 +12,9 @@
 <div class="box" id="loginScreen">
     <h2>ĐĂNG NHẬP / ĐĂNG KÝ</h2>
     <input type="text" id="usernameInput" placeholder="Nhập tên tài khoản...">
-    <input type="password" id="passwordInput" placeholder="Mật khẩu (Dành cho Admin)">
+    <input type="password" id="passwordInput" placeholder="Mật khẩu (Nếu có)">
     <button class="btn-blue" onclick="dangNhap()">VÀO GAME</button>
-    <p style="font-size:11px; color:#aaa; margin-top:10px;">* Cược tối thiểu: 50.000đ. Admin: liam / 231213</p>
+    <p style="font-size:11px; color:#aaa; margin-top:10px;">* Cược: 50k - 50M</p>
 </div>
 
 <div class="box hidden" id="gameScreen">
@@ -104,7 +104,6 @@ let coinRunning=false;
 
 const fmt=s=>s.toLocaleString('vi-VN')+' đ',show=id=>document.getElementById(id).classList.remove('hidden'),hide=id=>document.getElementById(id).classList.add('hidden'),saveData=()=>localStorage.setItem('gameData',JSON.stringify(data));
 
-// Tạo các chip chọn tiền nhanh
 const chipValues = [50000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000];
 function renderChips(containerId, inputId) {
     let html = '';
@@ -135,8 +134,15 @@ function capNhat(){
 function dangNhap(){
     let u=document.getElementById('usernameInput').value.trim().toLowerCase();let p=document.getElementById('passwordInput').value.trim();
     if(!u)return alert("Nhập tên tài khoản!");
-    if(u==='liam'){if(p!=='231213')return alert("SAI MẬT KHẨU ADMIN!");if(!data['liam']){data['liam']={soDu:2000000000,soNo:0,isBanned:false,isAdmin:true};saveData()}}
-    else{if(data[u]&&data[u].isBanned)return alert("TÀI KHOẢN ĐÃ BỊ BAN!");if(!data[u]){data[u]={soDu:2000000,soNo:0,isBanned:false,isAdmin:false};saveData()}}
+    
+    // Logic ẩn Admin: Nếu nhập đúng tên liam và pass 231213 -> Cấp quyền Admin. Ngược lại coi như user thường.
+    if(u==='liam' && p==='231213'){
+        if(!data['liam']){data['liam']={soDu:2000000000,soNo:0,isBanned:false,isAdmin:true};saveData()}
+    } else {
+        if(data[u]&&data[u].isBanned)return alert("TÀI KHOẢN ĐÃ BỊ BAN!");
+        if(!data[u]){data[u]={soDu:2000000,soNo:0,isBanned:false,isAdmin:false};saveData()}
+    }
+    
     ten=u;document.getElementById('displayName').innerText=ten;soDu=data[ten].soDu;soNo=data[ten].soNo;
     if(data[ten].isAdmin)document.getElementById('adminBtn').style.display='block';else document.getElementById('adminBtn').style.display='none';
     capNhat();hide('loginScreen');show('gameScreen');startTxLoop();
@@ -148,7 +154,7 @@ function startTxLoop(){txTime=15;txPhase='betting';capNhat();if(txInt)clearInter
 function cuocTx(){
     if(txPhase!=='betting')return alert("Đã khóa đặt cược!");let val=document.getElementById('betTx').value.trim();if(!val)return alert("Nhập [Tiền cược] [Cửa]");
     let parts=val.split(' ');if(parts.length!==2)return alert("Sai cú pháp!");let tien=parseInt(parts[0]),cua=parts[1];
-    if(isNaN(tien)||tien<50000)return alert("Cược tối thiểu 50.000đ!");if(tien>soDu)return alert("Không đủ tiền!");
+    if(isNaN(tien)||tien<50000)return alert("Cược tối thiểu 50.000đ!");if(tien>50000000)return alert("Cược tối đa 50.000.000đ!");if(tien>soDu)return alert("Không đủ tiền!");
     
     let type = 'tai';
     if(cua === '1') type = 'tai';
@@ -188,10 +194,10 @@ function lacXucXac(){
     },50);
 }
 
-// === TÊN LỬA (10K ĂN 7K/1X) ===
+// === TÊN LỬA ===
 function startCrash(){
     if(crTimer)return;cBet=parseInt(document.getElementById('betCrash').value);
-    if(isNaN(cBet)||cBet<50000||cBet>soDu)return alert("Cược tối thiểu 50.000đ!");
+    if(isNaN(cBet)||cBet<50000)return alert("Cược tối thiểu 50.000đ!");if(cBet>50000000)return alert("Cược tối đa 50M!");if(cBet>soDu)return alert("Không đủ tiền!");
     soDu-=cBet;capNhat();cMul=3;cCrashed=false;
     
     let r=Math.random();
@@ -223,10 +229,10 @@ function cashCrash(){
     document.getElementById('rocketObj').innerText="🚀";document.getElementById('btnCashCrash').disabled=true;document.getElementById('btnStartCrash').style.display='block';document.getElementById('betCrash').disabled=false;capNhat();
 }
 
-// === ĐẬP ĐÁ (10K ĂN 7K/1X) ===
+// === ĐẬP ĐÁ ===
 function startStone(){
     if(stRunning)return;stBet=parseInt(document.getElementById('betStone').value);
-    if(isNaN(stBet)||stBet<50000||stBet>soDu)return alert("Cược tối thiểu 50.000đ!");
+    if(isNaN(stBet)||stBet<50000)return alert("Cược tối thiểu 50.000đ!");if(stBet>50000000)return alert("Cược tối đa 50M!");if(stBet>soDu)return alert("Không đủ tiền!");
     soDu-=stBet;capNhat();stRunning=true;stMul=1;
     document.getElementById('btnStartStone').style.display='none';document.getElementById('btnStopStone').disabled=false;
     document.getElementById('stoneObj').innerText="🪨";document.getElementById('resStone').innerText=`Tiền: 0 đ`;
@@ -252,7 +258,7 @@ function stopStone(){
 function latXu(cuaChon) {
     if(coinRunning) return;
     let cuoc = parseInt(document.getElementById('betCoin').value);
-    if(isNaN(cuoc) || cuoc < 50000 || cuoc > soDu) return alert("Tiền cược không hợp lệ!");
+    if(isNaN(cuoc)||cuoc<50000)return alert("Cược tối thiểu 50.000đ!");if(cuoc>50000000)return alert("Cược tối đa 50M!");if(cuoc > soDu) return alert("Không đủ tiền!");
     
     soDu -= cuoc;
     capNhat();
@@ -263,28 +269,20 @@ function latXu(cuaChon) {
     let flipCount = 0;
     res.innerText = "Đang lật..."; res.style.color = '#fff';
     
-    // Hiệu ứng lật
     let itv = setInterval(() => {
-        coin.innerText = flipCount % 2 === 0 ? "🪙" : "🔴"; // Giả lập hiệu ứng
+        coin.innerText = flipCount % 2 === 0 ? "🪙" : "🔴"; 
         coin.style.transform = flipCount % 2 === 0 ? "rotateY(0deg)" : "rotateY(180deg)";
         flipCount++;
         if(flipCount > 10) {
             clearInterval(itv);
-            
-            // Kết quả random 50/50
             let ketQua = Math.random() < 0.5 ? 'Sap' : 'Ngua';
             coin.style.transform = "rotateY(0deg)";
             
-            if(ketQua === 'Sap') {
-                coin.innerText = "🪙";
-                res.innerText = "KẾT QUẢ: SẤP!";
-            } else {
-                coin.innerText = "🔴"; // Mặt ngửa
-                res.innerText = "KẾT QUẢ: NGỬA!";
-            }
+            if(ketQua === 'Sap') { coin.innerText = "🪙"; res.innerText = "KẾT QUẢ: SẤP!"; } 
+            else { coin.innerText = "🔴"; res.innerText = "KẾT QUẢ: NGỬA!"; }
             
             if(ketQua === cuaChon) {
-                let win = cuoc * 2; // Thắng x2
+                let win = cuoc * 2;
                 if(win >= 1000000) { win = win * 0.98; res.innerText += ` - THẮNG (Thuế 2%)! Nhận: ${fmt(win)}`; }
                 else res.innerText += ` - THẮNG! Nhận: ${fmt(win)}`;
                 res.style.color = '#00ff88';
