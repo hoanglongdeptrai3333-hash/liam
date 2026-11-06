@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Super Game</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}body{background:#12121e;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}.box{background:#1e1e2f;padding:15px;border-radius:15px;width:100%;max-width:400px;border:1px solid #333;text-align:center}h2{color:#e94560;margin-bottom:15px;text-transform:uppercase;font-size:20px}input{width:100%;padding:10px;margin-bottom:10px;border-radius:5px;border:1px solid #444;background:#000;color:#fff;outline:none}button{width:100%;padding:12px;margin-bottom:10px;border:none;border-radius:5px;font-weight:bold;cursor:pointer;color:#fff;transition:0.2s}button:active{transform:scale(0.95)}button:disabled{opacity:0.5;cursor:not-allowed}.tabs{display:flex;gap:5px;margin-bottom:15px}.tabs button{background:#333;margin:0;padding:8px;font-size:12px;flex:1}.tabs button.active{background:#e94560}.btn-red{background:#d63031}.btn-green{background:#00b894}.btn-blue{background:#2980b9}.btn-yellow{background:#f39c12;color:#000}.btn-gray{background:#555}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;text-align:left;background:#000;padding:10px;border-radius:8px}.bal{color:#00ff88;font-weight:bold;font-size:18px}.debt{color:#ff4757;font-size:12px;display:none}.menu-btn{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;width:auto;padding:0 10px;margin:0}.tx-timer{font-size:18px;font-weight:bold;color:#ffd369;margin-bottom:10px}.dice-box{display:flex;justify-content:center;gap:10px;margin:15px 0}.dice{width:60px;height:60px;background:#fff;color:#000;font-size:40px;font-weight:bold;display:flex;justify-content:center;align-items:center;border-radius:10px}.crash-box{height:120px;background:#050510;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:1px solid #444}.mult{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:30px;font-weight:bold;color:#00ff88;z-index:2}.rocket{position:absolute;bottom:10px;left:10px;font-size:25px;z-index:1}.rab-box{height:90px;background:#4ecdc4;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:2px solid #2c3e50}.ground{position:absolute;bottom:0;width:100%;height:20px;background:#2ecc71;border-top:2px solid #27ae60;z-index:1}.rab{position:absolute;bottom:20px;left:70%;font-size:28px;transform:scaleX(-1);z-index:3}.fox{position:absolute;bottom:20px;left:30%;font-size:30px;transform:scaleX(-1);z-index:2}.r-mult{position:absolute;top:5px;right:10px;font-weight:bold;font-size:14px;color:#fff;background:rgba(0,0,0,0.6);padding:2px 6px;border-radius:5px;z-index:4}.goal-box{height:150px;background:#27ae60;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;display:flex;flex-direction:column;justify-content:space-between;padding:10px;border:3px solid #fff}.g-row{display:flex;justify-content:space-between;height:45%}.g-spot{width:30%;height:100%;background:rgba(255,255,255,0.2);border:2px dashed #fff;display:flex;justify-content:center;align-items:center;font-size:25px;border-radius:5px;cursor:pointer}.gk{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:35px;z-index:10;transition:all 0.3s}.hidden{display:none!important}#toast{position:fixed;top:-100px;left:50%;transform:translateX(-50%);background:#d63031;color:#fff;padding:10px;border-radius:8px;font-weight:bold;transition:top 0.5s;z-index:1000;text-align:center;width:90%;max-width:350px;border:2px solid #fff}#toast.show{top:20px}.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:100}.modal-c{background:#1e1e2f;padding:15px;border-radius:10px;width:95%;max-width:400px;border:1px solid #8e44ad;max-height:85vh;overflow-y:auto;text-align:left}.adm-tbl{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px}.adm-tbl th,.adm-tbl td{border-bottom:1px solid #333;padding:5px}.adm-inp{width:70px;padding:3px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}body{background:#12121e;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}.box{background:#1e1e2f;padding:15px;border-radius:15px;width:100%;max-width:400px;border:1px solid #333;text-align:center}h2{color:#e94560;margin-bottom:15px;text-transform:uppercase;font-size:20px}input{width:100%;padding:10px;margin-bottom:10px;border-radius:5px;border:1px solid #444;background:#000;color:#fff;outline:none}button{width:100%;padding:12px;margin-bottom:10px;border:none;border-radius:5px;font-weight:bold;cursor:pointer;color:#fff;transition:0.2s}button:active{transform:scale(0.95)}button:disabled{opacity:0.5;cursor:not-allowed}.tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}.tabs button{background:#333;margin:0;padding:8px;font-size:11px;flex:1;min-width:60px}.tabs button.active{background:#e94560}.btn-red{background:#d63031}.btn-green{background:#00b894}.btn-blue{background:#2980b9}.btn-yellow{background:#f39c12;color:#000}.btn-purple{background:#8e44ad}.btn-gray{background:#555}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;text-align:left;background:#000;padding:10px;border-radius:8px}.bal{color:#00ff88;font-weight:bold;font-size:18px}.debt{color:#ff4757;font-size:12px;display:none}.menu-btn{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;width:auto;padding:0 10px;margin:0}.tx-timer{font-size:18px;font-weight:bold;color:#ffd369;margin-bottom:10px}.dice-box{display:flex;justify-content:center;gap:10px;margin:15px 0}.dice{width:60px;height:60px;background:#fff;color:#000;font-size:40px;font-weight:bold;display:flex;justify-content:center;align-items:center;border-radius:10px}.crash-box{height:120px;background:#050510;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:1px solid #444}.mult{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:30px;font-weight:bold;color:#00ff88;z-index:2}.rocket{position:absolute;bottom:10px;left:10px;font-size:25px;z-index:1}.rab-box{height:90px;background:#4ecdc4;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:2px solid #2c3e50}.ground{position:absolute;bottom:0;width:100%;height:20px;background:#2ecc71;border-top:2px solid #27ae60;z-index:1}.rab{position:absolute;bottom:20px;left:70%;font-size:28px;transform:scaleX(-1);z-index:3}.fox{position:absolute;bottom:20px;left:30%;font-size:30px;transform:scaleX(-1);z-index:2}.r-mult{position:absolute;top:5px;right:10px;font-weight:bold;font-size:14px;color:#fff;background:rgba(0,0,0,0.6);padding:2px 6px;border-radius:5px;z-index:4}.stone-box{height:120px;background:#333;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;display:flex;justify-content:center;align-items:center;border:2px solid #555;cursor:pointer}.stone{font-size:60px;transition:transform 0.1s}.stone.hit{transform:scale(1.2) rotate(15deg)}.hidden{display:none!important}#toast{position:fixed;top:-100px;left:50%;transform:translateX(-50%);background:#d63031;color:#fff;padding:10px;border-radius:8px;font-weight:bold;transition:top 0.5s;z-index:1000;text-align:center;width:90%;max-width:350px;border:2px solid #fff}#toast.show{top:20px}.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:100}.modal-c{background:#1e1e2f;padding:15px;border-radius:10px;width:95%;max-width:400px;border:1px solid #8e44ad;max-height:85vh;overflow-y:auto;text-align:left}.adm-tbl{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px}.adm-tbl th,.adm-tbl td{border-bottom:1px solid #333;padding:5px}.adm-inp{width:70px;padding:3px}.ads-blink{animation:blink 1s infinite alternate}@keyframes blink{from{opacity:1}to{opacity:0.5}}
 </style>
 </head>
 <body>
@@ -33,44 +33,51 @@
         <button class="active" id="tabBtn0" onclick="switchTab(0)">Tài Xỉu</button>
         <button id="tabBtn1" onclick="switchTab(1)">Tên Lửa</button>
         <button id="tabBtn2" onclick="switchTab(2)">Cáo Thỏ</button>
-        <button id="tabBtn3" onclick="switchTab(3)">Bắt Gôn</button>
+        <button id="tabBtn3" onclick="switchTab(3)">Đập Đá</button>
     </div>
 
     <div id="tab0">
         <div class="tx-timer" id="txTimer">...</div>
         <div class="dice-box"><div class="dice" id="d1">?</div><div class="dice" id="d2">?</div><div class="dice" id="d3">?</div></div>
         <div id="resTx" style="height:25px;font-weight:bold;margin-bottom:10px"></div>
-        <input type="number" id="betTx" value="100000" min="1000">
-        <button class="btn-red" id="btnXiu" onclick="cuocTx('xiu')">CƯỢC XỈU</button>
-        <button class="btn-green" id="btnTai" onclick="cuocTx('tai')">CƯỢC TÀI</button>
+        <p style="font-size:12px; color:#aaa; margin-bottom:5px; text-align:left;">Nhập: [Tiền cược] [1: Tài, 2: Xỉu]</p>
+        <input type="text" id="betTx" placeholder="VD: 100000 1 (Cược 100k Tài)">
+        <button class="btn-blue" onclick="cuocTx()">ĐẶT CƯỢC</button>
     </div>
 
     <div id="tab1" class="hidden">
-        <div class="crash-box"><div class="mult" id="multCrash">1.00x</div><div class="rocket" id="rocketObj">🚀</div></div>
-        <input type="number" id="betCrash" value="100000" min="1000">
+        <div class="crash-box"><div class="mult" id="multCrash">3.00x</div><div class="rocket" id="rocketObj">🚀</div></div>
+        <div id="resCrash" style="height:25px;font-weight:bold;margin-bottom:10px;color:#ffd369">Tiền thắng: 0 đ (1x = 3k)</div>
+        <input type="number" id="betCrash" value="10000" min="1000">
         <button class="btn-blue" id="btnStartCrash" onclick="startCrash()">BẮT ĐẦU BAY</button>
         <button class="btn-yellow" id="btnCashCrash" onclick="cashCrash()" disabled>CHỐT</button>
     </div>
 
     <div id="tab2" class="hidden">
         <div class="rab-box"><div class="ground"></div><div class="r-mult" id="multRab">1.00x</div><div class="fox" id="foxObj">🦊</div><div class="rab" id="rabObj">🐇</div></div>
-        <input type="number" id="betRab" value="100000" min="1000">
+        <div id="resRab" style="height:25px;font-weight:bold;margin-bottom:10px;color:#ffd369">Tiền thắng: 0 đ (1x = 3k)</div>
+        <input type="number" id="betRab" value="10000" min="1000">
         <button class="btn-green" id="btnStartRab" onclick="startRab()">THẢ THỎ</button>
         <button class="btn-yellow" id="btnCashRab" onclick="cashRab()" disabled>CHỐT</button>
     </div>
 
     <div id="tab3" class="hidden">
-        <div class="goal-box" id="goalBox">
-            <div class="g-row"><div class="g-spot" onclick="sutGon('TL')">↖️</div><div class="g-spot" onclick="sutGon('TR')">↗️</div></div>
-            <div class="g-row" style="align-items: flex-end;"><div class="g-spot" onclick="sutGon('DL')">↙️</div><div class="g-spot" onclick="sutGon('DR')">↘️</div></div>
-            <div class="gk" id="gkObj">🧤</div>
+        <div class="stone-box" onclick="hitStone()">
+            <div class="stone" id="stoneObj">🪨</div>
         </div>
-        <div id="resGoal" style="height:25px;font-weight:bold;margin-bottom:10px;color:#ffd369"></div>
-        <input type="number" id="betGoal" value="100000" min="1000">
-        <p style="font-size:12px;color:#aaa;margin-bottom:10px">Chọn hướng sút</p>
+        <div id="resStone" style="height:25px;font-weight:bold;margin-bottom:10px;color:#ffd369">Tiền kiếm: 0 đ (1x = 3k)</div>
+        <input type="number" id="betStone" value="10000" min="1000">
+        <button class="btn-green" id="btnStartStone" onclick="startStone()">BẮT ĐẦU</button>
+        <button class="btn-yellow" id="btnStopStone" onclick="stopStone()" disabled>DỪNG & NHẬN TIỀN</button>
     </div>
 
-    <div id="loanControls" class="hidden"><button class="btn-yellow" onclick="vayTien()">VAY TIỀN (Max 10M)</button></div>
+    <!-- KHU VỰC QUẢNG CÁO VAY NỢ -->
+    <div id="loanControls" class="hidden">
+        <div class="ads-blink" style="background:#8e44ad; padding:5px; border-radius:5px; margin-bottom:5px; font-size:12px; font-weight:bold;">
+            ⚠️ QUẢNG CÁO: BẠN CẦN TIỀN? VAY NGAY KẺO LỠ!
+        </div>
+        <button class="btn-yellow" onclick="vayTien()">VAY TIỀN (Max 10M)</button>
+    </div>
 </div>
 
 <div class="modal hidden" id="loanModal">
@@ -90,8 +97,8 @@
 
 <script>
 let data=JSON.parse(localStorage.getItem('gameData'))||{},maDaDung=[],ten="",soDu=0,soNo=0;
-let txInt=null,txTime=15,txPhase='waiting',crTimer=null,cMul=1,cPoint=0,cCrashed=false,cBet=0,raTimer=null,rMul=1,rPoint=0,rCaught=false,rBet=0;
-let goalCount = 0; // Đếm số lần sút gôn (tối đa 3)
+let txInt=null,txTime=15,txPhase='waiting',crTimer=null,cMul=1,cPoint=0,cCrashed=false,cBet=0,raTimer=null,rMul=1,rPoint=0,rCaught=false,rBet=0,stTimer=null,stMul=1,stRunning=false,stBet=0;
+let lastCrash64 = false; // Biến theo dõi mốc 64x
 
 const fmt=s=>s.toLocaleString('vi-VN')+' đ',show=id=>document.getElementById(id).classList.remove('hidden'),hide=id=>document.getElementById(id).classList.add('hidden'),saveData=()=>localStorage.setItem('gameData',JSON.stringify(data));
 function showToast(msg){document.getElementById('toastTxt').innerText=msg;document.getElementById('toast').classList.add('show');setTimeout(()=>document.getElementById('toast').classList.remove('show'),4000)}
@@ -104,72 +111,121 @@ function capNhat(){
     if(soNo>0){dEl.style.display='block';dEl.innerText='Nợ: '+fmt(soNo)}else dEl.style.display='none';
     if(data[ten]){data[ten].soDu=soDu;data[ten].soNo=soNo;saveData()}
     if(soNo>10000000){data[ten].isBanned=true;saveData();alert("TÀI KHOẢN BỊ KHÓA DO NỢ QUÁ 10 TRIỆU!");location.reload()}
-    let h=soDu>0;document.getElementById('btnTai').disabled=!h||txPhase!=='betting';document.getElementById('btnXiu').disabled=!h||txPhase!=='betting';
-    if(!h){document.getElementById('btnStartCrash').style.display='none';document.getElementById('btnStartRab').style.display='none';show('loanControls')}else{if(!crTimer)document.getElementById('btnStartCrash').style.display='block';if(!raTimer)document.getElementById('btnStartRab').style.display='block';hide('loanControls')}
+    let h=soDu>0;
+    if(!h){
+        document.getElementById('btnStartCrash').style.display='none';
+        document.getElementById('btnStartRab').style.display='none';
+        document.getElementById('btnStartStone').style.display='none';
+        show('loanControls');
+    }else{
+        if(!crTimer)document.getElementById('btnStartCrash').style.display='block';
+        if(!raTimer)document.getElementById('btnStartRab').style.display='block';
+        if(!stRunning)document.getElementById('btnStartStone').style.display='block';
+        hide('loanControls');
+    }
 }
 
 function dangNhap(){
     let u=document.getElementById('usernameInput').value.trim().toLowerCase(),c=document.getElementById('codeInput').value.trim().toLowerCase();
     if(!u)return alert("Nhập tên!");
-    
-    if(data[u]) {
-        if(data[u].isBanned) return alert("TÀI KHOẢN ĐÃ BỊ BAN BỞI ADMIN!");
-    } else {
-        let t=(u==='liam')?2000000000:2000000;
-        data[u]={soDu:t,soNo:0,isBanned:false,isAdmin:(u==='liam')};
-        saveData();
-    }
-    
-    ten=u;
-    document.getElementById('displayName').innerText=ten;
-    soDu=data[ten].soDu;soNo=data[ten].soNo;
-    
+    if(data[u]) { if(data[u].isBanned) return alert("TÀI KHOẢN ĐÃ BỊ BAN!"); } 
+    else { let t=(u==='liam')?2000000000:2000000; data[u]={soDu:t,soNo:0,isBanned:false,isAdmin:(u==='liam')}; saveData(); }
+    ten=u; document.getElementById('displayName').innerText=ten; soDu=data[ten].soDu;soNo=data[ten].soNo;
     if(c==="liam đz"&&!maDaDung.includes(ten)){soDu+=200000;maDaDung.push(ten);alert("Nhập mã thành công +200k!")}else if(c!==""&&c!=="liam đz")alert("Mã sai!");
-    
     if(data[ten].isAdmin) document.getElementById('adminBtn').style.display='block'; else document.getElementById('adminBtn').style.display='none';
-    
-    goalCount = 0; // Reset số lần sút
     capNhat();hide('loginScreen');show('gameScreen');startTxLoop();
 }
 
-function dangXuat(){if(crTimer||raTimer)return alert("Đang trong ván!");if(confirm("Thoát?"))location.reload()}
+function dangXuat(){if(crTimer||raTimer||stRunning)return alert("Đang trong ván!");if(confirm("Thoát?"))location.reload()}
 
 function startTxLoop(){txTime=15;txPhase='betting';capNhat();if(txInt)clearInterval(txInt);txInt=setInterval(()=>{txTime--;let t=document.getElementById('txTimer');if(txTime>2){t.innerText=`Cược: ${txTime}s`;t.style.color='#ffd369'}else if(txTime>0){t.innerText=`Khóa: ${txTime}s`;t.style.color='#ff4757';txPhase='locked';capNhat()}else{txPhase='rolling';t.innerText='Lắc...';t.style.color='#00ff88';clearInterval(txInt);txInt=null;lacXucXac()}},1000)}
 
-function cuocTx(lc){if(txPhase!=='betting')return;let c=parseInt(document.getElementById('betTx').value);if(isNaN(c)||c<1000||c>soDu)return alert("Tiền cược không hợp lệ!");soDu-=c;data[ten].pendingBet={type:lc,amount:c};capNhat()}
-
-function lacXucXac(){let d1=document.getElementById('d1'),d2=document.getElementById('d2'),d3=document.getElementById('d3'),dem=0;let itv=setInterval(()=>{d1.innerText=Math.floor(Math.random()*6)+1;d2.innerText=Math.floor(Math.random()*6)+1;d3.innerText=Math.floor(Math.random()*6)+1;dem++;if(dem>15){clearInterval(itv);let x1=Math.floor(Math.random()*6)+1,x2=Math.floor(Math.random()*6)+1,x3=Math.floor(Math.random()*6)+1;d1.innerText=x1;d2.innerText=x2;d3.innerText=x3;let tong=x1+x2+x3,laTai=tong>=11&&tong<=17,laXiu=tong>=4&&tong<=10,laBao=x1===x2&&x2===x3;let rd=document.getElementById('resTx');rd.innerText=`Tổng: ${tong} - `+(laBao?"BÃO":(laTai?"TÀI":"XỈU"));rd.style.color=laTai?'#00ff88':(laXiu?'#ff4757':'#ffd369');let bet=data[ten].pendingBet;if(bet&&!laBao){if(bet.type==='tai'&&laTai||bet.type==='xiu'&&laXiu){soDu+=bet.amount*2;rd.innerText+=' - THẮNG!';if(bet.amount*2>=10000000)showToast(`🔥 ${ten} thắng Tài Xỉu +${fmt(bet.amount*2)}!`)}else rd.innerText+=' - THUA!'}else if(laBao&&bet){soDu+=bet.amount;rd.innerText+=' - HOÀN TIỀN!'}data[ten].pendingBet=null;capNhat();setTimeout(()=>{startTxLoop()},3000)}},50)}
-
-// === TÊN LỬA MỐC CỐ ĐỊNH ===
-function startCrash(){
-    if(crTimer)return;cBet=parseInt(document.getElementById('betCrash').value);if(isNaN(cBet)||cBet<1000||cBet>soDu)return alert("Tiền cược không hợp lệ!");
-    soDu-=cBet;capNhat();cMul=1;cCrashed=false;
+function cuocTx(){
+    if(txPhase !== 'betting') return alert("Đã khóa đặt cược!");
+    let val = document.getElementById('betTx').value.trim();
+    if(!val) return alert("Nhập [Tiền cược] [1 hoặc 2]");
+    let parts = val.split(' ');
+    if(parts.length !== 2) return alert("Sai cú pháp!");
+    let tienCuoc = parseInt(parts[0]), cua = parseInt(parts[1]);
+    if(isNaN(tienCuoc) || tienCuoc < 1000) return alert("Tiền cược >= 1k!");
+    if(tienCuoc > soDu) return alert("Không đủ tiền!");
+    if(cua !== 1 && cua !== 2) return alert("Cửa cược: 1 (Tài) hoặc 2 (Xỉu)!");
     
-    // Random chọn mốc nổ dựa trên tỉ lệ
-    let r = Math.random();
-    if (r < 0.40) cPoint = 2.0;        // 40%
-    else if (r < 0.70) cPoint = 3.0;   // 30%
-    else if (r < 0.85) cPoint = 4.0;   // 15%
-    else if (r < 0.95) cPoint = 6.0;   // 10%
-    else if (r < 0.98) cPoint = 46.0;  // 3%
-    else if (r < 0.995) cPoint = 65.0; // 1.5%
-    else cPoint = 96.0;                // 0.5% (Siêu hiếm)
+    soDu -= tienCuoc;
+    data[ten].pendingBet = { type: (cua === 1 ? 'tai' : 'xiu'), amount: tienCuoc };
+    capNhat();
+    document.getElementById('resTx').innerText = `Đã đặt ${cua === 1 ? 'TÀI' : 'XỈU'} - ${fmt(tienCuoc)}`;
+    document.getElementById('resTx').style.color = '#ffd369';
+}
 
-    let m=document.getElementById('multCrash'),rk=document.getElementById('rocketObj');m.innerText="1.00x";m.style.color='#00ff88';rk.innerText="🚀";
+function lacXucXac(){
+    let d1=document.getElementById('d1'),d2=document.getElementById('d2'),d3=document.getElementById('d3'),dem=0;
+    let itv=setInterval(()=>{
+        d1.innerText=Math.floor(Math.random()*6)+1;d2.innerText=Math.floor(Math.random()*6)+1;d3.innerText=Math.floor(Math.random()*6)+1;dem++;
+        if(dem>15){
+            clearInterval(itv);let x1=Math.floor(Math.random()*6)+1,x2=Math.floor(Math.random()*6)+1,x3=Math.floor(Math.random()*6)+1;
+            d1.innerText=x1;d2.innerText=x2;d3.innerText=x3;let tong=x1+x2+x3,laTai=tong>=11&&tong<=17,laXiu=tong>=4&&tong<=10,laBao=x1===x2&&x2===x3;
+            let rd=document.getElementById('resTx');rd.innerText=`Tổng: ${tong} - `+(laBao?"BÃO":(laTai?"TÀI":"XỈU"));rd.style.color=laTai?'#00ff88':(laXiu?'#ff4757':'#ffd369');
+            let bet=data[ten].pendingBet;
+            if(bet){
+                if(laBao){ soDu+=bet.amount; rd.innerText+=' - HOÀN TIỀN!'; }
+                else if((bet.type==='tai'&&laTai)||(bet.type==='xiu'&&laXiu)){
+                    let win = bet.amount*2;
+                    // Thuế 2% nếu >= 1M
+                    if(win >= 1000000) { win = win * 0.98; rd.innerText += ` - THẮNG (Thuế 2%)!`; } 
+                    else rd.innerText+=' - THẮNG!';
+                    soDu += Math.floor(win);
+                    if(win>=10000000)showToast(`🔥 ${ten} thắng Tài Xỉu +${fmt(win)}!`);
+                } else rd.innerText+=' - THUA!';
+            }
+            data[ten].pendingBet=null; capNhat(); document.getElementById('betTx').value="";
+            setTimeout(()=>{startTxLoop()},3000);
+        }
+    },50);
+}
+
+// === TÊN LỬA (TỈ GIÁ 1X = 3K, TỪ 3X ĐỔ LÊN) ===
+function startCrash(){
+    if(crTimer)return;cBet=parseInt(document.getElementById('betCrash').value);
+    if(isNaN(cBet)||cBet<1000||cBet>soDu)return alert("Tiền cược không hợp lệ!");
+    
+    soDu-=cBet;capNhat();cMul=3.0;cCrashed=false;
+    
+    // Random mốc nổ từ 3x trở lên. Mốc 64x chỉ xuất hiện 1 lần (dùng cờ hiệu)
+    let r = Math.random();
+    if (r < 0.60) cPoint = 3.0;        // 60% nổ 3x
+    else if (r < 0.85) cPoint = 6.0;   // 25% nổ 6x
+    else if (r < 0.95) cPoint = 24.0;  // 10% nổ 24x
+    else if (r < 0.99) cPoint = 96.0;  // 4% nổ 96x (siêu hiếm)
+    else {
+        // 1% nổ 64x, nhưng chỉ cho nổ 1 lần
+        if(!lastCrash64) { cPoint = 64.0; lastCrash64 = true; }
+        else cPoint = 3.0; // Nếu đã nổ 64x rồi thì ép về 3x
+    }
+
+    let m=document.getElementById('multCrash'),rk=document.getElementById('rocketObj'),res=document.getElementById('resCrash');
+    m.innerText="3.00x";m.style.color='#00ff88';rk.innerText="🚀";
+    res.innerText = `Tiền thắng: ${fmt(3000)} (1x = 3k)`;
+    
     document.getElementById('btnStartCrash').style.display='none';document.getElementById('btnCashCrash').disabled=false;document.getElementById('betCrash').disabled=true;
     
     let st=Date.now();
     crTimer=setInterval(()=>{
         let tm=(Date.now()-st)/1000;
-        // Tốc độ bay chậm lại ở các mốc cao để kịp chốt
-        cMul = 1.0 + Math.pow(tm, 1.5) * (cPoint > 10 ? 0.05 : 0.2); 
+        // Hệ số bắt đầu từ 3.0
+        cMul = 3.0 + Math.pow(tm, 1.5) * (cPoint > 10 ? 0.5 : 1.0); 
         
-        let b=10+(cMul*8)%100, l=10+(cMul*15)%250;
+        let b=10+(cMul*2)%100, l=10+(cMul*4)%250;
         rk.style.bottom=b+'px'; rk.style.left=l+'px';
+        
+        // Tính tiền theo tỉ giá 3k/1x
+        let currentWin = Math.floor(cMul * 3000); 
+        res.innerText = `Tiền thắng: ${fmt(currentWin)}`;
         
         if(cMul>=cPoint){
             clearInterval(crTimer); crTimer=null; cCrashed=true;
             m.innerText=cMul.toFixed(2)+"x (NỔ)"; m.style.color='#ff4757'; rk.innerText="💥";
+            res.innerText = `Đã nổ! Mất ${fmt(cBet)}`;
             document.getElementById('btnCashCrash').disabled=true; document.getElementById('btnStartCrash').style.display='block'; document.getElementById('betCrash').disabled=false; capNhat();
         }else{
             m.innerText=cMul.toFixed(2)+"x"; document.getElementById('btnCashCrash').innerText=`CHỐT (${cMul.toFixed(2)}x)`;
@@ -177,33 +233,53 @@ function startCrash(){
     },30);
 }
 
-function cashCrash(){if(!crTimer||cCrashed)return;clearInterval(crTimer);crTimer=null;let win=0;if(cMul<1.1){win=3000;soDu+=win;alert(`Chốt 1x: Nhận 3.000đ!`)}else if(cMul<2.0){alert(`Chốt sớm (<2.0x). Mất tiền!`)}else{win=Math.floor(cBet*cMul);soDu+=win;alert(`Chốt thành công! Nhận: ${fmt(win)}`);if(win>=10000000)showToast(`🔥 ${ten} chốt Tên Lửa ${cMul.toFixed(2)}x +${fmt(win)}!`)}document.getElementById('rocketObj').innerText="🚀";document.getElementById('btnCashCrash').disabled=true;document.getElementById('btnStartCrash').style.display='block';document.getElementById('betCrash').disabled=false;capNhat()}
+function cashCrash(){
+    if(!crTimer||cCrashed)return;clearInterval(crTimer);crTimer=null;
+    let win = Math.floor(cMul * 3000); // 1x = 3k
+    
+    // Thuế 2% nếu >= 1M
+    if(win >= 1000000) { win = win * 0.98; alert(`Chốt thành công (Đã trừ 2% thuế)! Nhận: ${fmt(win)}`); } 
+    else alert(`Chốt thành công! Nhận: ${fmt(win)}`);
+    
+    soDu += Math.floor(win);
+    if(win>=10000000)showToast(`🔥 ${ten} chốt Tên Lửa +${fmt(win)}!`);
+    
+    document.getElementById('rocketObj').innerText="🚀";
+    document.getElementById('btnCashCrash').disabled=true;document.getElementById('btnStartCrash').style.display='block';document.getElementById('betCrash').disabled=false;capNhat();
+}
 
-// === CÁO THỎ (LÊN ĐẾN 40X) ===
+// === CÁO THỎ (TỈ GIÁ 1X = 3K) ===
 function startRab(){
-    if(raTimer)return;rBet=parseInt(document.getElementById('betRab').value);if(isNaN(rBet)||rBet<1000||rBet>soDu)return alert("Tiền cược không hợp lệ!");
-    soDu-=rBet;capNhat();rMul=1;rCaught=false;
+    if(raTimer)return;rBet=parseInt(document.getElementById('betRab').value);
+    if(isNaN(rBet)||rBet<1000||rBet>soDu)return alert("Tiền cược không hợp lệ!");
+    soDu-=rBet;capNhat();rMul=1.0;rCaught=false;
     
     let r=Math.random();
-    if(r<0.6) rPoint=Math.random()*3+2.0; // 60% từ 2-5x
-    else if(r<0.9) rPoint=Math.random()*10+5.0; // 30% từ 5-15x
-    else rPoint=Math.random()*25+15.0; // 10% từ 15-40x
+    if(r<0.6) rPoint=Math.random()*3+2.0; 
+    else if(r<0.9) rPoint=Math.random()*10+5.0; 
+    else rPoint=Math.random()*25+15.0; 
 
-    let rab=document.getElementById('rabObj'),fox=document.getElementById('foxObj'),rDiv=document.getElementById('multRab');
+    let rab=document.getElementById('rabObj'),fox=document.getElementById('foxObj'),rDiv=document.getElementById('multRab'),res=document.getElementById('resRab');
     rab.innerText="🐇";fox.innerText="🦊";rDiv.innerText="1.00x";rDiv.style.color='#fff';
+    res.innerText = `Tiền thắng: ${fmt(3000)} (1x = 3k)`;
+    
     document.getElementById('btnStartRab').style.display='none';document.getElementById('btnCashRab').disabled=false;document.getElementById('betRab').disabled=true;
     
     let st=Date.now();
     raTimer=setInterval(()=>{
         let tm=(Date.now()-st)/1000;
-        rMul=1+(tm*1.0);
+        rMul=1.0+(tm*1.0);
         let prog=(rMul-1)/(rPoint-1);if(prog>1)prog=1;
         let rPos=(70+(prog*40))%110,fPos=(30+(prog*80))%110;
         rab.style.left=rPos+'%';fox.style.left=fPos+'%';
         
+        let currentWin = Math.floor(rMul * 3000);
+        res.innerText = `Tiền thắng: ${fmt(currentWin)}`;
+        
         if(rMul>=rPoint){
             clearInterval(raTimer);raTimer=null;rCaught=true;
             fox.style.left=(rPos-2)+'%';rab.innerText="💥";rDiv.innerText=rPoint.toFixed(2)+"x (BỊ BẮT)";rDiv.style.color='#ff4757';
+            res.innerText = `Bị bắt! Mất ${fmt(rBet)}`;
             document.getElementById('btnCashRab').disabled=true;document.getElementById('btnStartRab').style.display='block';document.getElementById('betRab').disabled=false;capNhat();
         }else{
             rDiv.innerText=rMul.toFixed(2)+"x";document.getElementById('btnCashRab').innerText=`CHỐT (${rMul.toFixed(2)}x)`;
@@ -211,62 +287,70 @@ function startRab(){
     },30);
 }
 
-function cashRab(){if(!raTimer||rCaught)return;clearInterval(raTimer);raTimer=null;let rab=document.getElementById('rabObj'),fox=document.getElementById('foxObj'),win=0;if(rMul<1.1){win=3000;soDu+=win;rab.innerText="🏆";fox.innerText="😡";alert(`Chốt 1x: Nhận 3.000đ!`)}else if(rMul<2.0){rab.innerText="💥";fox.innerText="🦊";alert(`Chốt sớm (<2.0x). Mất tiền!`)}else{win=Math.floor(rBet*rMul);soDu+=win;rab.innerText="🏆";fox.innerText="😡";alert(`Chốt thành công! Nhận: ${fmt(win)}`);if(win>=10000000)showToast(`🔥 ${ten} chốt Thỏ ${rMul.toFixed(2)}x +${fmt(win)}!`)}document.getElementById('btnCashRab').disabled=true;document.getElementById('btnStartRab').style.display='block';document.getElementById('betRab').disabled=false;capNhat()}
-
-// === BẮT GÔN (GIỚI HẠN 3 LẦN) ===
-function sutGon(huong){
-    if(goalCount >= 3) return alert("Bạn đã hết lượt sút (Tối đa 3 lần)!");
+function cashRab(){
+    if(!raTimer||rCaught)return;clearInterval(raTimer);raTimer=null;
+    let win = Math.floor(rMul * 3000);
     
-    let cuoc=parseInt(document.getElementById('betGoal').value);
-    if(isNaN(cuoc)||cuoc<1000||cuoc>soDu)return alert("Tiền cược không hợp lệ!");
+    if(win >= 1000000) { win = win * 0.98; alert(`Chốt thành công (Đã trừ 2% thuế)! Nhận: ${fmt(win)}`); } 
+    else alert(`Chốt thành công! Nhận: ${fmt(win)}`);
     
-    goalCount++;
-    soDu-=cuoc;capNhat();
-    let gk=document.getElementById('gkObj'),res=document.getElementById('resGoal');
-    res.innerText="Thủ môn đang bay...";res.style.color='#fff';
+    soDu += Math.floor(win);
+    if(win>=10000000)showToast(`🔥 ${ten} chốt Thỏ +${fmt(win)}!`);
     
-    let doanBat = ['TL','TR','DL','DR'][Math.floor(Math.random()*4)];
-    gk.style.top='50%';gk.style.left='50%';
-    
-    setTimeout(()=>{
-        if(doanBat==='TL'){gk.style.top='20%';gk.style.left='20%'}
-        else if(doanBat==='TR'){gk.style.top='20%';gk.style.left='80%'}
-        else if(doanBat==='DL'){gk.style.top='80%';gk.style.left='20%'}
-        else{gk.style.top='80%';gk.style.left='80%'}
-    },100);
-    
-    setTimeout(()=>{
-        if(doanBat===huong){
-            res.innerText="BỊ BẮT! Mất tiền cược.";res.style.color='#ff4757';gk.innerText="🧤";
-        }else{
-            let win=cuoc*2;soDu+=win;res.innerText="VÀO GÔN! Thắng "+fmt(win);res.style.color='#00ff88';gk.innerText="❌";
-            if(win>=10000000)showToast(`🔥 ${ten} sút Penalty thắng +${fmt(win)}!`);
-        }
-        capNhat();
-        if(goalCount >= 3) {
-            setTimeout(() => alert("Bạn đã hết lượt chơi Bắt Gôn (Tối đa 3 lần)!"), 500);
-        }
-        setTimeout(()=>{gk.innerText="🧤";gk.style.top='50%';gk.style.left='50%'},2000);
-    },600);
+    document.getElementById('btnCashRab').disabled=true;document.getElementById('btnStartRab').style.display='block';document.getElementById('betRab').disabled=false;capNhat();
 }
 
-function vayTien(){if(soNo+2000000>10000000)return alert("Vượt hạn mức vay 10M!");show('loanModal')}
-function xacNhanVay(){soNo+=2000000;soDu+=2000000;dongModal();capNhat()}
-function dongModal(){hide('loanModal')}
-
-function moAdmin(){
-    let tbody=document.querySelector('#adminTable tbody');tbody.innerHTML='';
-    for(let t in data){
-        let u=data[t];
-        let banBtn=(t==='liam')?`<span style="color:#888;font-size:12px">Bạn</span>`:(u.isBanned?`<button onclick="unban('${t}')" style="background:orange;padding:2px">Mở</button>`:`<button onclick="ban('${t}')" style="background:red;padding:2px">Ban</button>`);
-        tbody.innerHTML+=`<tr style="${u.isBanned?'opacity:0.5':''}"><td>${t}</td><td>${fmt(u.soDu)}</td><td><input type="number" id="in_${t}" class="adm-inp"><button onclick="sua('${t}')" style="background:green;padding:2px">Sửa</button></td><td>${banBtn}</td></tr>`
-    }
-    show('adminModal')
+// === ĐẬP ĐÁ (1X = 3K) ===
+function startStone(){
+    if(stRunning)return;
+    stBet=parseInt(document.getElementById('betStone').value);
+    if(isNaN(stBet)||stBet<1000||stBet>soDu)return alert("Tiền cược không hợp lệ!");
+    soDu-=stBet;capNhat();
+    stRunning=true; stMul=1.0;
+    document.getElementById('btnStartStone').style.display='none';
+    document.getElementById('btnStopStone').disabled=false;
+    document.getElementById('stoneObj').innerText="🪨";
+    document.getElementById('resStone').innerText=`Tiền kiếm: ${fmt(3000)} (1x = 3k)`;
+    
+    // Cứ mỗi 1 giây, hệ số tăng thêm 1 (tượng trưng cho việc tương tác)
+    stTimer=setInterval(()=>{
+        stMul += 1.0; 
+        let currentWin = Math.floor(stMul * 3000);
+        document.getElementById('resStone').innerText=`Tiền kiếm: ${fmt(currentWin)} (1x = 3k)`;
+        
+        // Random nổ (mất tiền) ở các mốc
+        if(Math.random() < 0.15) { // 15% nổ mỗi giây
+            clearInterval(stTimer); stRunning=false;
+            document.getElementById('stoneObj').innerText="💥";
+            document.getElementById('resStone').innerText=`Đá nát! Mất ${fmt(stBet)}`;
+            document.getElementById('btnStopStone').disabled=true;
+            document.getElementById('btnStartStone').style.display='block';
+            capNhat();
+        }
+    }, 1000);
 }
-function dongAdmin(){hide('adminModal')}
-function sua(t){let val=parseInt(document.getElementById(`in_${t}`).value);if(isNaN(val))return alert("Nhập số tiền!");data[t].soDu+=val;if(t===ten){soDu=data[t].soDu;capNhat()}moAdmin()}
-function ban(t){if(t==='liam')return alert("Không thể ban chính mình!");if(confirm("Ban tài khoản này?")){data[t].isBanned=true;saveData();moAdmin()}}
-function unban(t){data[t].isBanned=false;saveData();moAdmin()}
-</script>
-</body>
-</html>
+
+function hitStone(){
+    if(!stRunning) return;
+    let st = document.getElementById('stoneObj');
+    st.classList.add('hit');
+    setTimeout(()=>st.classList.remove('hit'), 100);
+}
+
+function stopStone(){
+    if(!stRunning)return;
+    clearInterval(stTimer);stRunning=false;
+    let win = Math.floor(stMul * 3000);
+    
+    if(win >= 1000000) { win = win * 0.98; alert(`Chốt thành công (Đã trừ 2% thuế)! Nhận: ${fmt(win)}`); } 
+    else alert(`Chốt thành công! Nhận: ${fmt(win)}`);
+    
+    soDu += Math.floor(win);
+    if(win>=10000000)showToast(`🔥 ${ten} chốt Đập Đá +${fmt(win)}!`);
+    
+    document.getElementById('btnStopStone').disabled=true;
+    document.getElementById('btnStartStone').style.display='block';
+    capNhat();
+}
+
+function vayTien(){if(soNo+
