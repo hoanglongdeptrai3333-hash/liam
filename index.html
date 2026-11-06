@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Tổng Hợp</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+    body { background: #12121e; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+    .box { background: #1e1e2f; padding: 15px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #333; text-align: center; }
+    h2 { color: #e94560; margin-bottom: 15px; text-transform: uppercase; font-size: 20px; }
+    input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #444; background: #000; color: #fff; outline: none; }
+    button { width: 100%; padding: 12px; margin-bottom: 10px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: #fff; transition: 0.2s; }
+    button:active { transform: scale(0.95); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .tabs { display: flex; gap: 5px; margin-bottom: 15px; }
+    .tabs button { background: #333; margin: 0; padding: 8px; font-size: 13px; flex: 1; }
+    .tabs button.active { background: #e94560; }
+    .btn-red { background: #d63031; }
+    .btn-green { background: #00b894; }
+    .btn-blue { background: #2980b9; }
+    .btn-yellow { background: #f39c12; color: #000; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; text-align: left; background: #000; padding: 10px; border-radius: 8px; }
+    .bal { color: #00ff88; font-weight: bold; font-size: 18px; }
+    
+    .tx-timer { font-size: 18px; font-weight: bold; color: #ffd369; margin-bottom: 10px; }
+    .dice-box { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
+    .dice { width: 60px; height: 60px; background: #fff; color: #000; font-size: 40px; font-weight: bold; display: flex; justify-content: center; align-items: center; border-radius: 10px; }
+    
+    .crash-box { height: 140px; background: #050510; position: relative; overflow: hidden; border-radius: 10px; margin-bottom: 10px; border: 1px solid #444; }
+    .mult { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px; font-weight: bold; color: #00ff88; z-index: 2; }
+    .rocket { position: absolute; bottom: 10px; left: 10px; font-size: 28px; z-index: 1; }
+
+    .rab-box { height: 100px; background: #4ecdc4; position: relative; overflow: hidden; border-radius: 10px; margin-bottom: 10px; border: 2px solid #2c3e50; }
+    .ground { position: absolute; bottom: 0; width: 100%; height: 25px; background: #2ecc71; border-top: 2px solid #27ae60; z-index: 1; }
+    .rab { position: absolute; bottom: 25px; left: 70%; font-size: 30px; transform: scaleX(-1); z-index: 3; }
+    .fox { position: absolute; bottom: 25px; left: 30%; font-size: 35px; transform: scaleX(-1); z-index: 2; }
+    .r-mult { position: absolute; top: 5px; right: 10px; font-weight: bold; font-size: 16px; color: #fff; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 5px; z-index: 4; }
+
+    .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="box" id="loginScreen">
+    <h2>ĐĂNG NHẬP</h2>
+    <input type="text" id="usernameInput" placeholder="Nhập tên...">
+    <button class="btn-blue" onclick="dangNhap()">VÀO GAME</button>
+</div>
+
+<div class="box hidden" id="gameScreen">
+    <div class="header">
+        <div>
+            <div id="displayName" style="font-weight:bold; color:#ffd369;">User</div>
+            <div class="bal" id="displayBalance">0 đ</div>
+        </div>
+        <button class="btn-red" style="width:auto; padding:5px 10px; margin:0; font-size:12px;" onclick="location.reload()">Thoát</button>
+    </div>
+
+    <div class="tabs">
+        <button class="active" id="tabBtn0" onclick="switchTab(0)">Tài Xỉu</button>
+        <button id="tabBtn1" onclick="switchTab(1)">Tên Lửa</button>
+        <button id="tabBtn2" onclick="switchTab(2)">Cáo Thỏ</button>
+    </div>
+
+    <!-- TÀI XỈU -->
+    <div id="tab0">
+        <div class="tx-timer" id="txTimer">...</div>
+        <div class="dice-box">
+            <div class="dice" id="d1">?</div><div class="dice" id="d2">?</div><div class="dice" id="d3">?</div>
+        </div>
+        <div id="resTx" style="height:25px; font-weight:bold; margin-bottom:10px;"></div>
+        <input type="number" id="betTx" value="100000" min="1000">
+        <button class="btn-red" id="btnXiu" onclick="cuocTx('xiu')">CƯỢC XỈU</button>
+        <button class="btn-green" id="btnTai" onclick="cuocTx('tai')">CƯỢC TÀI</button>
+    </div>
+
+    <!-- TÊN LỬA -->
+    <div id="tab1" class="hidden">
+        <div class="crash-box">
+            <div class="mult" id="multCrash">1.00x</div>
+            <div class="rocket" id="rocketObj">🚀</div>
+        </div>
+        <input type="number" id="betCrash" value="100000" min="1000">
+        <button class="btn-blue" id="btnStartCrash" onclick="startCrash()">BẮT ĐẦU BAY</button>
+        <button class="btn-yellow" id="btnCashCrash" onclick="cashCrash()" disabled>CHỐT</button>
+    </div>
+
+    <!-- CÁO THỎ -->
+    <div id="tab2" class="hidden">
+        <div class="rab-box">
+            <div class="ground"></div>
+            <div class="r-mult" id="multRab">1.00x</div>
+            <div class="fox" id="foxObj">🦊</div>
+            <div class="rab" id="rabObj">🐇</div>
+        </div>
+        <input type="number" id="betRab" value="100000" min="1000">
+        <button class="btn-green" id="btnStartRab" onclick="startRab()">THẢ THỎ</button>
+        <button class="btn-yellow" id="btnCashRab" onclick="cashRab()" disabled>CHỐT</button>
+    </div>
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem('gameData')) || {}; 
+let ten = "", soDu = 0;
+
+let txInt = null, txTime = 15, txPhase = 'waiting'; 
+let crTimer = null, cMul = 1.0, cPoint = 0, cCrashed = false, cBet = 0;
+let raTimer = null, rMul = 1.0, rPoint = 0, rCaught = false, rBet = 0;
+
+const fmt = s => s.toLocaleString('vi-VN') + ' đ';
+const show = id => document.getElementById(id).classList.remove('hidden');
+const hide = id => document.getElementById(id).classList.add('hidden');
+const saveData = () => localStorage.setItem('gameData', JSON.stringify(data));
+
+function switchTab(idx) {
+    for(let i=0; i<3; i++) {
+        document.getElementById('tabBtn'+i).classList.remove('active');
+        hide('tab'+i);
+    }
+    document.getElementById('tabBtn'+idx).classList.add('active');
+    show('tab'+idx);
+    if(idx === 0 && !txInt) startTxLoop();
+}
+
+function capNhat() {
+    document.getElementById('displayBalance').innerText = fmt(soDu);
+    if(data[ten]) { data[ten].soDu = soDu; saveData(); }
+
+    let hasMoney = soDu > 0;
+    document.getElementById('btnTai').disabled = !hasMoney || txPhase !== 'betting';
+    document.getElementById('btnXiu').disabled = !hasMoney || txPhase !== 'betting';
+}
+
+function dangNhap() {
+    let u = document.getElementById('usernameInput').value.trim().toLowerCase();
+    if(!u) return alert("Nhập tên!");
+
+    if(!data[u]) {
+        let tien = (u === 'liam') ? 2000000000 : 2000000;
+        data[u] = { soDu: tien };
+        saveData();
+    }
+    
+    ten = u;
+    document.getElementById('displayName').innerText = ten;
+    soDu = data[ten].soDu;
+
+    capNhat();
+    hide('loginScreen'); show('gameScreen');
+    startTxLoop();
+}
+
+// === TÀI XỈU ===
+function startTxLoop() {
+    txTime = 15; txPhase = 'betting'; capNhat();
+    if(txInt) clearInterval(txInt);
+    txInt = setInterval(() => {
+        txTime--;
+        let t = document.getElementById('txTimer');
+        if(txTime > 2) { t.innerText = `Cược: ${txTime}s`; t.style.color = '#ffd369'; }
+        else if(txTime > 0) { t.innerText = `Khóa: ${txTime}s`; t.style.color = '#ff4757'; txPhase = 'locked'; capNhat(); }
+        else {
+            txPhase = 'rolling'; t.innerText = 'Lắc...'; t.style.color = '#00ff88';
+            clearInterval(txInt); txInt = null; lacXucXac();
+        }
+    }, 1000);
+}
+
+function cuocTx(lc) {
+    if(txPhase !== 'betting') return;
+    let cuoc = parseInt(document.getElementById('betTx').value);
+    if(isNaN(cuoc) || cuoc < 1000 || cuoc > soDu) return alert("Tiền cược không hợp lệ!");
+
+    soDu -= cuoc; 
+    data[ten].pendingBet = { type: lc, amount: cuoc };
+    capNhat();
+}
+
+function lacXucXac() {
+    let d1 = document.getElementById('d1'), d2 = document.getElementById('d2'), d3 = document.getElementById('d3');
+    let dem = 0;
+    let itv = setInterval(() => {
+        d1.innerText = Math.floor(Math.random() * 6) + 1;
+        d2.innerText = Math.floor(Math.random() * 6) + 1;
+        d3.innerText = Math.floor(Math.random() * 6) + 1;
+        dem++;
+        if(dem > 15) {
+            clearInterval(itv);
+            let x1 = Math.floor(Math.random() * 6) + 1, x2 = Math.floor(Math.random() * 6) + 1, x3 = Math.floor(Math.random() * 6) + 1;
+            d1.innerText = x1; d2.innerText = x2; d3.innerText = x3;
+            let tong = x1 + x2 + x3;
+            let laTai = tong >= 11 && tong <= 17, laXiu = tong >= 4 && tong <= 10, laBao = (x1===x2 && x2===x3);
+            
+            let rd = document.getElementById('resTx');
+            rd.innerText = `Tổng: ${tong} - ` + (laBao ? "BÃO" : (laTai ? "TÀI" : "XỈU"));
+            rd.style.color = laTai ? '#00ff88' : (laXiu ? '#ff4757' : '#ffd369');
+
+            let bet = data[ten].pendingBet;
+            if(bet && !laBao) {
+                if((bet.type === 'tai' && laTai) || (bet.type === 'xiu' && laXiu)) {
+                    let thang = bet.amount * 2;
+                    soDu += thang; rd.innerText += ` - THẮNG!`;
+                } else rd.innerText += ` - THUA!`;
+            } else if (laBao && bet) {
+                soDu += bet.amount; rd.innerText += ` - HOÀN TIỀN!`;
+            }
+            data[ten].pendingBet = null; capNhat();
+            setTimeout(() => { startTxLoop(); }, 3000);
+        }
+    }, 50);
+}
+
+// === TÊN LỬA ===
+function startCrash() {
+    if(crTimer) return;
+    cBet = parseInt(document.getElementById('betCrash').value);
+    if(isNaN(cBet) || cBet < 1000 || cBet > soDu) return alert("Tiền cược không hợp lệ!");
+
+    soDu -= cBet; capNhat();
+    cMul = 1.0; cCrashed = false;
+    
+    let r = Math.random();
+    if (r < 0.6) cPoint = Math.random() * 1.5 + 1.01;
+    else if (r < 0.9) cPoint = Math.random() * 7.5 + 2.5;
+    else cPoint = Math.random() * 90 + 10;
+
+    let m = document.getElementById('multCrash'), rk = document.getElementById('rocketObj');
+    m.innerText = "1.00x"; m.style.color = '#00ff88'; rk.innerText = "🚀";
+    
+    document.getElementById('btnStartCrash').style.display = 'none';
+    document.getElementById('btnCashCrash').disabled = false;
+    document.getElementById('betCrash').disabled = true;
+
+    let st = Date.now();
+    crTimer = setInterval(() => {
+        let tm = (Date.now() - st) / 1000;
+        cMul = 1.0 + Math.pow(tm, 1.3);
+
+        let b = 10 + (cMul * 8) % 100;
+        let l = 10 + (cMul * 15) % 250;
+        rk.style.bottom = b + 'px'; 
+        rk.style.left = l + 'px';
+
+        if(cMul >= cPoint) {
+            clearInterval(crTimer); crTimer = null; cCrashed = true;
+            m.innerText = cMul.toFixed(2) + "x (NỔ)"; m.style.color = '#ff4757'; rk.innerText = "💥";
+            document.getElementById('btnCashCrash').disabled = true;
+            document.getElementById('btnStartCrash').style.display = 'block';
+            document.getElementById('betCrash').disabled = false;
+            capNhat();
+        } else {
+            m.innerText = cMul.toFixed(2) + "x";
+            document.getElementById('btnCashCrash').innerText = `CHỐT (${cMul.toFixed(2)}x)`;
+        }
+    }, 30);
+}
+
+function cashCrash() {
+    if(!crTimer || cCrashed) return;
+    clearInterval(crTimer); crTimer = null;
+    let win = 0;
+    if(cMul < 1.1) { win = 3000; soDu += win; alert(`Chốt 1x: Nhận 3.000đ!`); }
+    else if(cMul < 2.0) { alert(`Chốt sớm (<2.0x). Mất tiền!`); }
+    else {
+        win = Math.floor(cBet * cMul); soDu += win;
+        alert(`Chốt thành công! Nhận: ${fmt(win)}`);
+    }
+    document.getElementById('rocketObj').innerText = "🚀";
+    document.getElementById('btnCashCrash').disabled = true;
+    document.getElementById('btnStartCrash').style.display = 'block';
+    document.getElementById('betCrash').disabled = false;
+    capNhat();
+}
+
+// === CÁO THỎ ===
+function startRab() {
+    if(raTimer) return;
+    rBet = parseInt(document.getElementById('betRab').value);
+    if(isNaN(rBet) || rBet < 1000 || rBet > soDu) return alert("Tiền cược không hợp lệ!");
+
+    soDu -= rBet; capNhat();
+    rMul = 1.0; rCaught = false;
+    
+    let r = Math.random();
+    if (r < 0.6) rPoint = Math.random() * 3 + 2.0;
+    else if (r < 0.9) rPoint = Math.random() * 10 + 5.0;
+    else rPoint = Math.random() * 85 + 15.0;
+
+    let rab = document.getElementById('rabObj'), fox = document.getElementById('foxObj'), rDiv = document.getElementById('multRab');
+    rab.innerText = "🐇"; fox.innerText = "🦊"; rDiv.innerText = "1.00x"; rDiv.style.color = '#fff';
+
+    document.getElementById('btnStartRab').style.display = 'none';
+    document.getElementById('btnCashRab').disabled = false;
+    document.getElementById('betRab').disabled = true;
+
+    let st = Date.now();
+    raTimer = setInterval(() => {
+        let tm = (Date.now() - st) / 1000;
+        rMul = 1.0 + (tm * 1.0); 
+        
+        let prog = (rMul - 1) / (rPoint - 1);
+        if(prog > 1) prog = 1;
+
+        let rPos = (70 + (prog * 40)) % 110; 
+        let fPos = (30 + (prog * 80)) % 110; 
+        rab.style.left = rPos + '%'; fox.style.left = fPos + '%';
+
+        if(rMul >= rPoint) {
+            clearInterval(raTimer); raTimer = null; rCaught = true;
+            fox.style.left = (rPos - 2) + '%'; rab.innerText = "💥";
+            rDiv.innerText = rPoint.toFixed(2) + "x (BỊ BẮT)"; rDiv.style.color = '#ff4757';
+            document.getElementById('btnCashRab').disabled = true;
+            document.getElementById('btnStartRab').style.display = 'block';
+            document.getElementById('betRab').disabled = false;
+            capNhat();
+        } else {
+            rDiv.innerText = rMul.toFixed(2) + "x";
+            document.getElementById('btnCashRab').innerText = `CHỐT (${rMul.toFixed(2)}x)`;
+        }
+    }, 30);
+}
+
+function cashRab() {
+    if(!raTimer || rCaught) return;
+    clearInterval(raTimer); raTimer = null;
+    let rab = document.getElementById('rabObj'), fox = document.getElementById('foxObj'), win = 0;
+
+    if(rMul < 1.1) { win = 3000; soDu += win; rab.innerText = "🏆"; fox.innerText = "😡"; alert(`Chốt 1x: Nhận 3.000đ!`); }
+    else if(rMul < 2.0) { rab.innerText = "💥"; fox.innerText = "🦊"; alert(`Chốt sớm (<2.0x). Mất tiền!`); }
+    else {
+        win = Math.floor(rBet * rMul); soDu += win; rab.innerText = "🏆"; fox.innerText = "😡";
+        alert(`Chốt thành công! Nhận: ${fmt(win)}`);
+    }
+    document.getElementById('btnCashRab').disabled = true;
+    document.getElementById('btnStartRab').style.display = 'block';
+    document.getElementById('betRab').disabled = false;
+    capNhat();
+}
+</script>
+</body>
+  </html>
