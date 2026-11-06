@@ -41,7 +41,7 @@
         <div class="tx-timer" id="txTimer">...</div>
         <div class="dice-box"><div class="dice" id="d1">?</div><div class="dice" id="d2">?</div><div class="dice" id="d3">?</div></div>
         <div id="resTx" style="height:25px;font-weight:bold;margin-bottom:10px"></div>
-        <p style="font-size:12px; color:#aaa; margin-bottom:5px; text-align:left;">Nhập: [Tiền cược >=50k] [1: Tài, 2: Xỉu]</p>
+        <p style="font-size:12px; color:#aaa; margin-bottom:5px; text-align:left;">Nhập: [Tiền >=50k] [1:Tài, 2:Xỉu, 111-666:Bão]</p>
         <input type="text" id="betTx" placeholder="VD: 50000 1">
         <button class="btn-blue" onclick="cuocTx()">ĐẶT CƯỢC</button>
     </div>
@@ -123,10 +123,18 @@ function dangXuat(){if(crTimer||raTimer||stRunning)return alert("Đang trong vá
 function startTxLoop(){txTime=15;txPhase='betting';capNhat();if(txInt)clearInterval(txInt);txInt=setInterval(()=>{txTime--;let t=document.getElementById('txTimer');if(txTime>2){t.innerText=`Cược: ${txTime}s`;t.style.color='#ffd369'}else if(txTime>0){t.innerText=`Khóa: ${txTime}s`;t.style.color='#ff4757';txPhase='locked';capNhat()}else{txPhase='rolling';t.innerText='Lắc...';t.style.color='#00ff88';clearInterval(txInt);txInt=null;lacXucXac()}},1000)}
 
 function cuocTx(){
-    if(txPhase!=='betting')return alert("Đã khóa đặt cược!");let val=document.getElementById('betTx').value.trim();if(!val)return alert("Nhập [Tiền cược] [1 hoặc 2]");
-    let parts=val.split(' ');if(parts.length!==2)return alert("Sai cú pháp!");let tien=parseInt(parts[0]),cua=parseInt(parts[1]);
-    if(isNaN(tien)||tien<50000)return alert("Cược tối thiểu 50.000đ!");if(tien>soDu)return alert("Không đủ tiền!");if(cua!==1&&cua!==2)return alert("Cửa: 1 (Tài) hoặc 2 (Xỉu)!");
-    soDu-=tien;data[ten].pendingBet={type:(cua===1?'tai':'xiu'),amount:tien};capNhat();document.getElementById('resTx').innerText=`Đã đặt ${cua===1?'TÀI':'XỈU'} - ${fmt(tien)}`;document.getElementById('resTx').style.color='#ffd369';
+    if(txPhase!=='betting')return alert("Đã khóa đặt cược!");let val=document.getElementById('betTx').value.trim();if(!val)return alert("Nhập [Tiền cược] [Cửa]");
+    let parts=val.split(' ');if(parts.length!==2)return alert("Sai cú pháp!");let tien=parseInt(parts[0]),cua=parts[1];
+    if(isNaN(tien)||tien<50000)return alert("Cược tối thiểu 50.000đ!");if(tien>soDu)return alert("Không đủ tiền!");
+    
+    let type = 'tai';
+    if(cua === '1') type = 'tai';
+    else if(cua === '2') type = 'xiu';
+    else if(['111','222','333','444','555','666'].includes(cua)) type = cua;
+    else return alert("Cửa cược không hợp lệ! (1, 2 hoặc 111-666)");
+
+    soDu-=tien;data[ten].pendingBet={type:type,amount:tien};
+    capNhat();document.getElementById('resTx').innerText=`Đã đặt ${cua} - ${fmt(tien)}`;document.getElementById('resTx').style.color='#ffd369';
 }
 
 function lacXucXac(){
@@ -136,12 +144,28 @@ function lacXucXac(){
         if(dem>15){clearInterval(itv);let x1=Math.floor(Math.random()*6)+1,x2=Math.floor(Math.random()*6)+1,x3=Math.floor(Math.random()*6)+1;
             d1.innerText=x1;d2.innerText=x2;d3.innerText=x3;let tong=x1+x2+x3,laTai=tong>=11&&tong<=17,laXiu=tong>=4&&tong<=10,laBao=x1===x2&&x2===x3;
             let rd=document.getElementById('resTx');rd.innerText=`Tổng: ${tong} - `+(laBao?"BÃO":(laTai?"TÀI":"XỈU"));rd.style.color=laTai?'#00ff88':(laXiu?'#ff4757':'#ffd369');
+            
             let bet=data[ten].pendingBet;if(bet){
-                if(laBao){soDu+=bet.amount;rd.innerText+=' - HOÀN TIỀN!'}
-                else if((bet.type==='tai'&&laTai)||(bet.type==='xiu'&&laXiu)){
-                    let win=bet.amount*2;if(win>=1000000){win=win*0.98;rd.innerText+=' - THẮNG (Thuế 2%)!'}else rd.innerText+=' - THẮNG!';
-                    soDu+=Math.floor(win);if(win>=10000000)showToast(`🔥 ${ten} thắng +${fmt(win)}!`)
-                } else rd.innerText+=' - THUA!';
+                let win=0;
+                if(laBao && bet.type === x1.toString().repeat(3)){
+                    win=bet.amount*2;rd.innerText+=` - NỔ BÃO ${x1}!`;
+                }
+                else if(!laBao && bet.type==='tai' && laTai){
+                    win=bet.amount*2;rd.innerText+=' - THẮNG TÀI!';
+                }
+                else if(!laBao && bet.type==='xiu' && laXiu){
+                    win=bet.amount*2;rd.innerText+=' - THẮNG XỈU!';
+                }
+                
+                if(win > 0){
+                    if(win>=1000000){win=win*0.98;rd.innerText+=' (Thuế 2%)';}
+                    soDu+=Math.floor(win);
+                    if(win>=10000000)showToast(`🔥 ${ten} thắng +${fmt(win)}!`);
+                } else {
+                    if(!laBao && (bet.type==='tai'||bet.type==='xiu')) rd.innerText+=' - THUA!';
+                    else if(!laBao && bet.type!=='tai' && bet.type!=='xiu') rd.innerText+=' - THUA (Không có Bão)!';
+                    else if(laBao && bet.type !== x1.toString().repeat(3)) rd.innerText+=' - THUA (Sai Bão)!';
+                }
             }
             data[ten].pendingBet=null;capNhat();document.getElementById('betTx').value="";setTimeout(()=>{startTxLoop()},3000);
         }
