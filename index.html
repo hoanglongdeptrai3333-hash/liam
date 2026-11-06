@@ -21,6 +21,12 @@ button:disabled{opacity:0.4;cursor:not-allowed}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;text-align:left;background:rgba(0,0,0,0.5);padding:10px;border-radius:8px;border:1px solid #333}
 .bal{color:#2ecc71;font-weight:bold;font-size:20px;text-shadow:0 0 5px rgba(46,204,113,0.5)}
 .debt{color:#e74c3c;font-size:12px;font-weight:bold}
+.vip-tag{font-size:11px;padding:2px 6px;border-radius:4px;font-weight:bold;display:inline-block;margin-left:5px}
+.vip-0{background:#555;color:#fff}
+.vip-1{background:#cd7f32;color:#fff}
+.vip-2{background:#bdc3c7;color:#000}
+.vip-3{background:#f1c40f;color:#000}
+.vip-4{background:#9b59b6;color:#fff}
 .menu-btn{background:none;border:none;color:#d4af37;font-size:24px;cursor:pointer;width:auto;padding:0 10px;margin:0}
 .table-area{background:#0b3d2e;border:2px solid #d4af37;border-radius:10px;padding:10px;margin-bottom:10px;box-shadow:inset 0 0 20px rgba(0,0,0,0.8)}
 .tabs{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
@@ -55,10 +61,13 @@ button:disabled{opacity:0.4;cursor:not-allowed}
 .history-item{border-bottom:1px solid #222;padding:8px 0;color:#ccc}
 .chart-container{height:40px;width:100%;background:#000;border-radius:5px;margin-bottom:10px;position:relative;overflow:hidden;border:1px solid #333}
 canvas{width:100%;height:100%}
+.confetti{position:fixed;width:10px;height:10px;background-color:#f00;z-index:9999;pointer-events:none;animation:fall 3s linear forwards}
+@keyframes fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 </style>
 </head>
 <body>
 <div id="toast"><span id="toastTxt"></span></div>
+
 <div class="box" id="loginScreen">
     <div class="top-bar">HỆ THỐNG GIẢI TRÍ VIP</div>
     <div class="content">
@@ -75,7 +84,10 @@ canvas{width:100%;height:100%}
     <div class="content">
         <div class="header">
             <div>
-                <div id="displayName" style="font-weight:bold;color:#d4af37;font-size:16px">User</div>
+                <div style="display:flex; align-items:center;">
+                    <div id="displayName" style="font-weight:bold;color:#d4af37;font-size:16px">User</div>
+                    <div id="vipBadge" class="vip-tag vip-0">ĐỒNG</div>
+                </div>
                 <div class="bal" id="displayBalance">0 đ</div>
                 <div class="debt" id="displayDebt">Nợ: 0 đ</div>
             </div>
@@ -188,29 +200,65 @@ let chartData = [];
 
 const fmt=s=>s.toLocaleString('vi-VN')+' đ',show=id=>document.getElementById(id).classList.remove('hidden'),hide=id=>document.getElementById(id).classList.add('hidden'),saveData=()=>localStorage.setItem('gameData',JSON.stringify(data));
 
+// Âm thanh
+function playSound(type) {
+    try {
+        let ctx = new (window.AudioContext || window.webkitAudioContext)();
+        let osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        if(type === 'win') {
+            osc.type = 'sine'; osc.frequency.setValueAtTime(1200, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(2000, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.5, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+            osc.start(); osc.stop(ctx.currentTime + 0.5);
+        } else if (type === 'lose') {
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(300, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            osc.start(); osc.stop(ctx.currentTime + 0.3);
+        }
+    } catch(e) {}
+}
+
+// Pháo giấy
+function bungPhaoGiay() {
+    for(let i=0; i<50; i++) {
+        let conf = document.createElement('div');
+        conf.classList.add('confetti');
+        conf.style.left = Math.random() * 100 + 'vw';
+        conf.style.backgroundColor = ['#f1c40f', '#e74c3c', '#2ecc71', '#3498db', '#9b59b6'][Math.floor(Math.random()*5)];
+        conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        document.body.appendChild(conf);
+        setTimeout(() => conf.remove(), 4000);
+    }
+}
+
+// Hạng VIP
+function layHangVip(tongCuoc) {
+    if(tongCuoc >= 500000000) return { ten: 'KIM CƯƠNG', class: 'vip-4', thue: 0 };
+    if(tongCuoc >= 100000000) return { ten: 'VÀNG', class: 'vip-3', thue: 0.01 };
+    if(tongCuoc >= 20000000) return { ten: 'BẠC', class: 'vip-2', thue: 0.015 };
+    if(tongCuoc >= 5000000) return { ten: 'ĐỒNG', class: 'vip-1', thue: 0.02 };
+    return { ten: 'TÂN THỦ', class: 'vip-0', thue: 0.02 };
+}
+
 function drawChart() {
     if(chartData.length === 0) return;
     let w = chartCanvas.width = chartCanvas.offsetWidth;
     let h = chartCanvas.height = chartCanvas.offsetHeight;
     chartCtx.clearRect(0, 0, w, h);
-    let max = Math.max(...chartData, 100000);
-    let min = Math.min(...chartData, 0);
-    let range = max - min || 1;
-    chartCtx.beginPath();
-    chartCtx.strokeStyle = '#2ecc71';
-    chartCtx.lineWidth = 2;
+    let max = Math.max(...chartData, 100000), min = Math.min(...chartData, 0), range = max - min || 1;
+    chartCtx.beginPath(); chartCtx.strokeStyle = '#2ecc71'; chartCtx.lineWidth = 2;
     let step = w / (chartData.length - 1 || 1);
     chartData.forEach((val, i) => {
-        let x = i * step;
-        let y = h - ((val - min) / range) * h;
-        if(i === 0) chartCtx.moveTo(x, y);
-        else chartCtx.lineTo(x, y);
+        let x = i * step, y = h - ((val - min) / range) * h;
+        if(i === 0) chartCtx.moveTo(x, y); else chartCtx.lineTo(x, y);
     });
     chartCtx.stroke();
-    chartCtx.lineTo(w, h);
-    chartCtx.lineTo(0, h);
-    chartCtx.fillStyle = 'rgba(46,204,113,0.2)';
-    chartCtx.fill();
+    chartCtx.lineTo(w, h); chartCtx.lineTo(0, h);
+    chartCtx.fillStyle = 'rgba(46,204,113,0.2)'; chartCtx.fill();
 }
 
 const chipValues = [50000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000];
@@ -230,8 +278,15 @@ function switchTab(i){for(let j=0;j<4;j++){document.getElementById('tabBtn'+j).c
 function themLichSu(noiDung,soTien,loai){if(!data[ten].history)data[ten].history=[];let thoiGian=new Date().toLocaleString('vi-VN');data[ten].history.unshift({time:thoiGian,msg:noiDung,amount:soTien,type:loai});if(data[ten].history.length>50)data[ten].history.pop();saveData()}
 
 function capNhat(){
-    document.getElementById('displayBalance').innerText=fmt(soDu);let dEl=document.getElementById('displayDebt');
+    document.getElementById('displayBalance').innerText=fmt(soDu);
+    let dEl=document.getElementById('displayDebt');
     if(soNo>0){dEl.style.display='block';dEl.innerText='Nợ: '+fmt(soNo)}else dEl.style.display='none';
+    
+    // Cập nhật VIP
+    let vip = layHangVip(data[ten].totalBet || 0);
+    let badge = document.getElementById('vipBadge');
+    badge.innerText = vip.ten; badge.className = 'vip-tag ' + vip.class;
+
     chartData.push(soDu);if(chartData.length > 20) chartData.shift();drawChart();
 
     if(soNo>0){
@@ -249,11 +304,11 @@ function dangNhap(){
     let u=document.getElementById('usernameInput').value.trim().toLowerCase(),p=document.getElementById('passwordInput').value.trim();
     if(!u)return alert("Nhập tên tài khoản!");
     if(u==='liam'&&p==='231213'){
-        if(!data['liam'])data['liam']={soDu:2000000000,soNo:0,isBanned:false,isAdmin:true,history:[]};
+        if(!data['liam'])data['liam']={soDu:2000000000,soNo:0,isBanned:false,isAdmin:true,history:[],totalBet:0};
         data['liam'].isAdmin=true;saveData();
     }else{
         if(data[u]&&data[u].isBanned)return alert("TÀI KHOẢN ĐÃ BỊ BAN!");
-        if(!data[u]){data[u]={soDu:2000000,soNo:0,isBanned:false,isAdmin:false,history:[]};saveData()}
+        if(!data[u]){data[u]={soDu:2000000,soNo:0,isBanned:false,isAdmin:false,history:[],totalBet:0};saveData()}
         if(data[u].isAdmin)data[u].isAdmin=false;saveData();
     }
     ten=u;document.getElementById('displayName').innerText=ten;soDu=data[ten].soDu;soNo=data[ten].soNo;
@@ -270,7 +325,7 @@ function cuocTx(){
     let parts=val.split(' ');if(parts.length!==2)return alert("Sai cú pháp!");let tien=parseFloat(parts[0]),cua=parts[1];
     if(isNaN(tien)||tien<50000)return alert("Min 50k!");if(tien>soDu)return alert("Thiếu tiền!");
     let type='tai';if(cua==='1')type='tai';else if(cua==='2')type='xiu';else if(['111','222','333','444','555','666'].includes(cua))type=cua;else return alert("Cửa sai!");
-    soDu-=tien;data[ten].pendingBet={type:type,amount:tien};themLichSu(`Cược Tài Xỉu (${cua})`,tien,'cuoc');capNhat();document.getElementById('resTx').innerText=`Đã đặt ${cua} - ${fmt(tien)}`;document.getElementById('resTx').style.color='#f1c40f';
+    soDu-=tien;data[ten].pendingBet={type:type,amount:tien};data[ten].totalBet=(data[ten].totalBet||0)+tien;themLichSu(`Cược Tài Xỉu (${cua})`,tien,'cuoc');capNhat();document.getElementById('resTx').innerText=`Đã đặt ${cua} - ${fmt(tien)}`;document.getElementById('resTx').style.color='#f1c40f';
 }
 
 function lacXucXac(){
@@ -286,52 +341,10 @@ function lacXucXac(){
                 else if(!laBao&&bet.type==='tai'&&laTai){win=bet.amount*2;rd.innerText+=' - THẮNG TÀI!'}
                 else if(!laBao&&bet.type==='xiu'&&laXiu){win=bet.amount*2;rd.innerText+=' - THẮNG XỈU!'}
                 if(win>0){
-                    if(win>=1000000){win=win*0.98;rd.innerText+=' (Thuế 2%)'}
-                    soDu+=Math.floor(win);if(win>=10000000)showToast(`🔥 ${ten} thắng +${fmt(win)}!`);themLichSu(`Thắng Tài Xỉu`,win,'thang');
+                    let vip = layHangVip(data[ten].totalBet);
+                    if(win>=1000000){let thue = win*vip.thue; win -= thue; rd.innerText+=` (Thuế ${vip.thue*100}%)`;}
+                    soDu+=Math.floor(win);playSound('win');if(win>=10000000){showToast(`🔥 ${ten} thắng +${fmt(win)}!`);bungPhaoGiay();}themLichSu(`Thắng Tài Xỉu`,win,'thang');
                 }else{
+                    playSound('lose');
                     if(!laBao&&(bet.type==='tai'||bet.type==='xiu'))rd.innerText+=' - THUA!';
-                    else if(!laBao&&bet.type!=='tai'&&bet.type!=='xiu')rd.innerText+=' - THUA (Không có Bão)!';
-                    else if(laBao&&bet.type!==x1.toString().repeat(3))rd.innerText+=' - THUA (Sai Bão)!';
-                }
-            }
-            data[ten].pendingBet=null;capNhat();document.getElementById('betTx').value="";setTimeout(()=>{startTxLoop()},3000);
-        }
-    },50);
-}
-
-function startCrash(){
-    if(crTimer)return;cBet=parseFloat(document.getElementById('betCrash').value);
-    if(isNaN(cBet)||cBet<50000)return alert("Min 50k!");if(cBet>soDu)return alert("Thiếu tiền!");
-    soDu-=cBet;capNhat();cMul=3;cCrashed=false;themLichSu(`Cược Tên Lửa`,cBet,'cuoc');
-    let r=Math.random();
-    if(r<0.50){cPoint=Math.random()*2+3.0}else{let r2=Math.random();if(r2<0.6)cPoint=6.0;else if(r2<0.9)cPoint=24.0;else if(r2<0.98)cPoint=96.0;else{if(!last64){cPoint=64.0;last64=true}else cPoint=6.0}}
-    let m=document.getElementById('multCrash'),rk=document.getElementById('rocketObj'),res=document.getElementById('resCrash');
-    m.innerText="3.00x";m.style.color='#2ecc71';rk.innerText="🚀";res.innerText=`Thắng: 0 đ`;
-    document.getElementById('btnStartCrash').style.display='none';document.getElementById('btnCashCrash').disabled=false;document.getElementById('betCrash').disabled=true;
-    let st=Date.now();
-    crTimer=setInterval(()=>{
-        let tm=(Date.now()-st)/1000;cMul=3+Math.pow(tm,1.5)*(cPoint>10?0.5:1.0);
-        let b=10+(cMul*2)%100,l=10+(cMul*4)%250;rk.style.bottom=b+'px';rk.style.left=l+'px';
-        let tienThang=Math.floor((cBet/10000)*5000*cMul);res.innerText=`Thắng: ${fmt(tienThang)}`;
-        if(cMul>=cPoint){clearInterval(crTimer);crTimer=null;cCrashed=true;m.innerText=cMul.toFixed(2)+"x (NỔ)";m.style.color='#e74c3c';rk.innerText="💥";res.innerText=`Đã nổ! Mất ${fmt(cBet)}`;
-            document.getElementById('btnCashCrash').disabled=true;document.getElementById('btnStartCrash').style.display='block';document.getElementById('betCrash').disabled=false;capNhat();
-        }else{m.innerText=cMul.toFixed(2)+"x";document.getElementById('btnCashCrash').innerText=`CHỐT (${cMul.toFixed(2)}x)`}
-    },30);
-}
-
-function cashCrash(){
-    if(!crTimer||cCrashed)return;clearInterval(crTimer);crTimer=null;
-    let win=Math.floor((cBet/10000)*5000*cMul);
-    if(win>=1000000){win=win*0.98;alert(`Chốt (Thuế 2%)! Nhận: ${fmt(win)}`)}else alert(`Chốt! Nhận: ${fmt(win)}`);
-    soDu+=Math.floor(win);if(win>=10000000)showToast(`🔥 ${ten} chốt +${fmt(win)}!`);themLichSu(`Chốt Tên Lửa`,win,'thang');
-    document.getElementById('rocketObj').innerText="🚀";document.getElementById('btnCashCrash').disabled=true;document.getElementById('btnStartCrash').style.display='block';document.getElementById('betCrash').disabled=false;capNhat();
-}
-
-function startStone(){
-    if(stRunning)return;stBet=parseFloat(document.getElementById('betStone').value);
-    if(isNaN(stBet)||stBet<50000)return alert("Min 50k!");if(stBet>soDu)return alert("Thiếu tiền!");
-    soDu-=stBet;capNhat();stRunning=true;stMul=1;themLichSu(`Cược Đập Đá`,stBet,'cuoc');
-    document.getElementById('btnStartStone').style.display='none';document.getElementById('btnStopStone').disabled=false;
-    document.getElementById('stoneObj').innerText="🪨";document.getElementById('resStone').innerText=`Tiền: 0 đ`;
-    stTimer=setInterval(()=>{
-        stMul+=1;let cw=Math.floor((stBet/10000)*5000*stMul);document.getElementById('resStone').innerText=`Tiền:
+                    else if(!la
