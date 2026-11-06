@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Super Game</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}body{background:#12121e;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}.box{background:#1e1e2f;padding:15px;border-radius:15px;width:100%;max-width:400px;border:1px solid #333;text-align:center}h2{color:#e94560;margin-bottom:15px;text-transform:uppercase;font-size:20px}input{width:100%;padding:10px;margin-bottom:10px;border-radius:5px;border:1px solid #444;background:#000;color:#fff;outline:none}button{width:100%;padding:12px;margin-bottom:10px;border:none;border-radius:5px;font-weight:bold;cursor:pointer;color:#fff;transition:0.2s}button:active{transform:scale(0.95)}button:disabled{opacity:0.5;cursor:not-allowed}.tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}.tabs button{background:#333;margin:0;padding:8px;font-size:11px;flex:1;min-width:60px}.tabs button.active{background:#e94560}.btn-red{background:#d63031}.btn-green{background:#00b894}.btn-blue{background:#2980b9}.btn-yellow{background:#f39c12;color:#000}.btn-gray{background:#555}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;text-align:left;background:#000;padding:10px;border-radius:8px}.bal{color:#00ff88;font-weight:bold;font-size:18px}.debt{color:#ff4757;font-size:12px;display:none}.menu-btn{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;width:auto;padding:0 10px;margin:0}.tx-timer{font-size:18px;font-weight:bold;color:#ffd369;margin-bottom:10px}.dice-box{display:flex;justify-content:center;gap:10px;margin:15px 0}.dice{width:60px;height:60px;background:#fff;color:#000;font-size:40px;font-weight:bold;display:flex;justify-content:center;align-items:center;border-radius:10px}.crash-box{height:120px;background:#050510;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:1px solid #444}.mult{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:30px;font-weight:bold;color:#00ff88;z-index:2}.rocket{position:absolute;bottom:10px;left:10px;font-size:25px;z-index:1}.rab-box{height:90px;background:#4ecdc4;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:2px solid #2c3e50}.ground{position:absolute;bottom:0;width:100%;height:20px;background:#2ecc71;border-top:2px solid #27ae60;z-index:1}.rab{position:absolute;bottom:20px;left:70%;font-size:28px;transform:scaleX(-1);z-index:3}.fox{position:absolute;bottom:20px;left:30%;font-size:30px;transform:scaleX(-1);z-index:2}.r-mult{position:absolute;top:5px;right:10px;font-weight:bold;font-size:14px;color:#fff;background:rgba(0,0,0,0.6);padding:2px 6px;border-radius:5px;z-index:4}.stone-box{height:120px;background:#333;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;display:flex;justify-content:center;align-items:center;border:2px solid #555;cursor:pointer}.stone{font-size:60px;transition:transform 0.1s}.stone.hit{transform:scale(1.2) rotate(15deg)}.hidden{display:none!important}#toast{position:fixed;top:-100px;left:50%;transform:translateX(-50%);background:#d63031;color:#fff;padding:10px;border-radius:8px;font-weight:bold;transition:top 0.5s;z-index:1000;text-align:center;width:90%;max-width:350px;border:2px solid #fff}#toast.show{top:20px}.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:100}.modal-c{background:#1e1e2f;padding:15px;border-radius:10px;width:95%;max-width:400px;border:1px solid #8e44ad;max-height:85vh;overflow-y:auto;text-align:left}.adm-tbl{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px}.adm-tbl th,.adm-tbl td{border-bottom:1px solid #333;padding:5px}.adm-inp{width:70px;padding:3px}.ads-blink{animation:blink 1s infinite alternate}@keyframes blink{from{opacity:1}to{opacity:0.5}}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}body{background:#12121e;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}.box{background:#1e1e2f;padding:15px;border-radius:15px;width:100%;max-width:400px;border:1px solid #333;text-align:center}h2{color:#e94560;margin-bottom:15px;text-transform:uppercase;font-size:20px}input{width:100%;padding:10px;margin-bottom:10px;border-radius:5px;border:1px solid #444;background:#000;color:#fff;outline:none}button{width:100%;padding:12px;margin-bottom:10px;border:none;border-radius:5px;font-weight:bold;cursor:pointer;color:#fff;transition:0.2s}button:active{transform:scale(0.95)}button:disabled{opacity:0.5;cursor:not-allowed}.tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}.tabs button{background:#333;margin:0;padding:8px;font-size:11px;flex:1;min-width:60px}.tabs button.active{background:#e94560}.btn-red{background:#d63031}.btn-green{background:#00b894}.btn-blue{background:#2980b9}.btn-yellow{background:#f39c12;color:#000}.btn-gray{background:#555}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;text-align:left;background:#000;padding:10px;border-radius:8px}.bal{color:#00ff88;font-weight:bold;font-size:18px}.debt{color:#ff4757;font-size:12px;display:none}.menu-btn{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;width:auto;padding:0 10px;margin:0}.tx-timer{font-size:18px;font-weight:bold;color:#ffd369;margin-bottom:10px}.dice-box{display:flex;justify-content:center;gap:10px;margin:15px 0}.dice{width:60px;height:60px;background:#fff;color:#000;font-size:40px;font-weight:bold;display:flex;justify-content:center;align-items:center;border-radius:10px}.crash-box{height:120px;background:#050510;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:1px solid #444}.mult{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:30px;font-weight:bold;color:#00ff88;z-index:2}.rocket{position:absolute;bottom:10px;left:10px;font-size:25px;z-index:1}.rab-box{height:90px;background:#4ecdc4;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;border:2px solid #2c3e50}.ground{position:absolute;bottom:0;width:100%;height:20px;background:#2ecc71;border-top:2px solid #27ae60;z-index:1}.rab{position:absolute;bottom:20px;left:10%;font-size:28px;transform:scaleX(-1);z-index:3}.fox{position:absolute;bottom:20px;left:0%;font-size:30px;transform:scaleX(-1);z-index:2}.r-mult{position:absolute;top:5px;right:10px;font-weight:bold;font-size:14px;color:#fff;background:rgba(0,0,0,0.6);padding:2px 6px;border-radius:5px;z-index:4}.stone-box{height:120px;background:#333;position:relative;overflow:hidden;border-radius:10px;margin-bottom:10px;display:flex;justify-content:center;align-items:center;border:2px solid #555;cursor:pointer}.stone{font-size:60px;transition:transform 0.1s}.stone.hit{transform:scale(1.2) rotate(15deg)}.hidden{display:none!important}#toast{position:fixed;top:-100px;left:50%;transform:translateX(-50%);background:#d63031;color:#fff;padding:10px;border-radius:8px;font-weight:bold;transition:top 0.5s;z-index:1000;text-align:center;width:90%;max-width:350px;border:2px solid #fff}#toast.show{top:20px}.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:100}.modal-c{background:#1e1e2f;padding:15px;border-radius:10px;width:95%;max-width:400px;border:1px solid #8e44ad;max-height:85vh;overflow-y:auto;text-align:left}.adm-tbl{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px}.adm-tbl th,.adm-tbl td{border-bottom:1px solid #333;padding:5px}.adm-inp{width:70px;padding:3px}.ads-blink{animation:blink 1s infinite alternate}@keyframes blink{from{opacity:1}to{opacity:0.5}}
 </style>
 </head>
 <body>
@@ -147,20 +147,13 @@ function lacXucXac(){
             
             let bet=data[ten].pendingBet;if(bet){
                 let win=0;
-                if(laBao && bet.type === x1.toString().repeat(3)){
-                    win=bet.amount*2;rd.innerText+=` - NỔ BÃO ${x1}!`;
-                }
-                else if(!laBao && bet.type==='tai' && laTai){
-                    win=bet.amount*2;rd.innerText+=' - THẮNG TÀI!';
-                }
-                else if(!laBao && bet.type==='xiu' && laXiu){
-                    win=bet.amount*2;rd.innerText+=' - THẮNG XỈU!';
-                }
+                if(laBao && bet.type === x1.toString().repeat(3)){ win=bet.amount*2;rd.innerText+=` - NỔ BÃO ${x1}!`; }
+                else if(!laBao && bet.type==='tai' && laTai){ win=bet.amount*2;rd.innerText+=' - THẮNG TÀI!'; }
+                else if(!laBao && bet.type==='xiu' && laXiu){ win=bet.amount*2;rd.innerText+=' - THẮNG XỈU!'; }
                 
                 if(win > 0){
                     if(win>=1000000){win=win*0.98;rd.innerText+=' (Thuế 2%)';}
-                    soDu+=Math.floor(win);
-                    if(win>=10000000)showToast(`🔥 ${ten} thắng +${fmt(win)}!`);
+                    soDu+=Math.floor(win);if(win>=10000000)showToast(`🔥 ${ten} thắng +${fmt(win)}!`);
                 } else {
                     if(!laBao && (bet.type==='tai'||bet.type==='xiu')) rd.innerText+=' - THUA!';
                     else if(!laBao && bet.type!=='tai' && bet.type!=='xiu') rd.innerText+=' - THUA (Không có Bão)!';
@@ -172,22 +165,28 @@ function lacXucXac(){
     },50);
 }
 
-// === TÊN LỬA ===
+// === TÊN LỬA (NHÂN TIỀN THEO CƯỢC - 10K ĂN 7K/1X) ===
 function startCrash(){
     if(crTimer)return;cBet=parseInt(document.getElementById('betCrash').value);
     if(isNaN(cBet)||cBet<50000||cBet>soDu)return alert("Cược tối thiểu 50.000đ!");
     soDu-=cBet;capNhat();cMul=3;cCrashed=false;
     
-    let r=Math.random();if(r<0.6)cPoint=3.0;else if(r<0.85)cPoint=6.0;else if(r<0.95)cPoint=24.0;else if(r<0.99)cPoint=96.0;else{if(!last64){cPoint=64.0;last64=true}else cPoint=3.0}
+    let r=Math.random();
+    if(r < 0.50) cPoint = Math.random() * 2 + 3.0;
+    else { let r2 = Math.random(); if(r2 < 0.6) cPoint = 6.0; else if(r2 < 0.9) cPoint = 24.0; else if(r2 < 0.98) cPoint = 96.0; else { if(!last64){cPoint=64.0;last64=true} else cPoint=6.0; } }
+
     let m=document.getElementById('multCrash'),rk=document.getElementById('rocketObj'),res=document.getElementById('resCrash');
-    m.innerText="3.00x";m.style.color='#00ff88';rk.innerText="🚀";res.innerText=`Thắng: ${fmt(3000)}`;
+    m.innerText="3.00x";m.style.color='#00ff88';rk.innerText="🚀";res.innerText=`Thắng: 0 đ`;
     document.getElementById('btnStartCrash').style.display='none';document.getElementById('btnCashCrash').disabled=false;document.getElementById('betCrash').disabled=true;
     
     let st=Date.now();
     crTimer=setInterval(()=>{
         let tm=(Date.now()-st)/1000;cMul=3+Math.pow(tm,1.5)*(cPoint>10?0.5:1.0);
         let b=10+(cMul*2)%100,l=10+(cMul*4)%250;rk.style.bottom=b+'px';rk.style.left=l+'px';
-        res.innerText=`Thắng: ${fmt(Math.floor(cMul*3000))}`;
+        
+        // Tỉ giá: 10k vốn = 7k/1x
+        let tienThang = Math.floor((cBet / 10000) * 7000 * cMul);
+        res.innerText=`Thắng: ${fmt(tienThang)}`;
         
         if(cMul>=cPoint){clearInterval(crTimer);crTimer=null;cCrashed=true;m.innerText=cMul.toFixed(2)+"x (NỔ)";m.style.color='#ff4757';rk.innerText="💥";res.innerText=`Đã nổ! Mất ${fmt(cBet)}`;
             document.getElementById('btnCashCrash').disabled=true;document.getElementById('btnStartCrash').style.display='block';document.getElementById('betCrash').disabled=false;capNhat();
@@ -196,68 +195,72 @@ function startCrash(){
 }
 
 function cashCrash(){
-    if(!crTimer||cCrashed)return;clearInterval(crTimer);crTimer=null;let win=Math.floor(cMul*3000);
+    if(!crTimer||cCrashed)return;clearInterval(crTimer);crTimer=null;
+    let win=Math.floor((cBet/10000)*7000*cMul);
     if(win>=1000000){win=win*0.98;alert(`Chốt (Thuế 2%)! Nhận: ${fmt(win)}`)}else alert(`Chốt! Nhận: ${fmt(win)}`);
     soDu+=Math.floor(win);if(win>=10000000)showToast(`🔥 ${ten} chốt +${fmt(win)}!`);
     document.getElementById('rocketObj').innerText="🚀";document.getElementById('btnCashCrash').disabled=true;document.getElementById('btnStartCrash').style.display='block';document.getElementById('betCrash').disabled=false;capNhat();
 }
 
-// === CÁO THỎ ===
+// === CÁO THỎ (NHÂN TIỀN THEO CƯỢC - 10K ĂN 7K/1X) ===
 function startRab(){
     if(raTimer)return;rBet=parseInt(document.getElementById('betRab').value);
     if(isNaN(rBet)||rBet<50000||rBet>soDu)return alert("Cược tối thiểu 50.000đ!");
     soDu-=rBet;capNhat();rMul=1;rCaught=false;
     
-    let r=Math.random();if(r<0.6)rPoint=Math.random()*3+2.0;else if(r<0.9)rPoint=Math.random()*10+5.0;else rPoint=Math.random()*25+15.0;
+    rPoint = Math.random() * 38 + 2.0;
     let rab=document.getElementById('rabObj'),fox=document.getElementById('foxObj'),rDiv=document.getElementById('multRab'),res=document.getElementById('resRab');
-    rab.innerText="🐇";fox.innerText="🦊";rDiv.innerText="1.00x";rDiv.style.color='#fff';res.innerText=`Thắng: ${fmt(3000)}`;
+    rab.innerText="🐇";fox.innerText="🦊";rab.style.left = '10%'; fox.style.left = '0%';
+    rDiv.innerText="1.00x";rDiv.style.color='#fff';res.innerText=`Thắng: 0 đ`;
+    
     document.getElementById('btnStartRab').style.display='none';document.getElementById('btnCashRab').disabled=false;document.getElementById('betRab').disabled=true;
     
     let st=Date.now();
     raTimer=setInterval(()=>{
         let tm=(Date.now()-st)/1000;rMul=1+(tm*1.0);
-        let prog=(rMul-1)/(rPoint-1);if(prog>1)prog=1;
-        let rPos=(70+(prog*40))%110,fPos=(30+(prog*80))%110;
-        rab.style.left=rPos+'%';fox.style.left=fPos+'%';
-        res.innerText=`Thắng: ${fmt(Math.floor(rMul*3000))}`;
+        let prog = (rMul - 1) / (rPoint - 1); if(prog > 1) prog = 1;
+        let rabPos = 10 + (prog * 70); let foxPos = 0 + (prog * 75); 
+        rab.style.left = rabPos + '%'; fox.style.left = foxPos + '%';
         
-        if(rMul>=rPoint){clearInterval(raTimer);raTimer=null;rCaught=true;fox.style.left=(rPos-2)+'%';rab.innerText="💥";rDiv.innerText=rPoint.toFixed(2)+"x (BỊ BẮT)";rDiv.style.color='#ff4757';res.innerText=`Bị bắt! Mất ${fmt(rBet)}`;
+        let tienThang = Math.floor((rBet / 10000) * 7000 * rMul);
+        res.innerText=`Thắng: ${fmt(tienThang)}`;
+        
+        if(rMul>=rPoint){
+            clearInterval(raTimer);raTimer=null;rCaught=true;
+            fox.style.left = (rabPos - 2) + '%'; rab.innerText="💥";rDiv.innerText=rPoint.toFixed(2)+"x (BỊ BẮT)";rDiv.style.color='#ff4757';res.innerText=`Bị bắt! Mất ${fmt(rBet)}`;
             document.getElementById('btnCashRab').disabled=true;document.getElementById('btnStartRab').style.display='block';document.getElementById('betRab').disabled=false;capNhat();
         }else{rDiv.innerText=rMul.toFixed(2)+"x";document.getElementById('btnCashRab').innerText=`CHỐT (${rMul.toFixed(2)}x)`}
     },30);
 }
 
 function cashRab(){
-    if(!raTimer||rCaught)return;clearInterval(raTimer);raTimer=null;let win=Math.floor(rMul*3000);
+    if(!raTimer||rCaught)return;clearInterval(raTimer);raTimer=null;
+    let win=Math.floor((rBet/10000)*7000*rMul);
     if(win>=1000000){win=win*0.98;alert(`Chốt (Thuế 2%)! Nhận: ${fmt(win)}`)}else alert(`Chốt! Nhận: ${fmt(win)}`);
     soDu+=Math.floor(win);if(win>=10000000)showToast(`🔥 ${ten} chốt +${fmt(win)}!`);
     document.getElementById('btnCashRab').disabled=true;document.getElementById('btnStartRab').style.display='block';document.getElementById('betRab').disabled=false;capNhat();
 }
 
-// === ĐẬP ĐÁ ===
+// === ĐẬP ĐÁ (NHÂN TIỀN THEO CƯỢC - 10K ĂN 7K/1X) ===
 function startStone(){
     if(stRunning)return;stBet=parseInt(document.getElementById('betStone').value);
     if(isNaN(stBet)||stBet<50000||stBet>soDu)return alert("Cược tối thiểu 50.000đ!");
     soDu-=stBet;capNhat();stRunning=true;stMul=1;
     document.getElementById('btnStartStone').style.display='none';document.getElementById('btnStopStone').disabled=false;
-    document.getElementById('stoneObj').innerText="🪨";document.getElementById('resStone').innerText=`Tiền: ${fmt(3000)}`;
+    document.getElementById('stoneObj').innerText="🪨";document.getElementById('resStone').innerText=`Tiền: 0 đ`;
     
     stTimer=setInterval(()=>{
-        stMul+=1;let cw=Math.floor(stMul*3000);
+        stMul+=1;
+        let cw=Math.floor((stBet/10000)*7000*stMul);
         document.getElementById('resStone').innerText=`Tiền: ${fmt(cw)}`;
         
-        // Tự động chốt nếu đạt 10M
         if(cw >= 10000000){
             clearInterval(stTimer);stRunning=false;
-            let win=10000000;
-            win=win*0.98;
+            let win=10000000*0.98;
             alert(`Đá đạt giới hạn 10M (Thuế 2%)! Nhận: ${fmt(win)}`);
             soDu+=Math.floor(win);showToast(`🔥 ${ten} chốt +${fmt(win)}!`);
-            document.getElementById('btnStopStone').disabled=true;document.getElementById('btnStartStone').style.display='block';capNhat();
-            return;
+            document.getElementById('btnStopStone').disabled=true;document.getElementById('btnStartStone').style.display='block';capNhat();return;
         }
-
-        // Random nổ 15%
         if(Math.random()<0.15){
             clearInterval(stTimer);stRunning=false;document.getElementById('stoneObj').innerText="💥";document.getElementById('resStone').innerText=`Đá nát! Mất ${fmt(stBet)}`;
             document.getElementById('btnStopStone').disabled=true;document.getElementById('btnStartStone').style.display='block';capNhat();
@@ -268,7 +271,8 @@ function startStone(){
 function hitStone(){if(!stRunning)return;let st=document.getElementById('stoneObj');st.classList.add('hit');setTimeout(()=>st.classList.remove('hit'),100)}
 
 function stopStone(){
-    if(!stRunning)return;clearInterval(stTimer);stRunning=false;let win=Math.floor(stMul*3000);
+    if(!stRunning)return;clearInterval(stTimer);stRunning=false;
+    let win=Math.floor((stBet/10000)*7000*stMul);
     if(win>=1000000){win=win*0.98;alert(`Chốt (Thuế 2%)! Nhận: ${fmt(win)}`)}else alert(`Chốt! Nhận: ${fmt(win)}`);
     soDu+=Math.floor(win);if(win>=10000000)showToast(`🔥 ${ten} chốt +${fmt(win)}!`);
     document.getElementById('btnStopStone').disabled=true;document.getElementById('btnStartStone').style.display='block';capNhat();
