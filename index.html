@@ -91,6 +91,7 @@
 <script>
 let data=JSON.parse(localStorage.getItem('gameData'))||{},maDaDung=[],ten="",soDu=0,soNo=0;
 let txInt=null,txTime=15,txPhase='waiting',crTimer=null,cMul=1,cPoint=0,cCrashed=false,cBet=0,raTimer=null,rMul=1,rPoint=0,rCaught=false,rBet=0;
+let goalCount = 0; // Đếm số lần sút gôn (tối đa 3)
 
 const fmt=s=>s.toLocaleString('vi-VN')+' đ',show=id=>document.getElementById(id).classList.remove('hidden'),hide=id=>document.getElementById(id).classList.add('hidden'),saveData=()=>localStorage.setItem('gameData',JSON.stringify(data));
 function showToast(msg){document.getElementById('toastTxt').innerText=msg;document.getElementById('toast').classList.add('show');setTimeout(()=>document.getElementById('toast').classList.remove('show'),4000)}
@@ -127,6 +128,7 @@ function dangNhap(){
     
     if(data[ten].isAdmin) document.getElementById('adminBtn').style.display='block'; else document.getElementById('adminBtn').style.display='none';
     
+    goalCount = 0; // Reset số lần sút
     capNhat();hide('loginScreen');show('gameScreen');startTxLoop();
 }
 
@@ -138,41 +140,94 @@ function cuocTx(lc){if(txPhase!=='betting')return;let c=parseInt(document.getEle
 
 function lacXucXac(){let d1=document.getElementById('d1'),d2=document.getElementById('d2'),d3=document.getElementById('d3'),dem=0;let itv=setInterval(()=>{d1.innerText=Math.floor(Math.random()*6)+1;d2.innerText=Math.floor(Math.random()*6)+1;d3.innerText=Math.floor(Math.random()*6)+1;dem++;if(dem>15){clearInterval(itv);let x1=Math.floor(Math.random()*6)+1,x2=Math.floor(Math.random()*6)+1,x3=Math.floor(Math.random()*6)+1;d1.innerText=x1;d2.innerText=x2;d3.innerText=x3;let tong=x1+x2+x3,laTai=tong>=11&&tong<=17,laXiu=tong>=4&&tong<=10,laBao=x1===x2&&x2===x3;let rd=document.getElementById('resTx');rd.innerText=`Tổng: ${tong} - `+(laBao?"BÃO":(laTai?"TÀI":"XỈU"));rd.style.color=laTai?'#00ff88':(laXiu?'#ff4757':'#ffd369');let bet=data[ten].pendingBet;if(bet&&!laBao){if(bet.type==='tai'&&laTai||bet.type==='xiu'&&laXiu){soDu+=bet.amount*2;rd.innerText+=' - THẮNG!';if(bet.amount*2>=10000000)showToast(`🔥 ${ten} thắng Tài Xỉu +${fmt(bet.amount*2)}!`)}else rd.innerText+=' - THUA!'}else if(laBao&&bet){soDu+=bet.amount;rd.innerText+=' - HOÀN TIỀN!'}data[ten].pendingBet=null;capNhat();setTimeout(()=>{startTxLoop()},3000)}},50)}
 
-function startCrash(){if(crTimer)return;cBet=parseInt(document.getElementById('betCrash').value);if(isNaN(cBet)||cBet<1000||cBet>soDu)return alert("Tiền cược không hợp lệ!");soDu-=cBet;capNhat();cMul=1;cCrashed=false;let r=Math.random();if(r<0.6)cPoint=Math.random()*1.5+1.01;else if(r<0.9)cPoint=Math.random()*7.5+2.5;else cPoint=Math.random()*90+10;let m=document.getElementById('multCrash'),rk=document.getElementById('rocketObj');m.innerText="1.00x";m.style.color='#00ff88';rk.innerText="🚀";document.getElementById('btnStartCrash').style.display='none';document.getElementById('btnCashCrash').disabled=false;document.getElementById('betCrash').disabled=true;let st=Date.now();crTimer=setInterval(()=>{let tm=(Date.now()-st)/1000;cMul=1+Math.pow(tm,1.3);let b=10+(cMul*8)%100,l=10+(cMul*15)%250;rk.style.bottom=b+'px';rk.style.left=l+'px';if(cMul>=cPoint){clearInterval(crTimer);crTimer=null;cCrashed=true;m.innerText=cMul.toFixed(2)+"x (NỔ)";m.style.color='#ff4757';rk.innerText="💥";document.getElementById('btnCashCrash').disabled=true;document.getElementById('btnStartCrash').style.display='block';document.getElementById('betCrash').disabled=false;capNhat()}else{m.innerText=cMul.toFixed(2)+"x";document.getElementById('btnCashCrash').innerText=`CHỐT (${cMul.toFixed(2)}x)`}},30)}
+// === TÊN LỬA MỐC CỐ ĐỊNH ===
+function startCrash(){
+    if(crTimer)return;cBet=parseInt(document.getElementById('betCrash').value);if(isNaN(cBet)||cBet<1000||cBet>soDu)return alert("Tiền cược không hợp lệ!");
+    soDu-=cBet;capNhat();cMul=1;cCrashed=false;
+    
+    // Random chọn mốc nổ dựa trên tỉ lệ
+    let r = Math.random();
+    if (r < 0.40) cPoint = 2.0;        // 40%
+    else if (r < 0.70) cPoint = 3.0;   // 30%
+    else if (r < 0.85) cPoint = 4.0;   // 15%
+    else if (r < 0.95) cPoint = 6.0;   // 10%
+    else if (r < 0.98) cPoint = 46.0;  // 3%
+    else if (r < 0.995) cPoint = 65.0; // 1.5%
+    else cPoint = 96.0;                // 0.5% (Siêu hiếm)
+
+    let m=document.getElementById('multCrash'),rk=document.getElementById('rocketObj');m.innerText="1.00x";m.style.color='#00ff88';rk.innerText="🚀";
+    document.getElementById('btnStartCrash').style.display='none';document.getElementById('btnCashCrash').disabled=false;document.getElementById('betCrash').disabled=true;
+    
+    let st=Date.now();
+    crTimer=setInterval(()=>{
+        let tm=(Date.now()-st)/1000;
+        // Tốc độ bay chậm lại ở các mốc cao để kịp chốt
+        cMul = 1.0 + Math.pow(tm, 1.5) * (cPoint > 10 ? 0.05 : 0.2); 
+        
+        let b=10+(cMul*8)%100, l=10+(cMul*15)%250;
+        rk.style.bottom=b+'px'; rk.style.left=l+'px';
+        
+        if(cMul>=cPoint){
+            clearInterval(crTimer); crTimer=null; cCrashed=true;
+            m.innerText=cMul.toFixed(2)+"x (NỔ)"; m.style.color='#ff4757'; rk.innerText="💥";
+            document.getElementById('btnCashCrash').disabled=true; document.getElementById('btnStartCrash').style.display='block'; document.getElementById('betCrash').disabled=false; capNhat();
+        }else{
+            m.innerText=cMul.toFixed(2)+"x"; document.getElementById('btnCashCrash').innerText=`CHỐT (${cMul.toFixed(2)}x)`;
+        }
+    },30);
+}
 
 function cashCrash(){if(!crTimer||cCrashed)return;clearInterval(crTimer);crTimer=null;let win=0;if(cMul<1.1){win=3000;soDu+=win;alert(`Chốt 1x: Nhận 3.000đ!`)}else if(cMul<2.0){alert(`Chốt sớm (<2.0x). Mất tiền!`)}else{win=Math.floor(cBet*cMul);soDu+=win;alert(`Chốt thành công! Nhận: ${fmt(win)}`);if(win>=10000000)showToast(`🔥 ${ten} chốt Tên Lửa ${cMul.toFixed(2)}x +${fmt(win)}!`)}document.getElementById('rocketObj').innerText="🚀";document.getElementById('btnCashCrash').disabled=true;document.getElementById('btnStartCrash').style.display='block';document.getElementById('betCrash').disabled=false;capNhat()}
 
-function startRab(){if(raTimer)return;rBet=parseInt(document.getElementById('betRab').value);if(isNaN(rBet)||rBet<1000||rBet>soDu)return alert("Tiền cược không hợp lệ!");soDu-=rBet;capNhat();rMul=1;rCaught=false;let r=Math.random();if(r<0.6)rPoint=Math.random()*3+2.0;else if(r<0.9)rPoint=Math.random()*10+5.0;else rPoint=Math.random()*85+15.0;let rab=document.getElementById('rabObj'),fox=document.getElementById('foxObj'),rDiv=document.getElementById('multRab');rab.innerText="🐇";fox.innerText="🦊";rDiv.innerText="1.00x";rDiv.style.color='#fff';document.getElementById('btnStartRab').style.display='none';document.getElementById('btnCashRab').disabled=false;document.getElementById('betRab').disabled=true;let st=Date.now();raTimer=setInterval(()=>{let tm=(Date.now()-st)/1000;rMul=1+(tm*1.0);let prog=(rMul-1)/(rPoint-1);if(prog>1)prog=1;let rPos=(70+(prog*40))%110,fPos=(30+(prog*80))%110;rab.style.left=rPos+'%';fox.style.left=fPos+'%';if(rMul>=rPoint){clearInterval(raTimer);raTimer=null;rCaught=true;fox.style.left=(rPos-2)+'%';rab.innerText="💥";rDiv.innerText=rPoint.toFixed(2)+"x (BỊ BẮT)";rDiv.style.color='#ff4757';document.getElementById('btnCashRab').disabled=true;document.getElementById('btnStartRab').style.display='block';document.getElementById('betRab').disabled=false;capNhat()}else{rDiv.innerText=rMul.toFixed(2)+"x";document.getElementById('btnCashRab').innerText=`CHỐT (${rMul.toFixed(2)}x)`}},30)}
+// === CÁO THỎ (LÊN ĐẾN 40X) ===
+function startRab(){
+    if(raTimer)return;rBet=parseInt(document.getElementById('betRab').value);if(isNaN(rBet)||rBet<1000||rBet>soDu)return alert("Tiền cược không hợp lệ!");
+    soDu-=rBet;capNhat();rMul=1;rCaught=false;
+    
+    let r=Math.random();
+    if(r<0.6) rPoint=Math.random()*3+2.0; // 60% từ 2-5x
+    else if(r<0.9) rPoint=Math.random()*10+5.0; // 30% từ 5-15x
+    else rPoint=Math.random()*25+15.0; // 10% từ 15-40x
+
+    let rab=document.getElementById('rabObj'),fox=document.getElementById('foxObj'),rDiv=document.getElementById('multRab');
+    rab.innerText="🐇";fox.innerText="🦊";rDiv.innerText="1.00x";rDiv.style.color='#fff';
+    document.getElementById('btnStartRab').style.display='none';document.getElementById('btnCashRab').disabled=false;document.getElementById('betRab').disabled=true;
+    
+    let st=Date.now();
+    raTimer=setInterval(()=>{
+        let tm=(Date.now()-st)/1000;
+        rMul=1+(tm*1.0);
+        let prog=(rMul-1)/(rPoint-1);if(prog>1)prog=1;
+        let rPos=(70+(prog*40))%110,fPos=(30+(prog*80))%110;
+        rab.style.left=rPos+'%';fox.style.left=fPos+'%';
+        
+        if(rMul>=rPoint){
+            clearInterval(raTimer);raTimer=null;rCaught=true;
+            fox.style.left=(rPos-2)+'%';rab.innerText="💥";rDiv.innerText=rPoint.toFixed(2)+"x (BỊ BẮT)";rDiv.style.color='#ff4757';
+            document.getElementById('btnCashRab').disabled=true;document.getElementById('btnStartRab').style.display='block';document.getElementById('betRab').disabled=false;capNhat();
+        }else{
+            rDiv.innerText=rMul.toFixed(2)+"x";document.getElementById('btnCashRab').innerText=`CHỐT (${rMul.toFixed(2)}x)`;
+        }
+    },30);
+}
 
 function cashRab(){if(!raTimer||rCaught)return;clearInterval(raTimer);raTimer=null;let rab=document.getElementById('rabObj'),fox=document.getElementById('foxObj'),win=0;if(rMul<1.1){win=3000;soDu+=win;rab.innerText="🏆";fox.innerText="😡";alert(`Chốt 1x: Nhận 3.000đ!`)}else if(rMul<2.0){rab.innerText="💥";fox.innerText="🦊";alert(`Chốt sớm (<2.0x). Mất tiền!`)}else{win=Math.floor(rBet*rMul);soDu+=win;rab.innerText="🏆";fox.innerText="😡";alert(`Chốt thành công! Nhận: ${fmt(win)}`);if(win>=10000000)showToast(`🔥 ${ten} chốt Thỏ ${rMul.toFixed(2)}x +${fmt(win)}!`)}document.getElementById('btnCashRab').disabled=true;document.getElementById('btnStartRab').style.display='block';document.getElementById('betRab').disabled=false;capNhat()}
 
-// === BẮT GÔN (TỈ LỆ LẶP LẠI) ===
-let lastShots = [];
+// === BẮT GÔN (GIỚI HẠN 3 LẦN) ===
 function sutGon(huong){
+    if(goalCount >= 3) return alert("Bạn đã hết lượt sút (Tối đa 3 lần)!");
+    
     let cuoc=parseInt(document.getElementById('betGoal').value);
     if(isNaN(cuoc)||cuoc<1000||cuoc>soDu)return alert("Tiền cược không hợp lệ!");
     
-    // Thêm hướng sút vào lịch sử (giữ tối đa 3 lần gần nhất)
-    lastShots.push(huong);
-    if(lastShots.length > 3) lastShots.shift();
-    
-    // Nếu người chơi sút 1 hướng 2 lần liên tiếp, thủ môn sẽ bắt bài (random 50% bắt đúng)
-    let doanBat = ['TL','TR','DL','DR'][Math.floor(Math.random()*4)];
-    
-    // Nếu 3 lần gần nhất sút cùng 1 hướng, chắc chắn bắt được
-    if(lastShots.length === 3 && lastShots[0]===lastShots[1] && lastShots[1]===lastShots[2]) {
-        doanBat = huong; 
-    } 
-    // Nếu 2 lần gần nhất sút cùng 1 hướng, 50% bắt được
-    else if(lastShots.length >= 2 && lastShots[lastShots.length-1]===lastShots[lastShots.length-2]) {
-        if(Math.random() > 0.5) doanBat = huong;
-    }
-
+    goalCount++;
     soDu-=cuoc;capNhat();
     let gk=document.getElementById('gkObj'),res=document.getElementById('resGoal');
     res.innerText="Thủ môn đang bay...";res.style.color='#fff';
     
+    let doanBat = ['TL','TR','DL','DR'][Math.floor(Math.random()*4)];
     gk.style.top='50%';gk.style.left='50%';
+    
     setTimeout(()=>{
         if(doanBat==='TL'){gk.style.top='20%';gk.style.left='20%'}
         else if(doanBat==='TR'){gk.style.top='20%';gk.style.left='80%'}
@@ -187,7 +242,11 @@ function sutGon(huong){
             let win=cuoc*2;soDu+=win;res.innerText="VÀO GÔN! Thắng "+fmt(win);res.style.color='#00ff88';gk.innerText="❌";
             if(win>=10000000)showToast(`🔥 ${ten} sút Penalty thắng +${fmt(win)}!`);
         }
-        capNhat();setTimeout(()=>{gk.innerText="🧤";gk.style.top='50%';gk.style.left='50%'},2000);
+        capNhat();
+        if(goalCount >= 3) {
+            setTimeout(() => alert("Bạn đã hết lượt chơi Bắt Gôn (Tối đa 3 lần)!"), 500);
+        }
+        setTimeout(()=>{gk.innerText="🧤";gk.style.top='50%';gk.style.left='50%'},2000);
     },600);
 }
 
@@ -210,4 +269,4 @@ function ban(t){if(t==='liam')return alert("Không thể ban chính mình!");if(
 function unban(t){data[t].isBanned=false;saveData();moAdmin()}
 </script>
 </body>
-    </html>
+</html>
