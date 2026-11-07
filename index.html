@@ -222,12 +222,12 @@
             <button class="btn-rocket-start" onclick="startRocket()">BẮT ĐẦU</button>
             <button class="btn-rocket-cashout" onclick="cashOutRocket()">RÚT</button>
         </div>
-        <p style="text-align:center; font-size:10px; color:#555; margin-top:15px;">*Tỉ lệ nổ: 60% (7x-11x), 45% (11x-45x), còn lại bay cao.</p>
+        <p style="text-align:center; font-size:10px; color:#555; margin-top:15px;">*An toàn đến x4. Từ x4 trở lên 50/50 nổ. Đạt x5 mới được rút.</p>
     </div>
 
     <!-- ĐÁ (CLICK) -->
     <div id="game-da" class="game-panel">
-        <div style="text-align:center; margin-bottom:15px; color:#888;">NHẤN LIÊN TỤC VÀO Ô BÊN DƯỚI ĐỂ TĂNG HỆ SỐ</div>
+        <div style="text-align:center; margin-bottom:15px; color:#888;">NHẤN GIỮ LIÊN TỤC VÀO Ô BÊN DƯỚI ĐỂ TĂNG HỆ SỐ</div>
         <div class="da-area" id="daClickArea" onmousedown="startDaClick()" onmouseup="stopDaClick()" onmouseleave="stopDaClick()" ontouchstart="startDaClick()" ontouchend="stopDaClick()">
             <div class="da-value" id="daMultiplier">x1.00</div>
             <div class="da-hint">Giữ chuột / Chạm để đập đá</div>
@@ -237,6 +237,7 @@
             <button class="btn-action" style="background:#d4af37; color:black; flex:1;" onclick="cashOutDa()">RÚT TIỀN</button>
         </div>
         <div style="text-align:center; margin-top:10px; font-size:12px; height: 20px;" id="daResult"></div>
+        <p style="text-align:center; font-size:10px; color:#555; margin-top:15px;">*An toàn đến x4. Từ x4 trở lên 50/50 nổ. Đạt x5 mới được rút.</p>
     </div>
 
     <!-- LẬT XU -->
@@ -326,7 +327,7 @@
 </div>
 
 <script>
-    // --- DATA (Dữ liệu lưu tạm trên trình duyệt) ---
+    // --- DATA ---
     let users = {
         'liam': { pass: '231213', money: 2000200000, isAdmin: true, isBanned: false }
     };
@@ -335,17 +336,17 @@
     let cauHistoryData = [];
     
     // Biến Tên Lửa
-    let rocketInterval, rocketVal = 1.00, isRocketRunning = false, rocketCashed = false;
+    let rocketInterval, rocketVal = 1.00, isRocketRunning = false, rocketCashed = false, rocketCrashPoint = 200;
     
     // Biến Đá (Click)
-    let daVal = 1.00, isDaRunning = false, daCashed = false, daClickInterval = null;
+    let daVal = 1.00, isDaRunning = false, daCashed = false, daClickInterval = null, daCrashPoint = 200;
 
     // --- KHỞI TẠO ---
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('logDate').innerText = "Log: " + new Date().toLocaleDateString('vi-VN');
     });
 
-    // --- ÂM THANH (Web Audio API) ---
+    // --- ÂM THANH ---
     function playSound(type) {
         try {
             let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -385,7 +386,7 @@
         setTimeout(() => { ann.classList.remove('show'); }, 5000);
     }
 
-    // --- AUTH (ĐĂNG NHẬP/ĐĂNG KÝ) ---
+    // --- AUTH ---
     function toggleAuth(type) {
         document.getElementById('loginBox').style.display = type === 'login' ? 'block' : 'none';
         document.getElementById('registerBox').style.display = type === 'register' ? 'block' : 'none';
@@ -416,9 +417,10 @@
         if (p !== p2) { alert("Mật khẩu không khớp!"); return; }
         if (users[u]) { alert("Tên đăng nhập đã tồn tại!"); return; }
         
-        // Tạo tài khoản mới với 100k
-        users[u] = { pass: p, money: 100000, isAdmin: false, isBanned: false };
-        alert("Đăng ký thành công! Đã tự động đăng nhập.");
+        // Tặng 300k + 200k admin = 500k
+        users[u] = { pass: p, money: 500000, isAdmin: false, isBanned: false };
+        
+        alert("Đăng ký thành công!\n- Thưởng chào mừng: 300.000 đ\n- Admin đz give: 200.000 đ\nTổng nhận: 500.000 đ");
         currentUser = u;
         document.getElementById('authScreen').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
@@ -461,344 +463,4 @@
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
         element.classList.add('active');
-        document.getElementById('game-' + tabId).classList.add('active');
-    }
-
-    function setBet(amount, btnElement) {
-        currentBet = amount;
-        document.querySelectorAll('.bet-btn-level').forEach(b => b.classList.remove('active'));
-        btnElement.classList.add('active');
-    }
-
-    // --- GHI LOG GIAO DỊCH ---
-    function addHistoryLog(game, amount, result) {
-        let historyDiv = document.getElementById('historyLog');
-        let logItem = document.createElement('div');
-        logItem.className = 'log-item';
-        let time = new Date().toLocaleTimeString('vi-VN');
-        let color = result === 'THẮNG' ? 'log-win' : (result === 'THUA' ? 'log-lose' : '');
-        logItem.innerHTML = `<span>${time} - ${game}</span><span class="${color}">${result}: ${amount.toLocaleString('vi-VN')} đ</span>`;
-        
-        if (historyDiv.children[0] && historyDiv.children[0].innerText === 'Chưa có giao dịch...') {
-            historyDiv.innerHTML = '';
-        }
-        historyDiv.prepend(logItem);
-        if (historyDiv.children.length > 20) {
-            historyDiv.removeChild(historyDiv.lastChild);
-        }
-    }
-
-    // --- TÀI XỈU ---
-    function playTaiXiu(choice) {
-        let user = users[currentUser];
-        if (user.money < currentBet) { alert("Không đủ tiền cược!"); return; }
-        user.money -= currentBet;
-        updateUI();
-        playSound('bet');
-
-        let d1 = Math.floor(Math.random() * 6) + 1;
-        let d2 = Math.floor(Math.random() * 6) + 1;
-        let d3 = Math.floor(Math.random() * 6) + 1;
-        let total = d1 + d2 + d3;
-        let result = total >= 11 ? 'tai' : 'xiu';
-        let resultText = total >= 11 ? 'TÀI' : 'XỈU';
-
-        cauHistoryData.push(result);
-        if (cauHistoryData.length > 20) cauHistoryData.shift();
-        renderCauHistory();
-
-        setTimeout(() => {
-            let winAmount = currentBet * 2;
-            if (choice === result) {
-                user.money += winAmount;
-                document.getElementById('taixiuResult').innerHTML = `<span style="color:#00ff88">THẮNG! ${d1}-${d2}-${d3} = ${total} (${resultText})</span>`;
-                addHistoryLog('Tài Xỉu', winAmount, 'THẮNG');
-                playSound('win');
-                // Thông báo toàn server nếu thắng > 200M
-                if (winAmount >= 200000000) {
-                    showGlobalAnnounce(currentUser, winAmount);
-                }
-            } else {
-                document.getElementById('taixiuResult').innerHTML = `<span style="color:#ff3333">THUA! ${d1}-${d2}-${d3} = ${total} (${resultText})</span>`;
-                addHistoryLog('Tài Xỉu', currentBet, 'THUA');
-                playSound('lose');
-            }
-            updateUI();
-        }, 500);
-    }
-
-    function renderCauHistory() {
-        let html = '';
-        cauHistoryData.forEach(item => {
-            html += `<div class="history-item ${item === 'tai' ? 'h-tai' : 'h-xiu'}">${item === 'tai' ? 'T' : 'X'}</div>`;
-        });
-        if (cauHistoryData.length === 0) html = `<div style="font-size:12px; color:#555;">Chưa có phiên nào...</div>`;
-        document.getElementById('cauHistory').innerHTML = html;
-    }
-
-    // --- TÊN LỬA (Đã sửa tỉ lệ nổ) ---
-    function startRocket() {
-        let user = users[currentUser];
-        if (user.money < currentBet) { alert("Không đủ tiền cược!"); return; }
-        if (isRocketRunning) return;
-        user.money -= currentBet;
-        updateUI();
-        playSound('bet');
-
-        isRocketRunning = true;
-        rocketCashed = false;
-        rocketVal = 1.00;
-        document.getElementById('rocketValue').innerText = "x1.00";
-        document.getElementById('rocketValue').style.color = "#00ff88";
-        document.getElementById('rocketStatus').innerText = "Đang bay...";
-
-        // LOGIC NỔ: 60% nổ từ 7x-11x, 45% nổ từ 11x-45x (Cộng lại >100% nhưng sẽ ưu tiên tính theo trọng số)
-        let rand = Math.random() * 100;
-        let crashPoint;
-        
-        if (rand < 60) {
-            // 60% nổ trong khoảng 7x đến 11x
-            crashPoint = 7.0 + Math.random() * 4.0;
-        } else if (rand < 95) {
-            // 35% tiếp theo (để tổng 60+35=95) nổ trong khoảng 11x đến 45x
-            crashPoint = 11.0 + Math.random() * 34.0;
-        } else {
-            // 5% còn lại bay cao (nổ sau 45x)
-            crashPoint = 45.0 + Math.random() * 20.0;
-        }
-
-        rocketInterval = setInterval(() => {
-            rocketVal += 0.05; // Tốc độ bay nhanh hơn chút
-            document.getElementById('rocketValue').innerText = "x" + rocketVal.toFixed(2);
-            
-            if (rocketVal >= crashPoint) {
-                clearInterval(rocketInterval);
-                isRocketRunning = false;
-                document.getElementById('rocketValue').style.color = "#ff3333";
-                document.getElementById('rocketStatus').innerText = "💥 ĐÃ NỔ! Mất tiền cược.";
-                addHistoryLog('Tên Lửa', currentBet, 'THUA');
-                playSound('lose');
-                return;
-            }
-            if (rocketVal >= 100.0) {
-                clearInterval(rocketInterval);
-                isRocketRunning = false;
-                document.getElementById('rocketStatus').innerText = "Đã đạt x100. Rút ngay!";
-            }
-        }, 100);
-    }
-
-    function cashOutRocket() {
-        if (!isRocketRunning || rocketCashed) return;
-        rocketCashed = true;
-        isRocketRunning = false;
-        clearInterval(rocketInterval);
-        
-        let win = Math.floor(currentBet * rocketVal);
-        users[currentUser].money += win;
-        updateUI();
-        
-        document.getElementById('rocketValue').style.color = "#d4af37";
-        document.getElementById('rocketStatus').innerText = `Rút thành công ${win.toLocaleString()}đ tại x${rocketVal.toFixed(2)}!`;
-        addHistoryLog('Tên Lửa', win, 'THẮNG');
-        playSound('win');
-        
-        if (win >= 200000000) {
-            showGlobalAnnounce(currentUser, win);
-        }
-    }
-
-    // --- ĐÁ (CLICK) ---
-    function startDaGame() {
-        let user = users[currentUser];
-        if (user.money < currentBet) { alert("Không đủ tiền cược!"); return; }
-        if (isDaRunning) return;
-        
-        user.money -= currentBet;
-        updateUI();
-        playSound('bet');
-        
-        isDaRunning = true;
-        daCashed = false;
-        daVal = 1.00;
-        document.getElementById('daMultiplier').innerText = "x1.00";
-        document.getElementById('daResult').innerHTML = "";
-        document.getElementById('daClickArea').style.borderColor = "#00ff88";
-    }
-
-    function startDaClick() {
-        if (!isDaRunning || daCashed) return;
-        if (daClickInterval) return;
-        
-        daClickInterval = setInterval(() => {
-            daVal += 0.05;
-            document.getElementById('daMultiplier').innerText = "x" + daVal.toFixed(2);
-        }, 50);
-    }
-
-    function stopDaClick() {
-        if (daClickInterval) {
-            clearInterval(daClickInterval);
-            daClickInterval = null;
-        }
-    }
-
-    function cashOutDa() {
-        if (!isDaRunning || daCashed) return;
-        if (daVal <= 1.00) { alert("Bạn chưa đập đá!"); return; }
-        
-        stopDaClick();
-        daCashed = true;
-        isDaRunning = false;
-        
-        let win = Math.floor(currentBet * daVal);
-        users[currentUser].money += win;
-        updateUI();
-        
-        document.getElementById('daClickArea').style.borderColor = "#333";
-        document.getElementById('daResult').innerHTML = `<span style="color:#00ff88">RÚT THÀNH CÔNG ${win.toLocaleString()}đ tại x${daVal.toFixed(2)}!</span>`;
-        addHistoryLog('Đá', win, 'THẮNG');
-        playSound('win');
-        
-        if (win >= 200000000) {
-            showGlobalAnnounce(currentUser, win);
-        }
-    }
-
-    // --- LẬT XU ---
-    function playXu(choice) {
-        let user = users[currentUser];
-        if (user.money < currentBet) { alert("Không đủ tiền cược!"); return; }
-        user.money -= currentBet; 
-        updateUI();
-        playSound('bet');
-
-        let result = Math.random() < 0.5 ? 'ngua' : 'up';
-        setTimeout(() => {
-            let winAmount = currentBet * 2;
-            if (choice === result) {
-                user.money += winAmount;
-                document.getElementById('xuResult').innerHTML = `<span style="color:#00ff88">THẮNG! Kết quả: ${result === 'ngua' ? 'NGỬA' : 'ÚP'}</span>`;
-                addHistoryLog('Lật Xu', winAmount, 'THẮNG');
-                playSound('win');
-                if (winAmount >= 200000000) {
-                    showGlobalAnnounce(currentUser, winAmount);
-                }
-            } else {
-                document.getElementById('xuResult').innerHTML = `<span style="color:#ff3333">THUA! Kết quả: ${result === 'ngua' ? 'NGỬA' : 'ÚP'}</span>`;
-                addHistoryLog('Lật Xu', currentBet, 'THUA');
-                playSound('lose');
-            }
-            updateUI();
-        }, 500);
-    }
-
-    // --- NẠP THẺ & VAY ---
-    function checkNapCondition() {
-        if (users[currentUser].money <= 0) {
-            alert("Bạn đã hết tiền, không thể nạp thẻ! Vui lòng VAY VỐN.");
-            return;
-        }
-        openModal('napModal');
-    }
-
-    function openVayModal() { openModal('vayModal'); }
-
-    function submitNap() {
-        let code = document.getElementById('napCode').value;
-        let seri = document.getElementById('napSeri').value;
-        let value = parseInt(document.getElementById('napValue').value);
-        if (code.length !== 8) { alert("Mã thẻ phải đúng 8 số!"); return; }
-        if (seri.length <= 10) { alert("Seri phải trên 10 số!"); return; }
-        alert("Đã gửi yêu cầu. Vui lòng chờ 2-3 phút!");
-        closeModal('napModal');
-        
-        setTimeout(() => {
-            users[currentUser].money += value;
-            updateUI();
-            alert(`Nạp thành công ${value.toLocaleString('vi-VN')} đ!`);
-        }, 3000); // Test 3s, thực tế để 180000
-    }
-
-    function submitVay() {
-        let amount = parseInt(document.getElementById('vayAmount').value);
-        if (!amount || amount <= 0) { alert("Nhập số tiền hợp lệ!"); return; }
-        
-        if (amount <= 10000000) {
-            users[currentUser].money += amount;
-            updateUI();
-            alert(`Đã vay thành công ${amount.toLocaleString('vi-VN')} đ!`);
-            closeModal('vayModal');
-        } else {
-            alert("Yêu cầu vay trên 10M đã được gửi đến Admin để duyệt!");
-            closeModal('vayModal');
-            // Lưu yêu cầu vào danh sách chờ
-            let loanList = document.getElementById('adminLoanList');
-            if (loanList.innerText === 'Không có yêu cầu nào.') loanList.innerHTML = '';
-            loanList.innerHTML += `<div>User <b>${currentUser}</b> xin vay: ${amount.toLocaleString()} đ <button class="btn-small btn-add" onclick="approveLoan('${currentUser}', ${amount}, this)">Duyệt</button></div>`;
-        }
-    }
-
-    function approveLoan(username, amount, btn) {
-        users[username].money += amount;
-        updateUI();
-        btn.parentElement.innerHTML = `<span style="color:#00ff88">Đã duyệt cho ${username}</span>`;
-    }
-
-    // --- ADMIN ---
-    function toggleAdminPanel() {
-        let p = document.getElementById('adminPanel');
-        p.style.display = p.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function renderAdminList() {
-        let html = '';
-        for (let u in users) {
-            html += `<tr>
-                <td>${u} ${users[u].isBanned ? '(BAN)' : ''}</td>
-                <td>${users[u].money.toLocaleString('vi-VN')}</td>
-                <td>
-                    <button class="btn-small btn-add" onclick="quickAddMoney('${u}')">+$</button>
-                    <button class="btn-small btn-ban" onclick="quickBan('${u}')">Ban</button>
-                </td>
-            </tr>`;
-        }
-        document.getElementById('adminUserList').innerHTML = html;
-    }
-
-    function quickAddMoney(username) {
-        document.getElementById('adminUserTarget').value = username;
-        openModal('adminMoneyModal');
-    }
-
-    function quickBan(username) {
-        if (confirm(`Bạn có chắc muốn BAN tài khoản ${username}?`)) {
-            users[username].isBanned = true;
-            if (username === currentUser) {
-                document.getElementById('bannedScreen').style.display = 'flex';
-                document.getElementById('mainApp').style.display = 'none';
-            }
-            updateUI();
-            alert(`Đã BAN ${username}.`);
-        }
-    }
-
-    function adminAddMoney() {
-        let target = document.getElementById('adminUserTarget').value;
-        let amount = parseInt(document.getElementById('adminMoneyAmount').value);
-        if (users[target]) {
-            users[target].money += amount;
-            updateUI();
-            alert(`Đã cộng ${amount.toLocaleString('vi-VN')} đ cho ${target}.`);
-            closeModal('adminMoneyModal');
-        } else {
-            alert("Không tìm thấy user!");
-        }
-    }
-
-    // --- MODAL UTILS ---
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-</script>
-</body>
-    </html>
+        document.getElementById('game-' + tabId).classList.add('active
