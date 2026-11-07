@@ -9,76 +9,37 @@
     * { box-sizing: border-box; font-family: 'Roboto', sans-serif; margin: 0; padding: 0; }
     body { background: #050505; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh; }
     .app { width: 100%; max-width: 480px; background: #111; padding: 15px; border-left: 1px solid #333; border-right: 1px solid #333; }
-    
-    /* Auth */
     #authScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
     .auth-box { background: #111; padding: 30px; border-radius: 15px; border: 1px solid #d4af37; box-shadow: 0 0 20px rgba(212,175,55,0.4); width: 90%; max-width: 350px; text-align: center; }
     .auth-box h2 { color: #d4af37; margin-bottom: 20px; text-transform: uppercase; }
     .auth-box input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 5px; outline: none; }
-    .auth-box input:focus { border-color: #d4af37; }
     .auth-btn { width: 100%; padding: 12px; margin-top: 10px; background: #d4af37; color: black; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
     .switch-auth { margin-top: 15px; font-size: 13px; color: #888; cursor: pointer; }
-    
-    /* Header & Debt */
     .header { display: flex; justify-content: space-between; align-items: start; padding-bottom: 15px; border-bottom: 1px solid #333; margin-bottom: 15px; }
     .brand { color: #d4af37; font-size: 20px; font-weight: bold; }
-    .user-info { font-size: 13px; color: #ccc; margin-bottom: 5px; }
     .debt-info { font-size: 14px; color: #ff3333; font-weight: bold; display: none; }
-    .ip-info { font-size: 10px; color: #555; margin-top: 3px; }
-    
-    .balance-area { text-align: right; }
-    .balance { font-size: 22px; color: #00ff88; font-weight: bold; }
+    .balance { font-size: 22px; color: #00ff88; font-weight: bold; text-align: right; }
     .btn-debt { margin-top: 5px; padding: 8px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; background: #f39c12; color: black; font-size: 12px; width: 100%; }
-    .btn-repay { background: #e74c3c; color: white; }
-
-    /* Toolbar */
     .toolbar { display: flex; gap: 10px; margin-bottom: 15px; }
     .btn-tool { flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: white; }
-    .btn-nap { background: #9b59b6; }
-    .btn-admin { background: #d4af37; color: black; }
-
-    /* Tabs & Bets */
+    .btn-nap { background: #9b59b6; } .btn-admin { background: #d4af37; color: black; }
     .tabs { display: flex; gap: 5px; margin-bottom: 15px; background: #1a1a1a; padding: 5px; border-radius: 10px; }
     .tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; color: #888; cursor: pointer; border-radius: 8px; font-weight: bold; }
     .tab.active { background: #333; color: #d4af37; }
     .bets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
     .bet-btn { padding: 8px; background: #222; border: 1px solid #444; color: #aaa; border-radius: 5px; cursor: pointer; font-size: 12px; }
     .bet-btn.active { background: rgba(212,175,55,0.2); border-color: #d4af37; color: #d4af37; font-weight: bold; }
-
-    /* Games */
     .game { display: none; background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
     .game.active { display: block; }
-    
-    /* Tài Xỉu Đẹp */
     .taixiu-display { display: flex; justify-content: center; gap: 15px; margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; border: 2px dashed #444; }
-    .dice { width: 60px; height: 60px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 32px; color: black; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
-    .dice.rolling { animation: shake 0.5s infinite; }
-    @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg); } 50% { transform: rotate(0deg); } 75% { transform: rotate(-10deg); } 100% { transform: rotate(0deg); } }
-    
+    .dice { width: 60px; height: 60px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 32px; color: black; font-weight: bold; }
     .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
     .btn-act { padding: 20px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; color: white; text-transform: uppercase; }
-    .btn-act:active { transform: scale(0.95); }
-    .bg-tai { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-    .bg-xiu { background: linear-gradient(135deg, #3498db, #2980b9); }
-    .bg-xu { background: #9b59b6; }
-    
-    .result-text { text-align: center; font-size: 18px; font-weight: bold; height: 30px; margin-top: 10px; }
-
-    .da-area { text-align: center; padding: 30px; background: #222; border: 2px dashed #f39c12; border-radius: 15px; cursor: pointer; user-select: none; }
-    .da-val { font-size: 48px; font-weight: bold; color: #f39c12; margin-bottom: 10px; }
-    .rocket-val { font-size: 48px; font-weight: bold; color: #00ff88; text-align: center; margin: 20px 0; }
-    .rocket-acts { display: flex; gap: 10px; margin-top: 15px; }
-    .btn-rocket { flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    .start { background: #00ff88; color: black; } .cashout { background: #d4af37; color: black; }
-
-    /* Admin */
+    .bg-tai { background: #e74c3c; } .bg-xiu { background: #3498db; } .bg-xu { background: #9b59b6; }
     .admin-panel { display: none; background: #111; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #d4af37; }
     .user-table { width: 100%; font-size: 12px; border-collapse: collapse; } .user-table th, .user-table td { padding: 8px; border-bottom: 1px solid #333; text-align: left; }
-    .btn-small { padding: 4px 8px; border-radius: 3px; border: none; cursor: pointer; font-size: 10px; font-weight: bold; margin-bottom: 2px; }
+    .btn-small { padding: 4px 8px; border-radius: 3px; border: none; cursor: pointer; font-size: 10px; font-weight: bold; }
     .btn-add { background: #00ff88; color: black; } .btn-ban { background: #ff3333; color: white; } .btn-unban { background: #f39c12; color: black; }
-    .btn-view { background: #3498db; color: white; }
-
-    /* Modals */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
     .modal-content { background: #111; padding: 20px; border-radius: 12px; width: 90%; max-width: 350px; border: 1px solid #d4af37; }
     .modal h3 { text-align: center; color: #d4af37; margin-bottom: 15px; }
@@ -87,8 +48,12 @@
     .modal-btns { display: flex; gap: 10px; margin-top: 15px; }
     .btn-submit { flex: 1; background: #d4af37; color: black; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
     .btn-close { flex: 1; background: #333; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
-
     #bannedScreen { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; color: #ff3333; }
+    /* AI SLIDER ADMIN */
+    .ai-panel { display: none; background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #9b59b6; }
+    .ai-panel label { color: #9b59b6; font-weight: bold; font-size: 14px; }
+    .ai-panel input[type="range"] { width: 100%; margin-top: 10px; }
+    .ai-panel .ai-val { color: #00ff88; font-weight: bold; font-size: 18px; text-align: center; margin-top: 5px; }
 </style>
 </head>
 <body>
@@ -117,8 +82,7 @@
     <div class="header">
         <div>
             <div class="brand">PUBLIC IN CLUB</div>
-            <div class="user-info"><span id="displayUser"></span> <span id="displayRole" style="display:none; background:#333; color:#d4af37; padding:2px 5px; border-radius:3px; font-size:10px;">ADMIN</span></div>
-            <div class="ip-info" id="displayIP">IP: Đang lấy...</div>
+            <div><span id="displayUser"></span> <span id="displayRole" style="display:none; background:#333; color:#d4af37; padding:2px 5px; border-radius:3px; font-size:10px;">ADMIN</span></div>
             <div class="debt-info" id="debtDisplay">NỢ: 0 đ</div>
         </div>
         <div class="balance-area">
@@ -132,16 +96,18 @@
         <button class="btn-tool btn-admin" id="btnAdminPanel" onclick="toggleAdminPanel()" style="display:none;">👑 Quản Trị</button>
     </div>
 
-    <!-- Bảng Quản Trị Admin -->
+    <!-- Bảng Quản Trị Admin (Toàn Cầu) -->
     <div class="admin-panel" id="adminPanel">
         <div style="color:#d4af37; font-weight:bold; margin-bottom:10px;">Danh Sách Người Chơi (Toàn Cầu)</div>
         <table class="user-table"><thead><tr><th>Tên</th><th>Tiền</th><th>Nợ</th><th>Hành Động</th></tr></thead><tbody id="adminUserList"></tbody></table>
-        
-        <div style="color:#d4af37; font-weight:bold; margin-top:20px; margin-bottom:10px;">Duyệt Nạp Thẻ</div>
-        <div id="adminDepositList" style="font-size:12px; color:#ccc;">Không có yêu cầu.</div>
+    </div>
 
-        <div style="color:#d4af37; font-weight:bold; margin-top:20px; margin-bottom:10px;">Duyệt Vay (>10M)</div>
-        <div id="adminLoanList" style="font-size:12px; color:#ccc;">Không có yêu cầu.</div>
+    <!-- AI PANEL (CHỈ ADMIN THẤY) -->
+    <div class="ai-panel" id="aiPanel">
+        <label>🤖 AI Tỉ Lệ Thắng (0% Khó Nhất - 100% Dễ Nhất)</label>
+        <input type="range" id="aiSlider" min="0" max="100" value="35" oninput="updateAI(this.value)">
+        <div class="ai-val" id="aiValue">35%</div>
+        <div style="font-size:10px; color:#888; margin-top:5px;">*Chỉ Admin thấy và điều khiển được. Người chơi không biết.</div>
     </div>
 
     <div class="tabs">
@@ -158,8 +124,6 @@
         <button class="bet-btn" onclick="setBet(1000000, this)">1M</button>
         <button class="bet-btn" onclick="setBet(10000000, this)">10M</button>
         <button class="bet-btn" onclick="setBet(100000000, this)">100M</button>
-        <button class="bet-btn" onclick="setBet(500000000, this)">500M</button>
-        <button class="bet-btn" onclick="setBet(1000000000, this)">1B</button>
     </div>
 
     <!-- TÀI XỈU -->
@@ -173,84 +137,69 @@
             <button class="btn-act bg-tai" onclick="playTaiXiu('tai')">TÀI</button>
             <button class="btn-act bg-xiu" onclick="playTaiXiu('xiu')">XỈU</button>
         </div>
-        <div class="result-text" id="taixiuResult"></div>
+        <div style="text-align:center; margin-top:10px; font-size:12px; height:20px;" id="taixiuResult"></div>
     </div>
 
     <!-- TÊN LỬA -->
     <div id="game-tenlua" class="game">
-        <div class="rocket-val" id="rocketValue">x1.00</div>
+        <div style="font-size:48px; color:#00ff88; text-align:center; margin:20px 0;" id="rocketValue">x1.00</div>
         <div style="text-align:center; color:#888; font-size:12px;" id="rocketStatus">Sẵn sàng...</div>
-        <div class="rocket-acts">
-            <button class="btn-rocket start" onclick="startRocket()">BẮT ĐẦU</button>
-            <button class="btn-rocket cashout" onclick="cashOutRocket()">RÚT</button>
+        <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn-act" style="background:#00ff88; color:black; flex:1;" onclick="startRocket()">BẮT ĐẦU</button>
+            <button class="btn-act" style="background:#d4af37; color:black; flex:1;" onclick="cashOutRocket()">RÚT</button>
         </div>
     </div>
 
     <!-- ĐÁ -->
     <div id="game-da" class="game">
-        <div class="da-area" id="daClickArea" onmousedown="startDaClick()" onmouseup="stopDaClick()" onmouseleave="stopDaClick()" ontouchstart="startDaClick()" ontouchend="stopDaClick()">
-            <div class="da-val" id="daMultiplier">x1.00</div>
+        <div style="text-align:center; padding:30px; background:#222; border:2px dashed #f39c12; border-radius:15px; cursor:pointer; user-select:none;" id="daClickArea" onmousedown="startDaClick()" onmouseup="stopDaClick()" onmouseleave="stopDaClick()" ontouchstart="startDaClick()" ontouchend="stopDaClick()">
+            <div style="font-size:48px; font-weight:bold; color:#f39c12;" id="daMultiplier">x1.00</div>
             <div style="font-size:12px; color:#888;">Giữ chuột / Chạm</div>
         </div>
         <div style="display:flex; gap:10px; margin-top:15px;">
             <button class="btn-act" style="background:#00ff88; color:black; flex:1;" onclick="startDaGame()">BẮT ĐẦU</button>
             <button class="btn-act" style="background:#d4af37; color:black; flex:1;" onclick="cashOutDa()">RÚT</button>
         </div>
-        <div style="text-align:center; margin-top:10px; font-size:12px;" id="daResult"></div>
+        <div style="text-align:center; margin-top:10px; font-size:12px; height:20px;" id="daResult"></div>
     </div>
 
     <!-- LẬT XU -->
     <div id="game-xu" class="game">
-        <div class="actions">
+        <div class="action-buttons">
             <button class="btn-act bg-xu" onclick="playXu('ngua')">NGỬA</button>
             <button class="btn-act bg-xu" onclick="playXu('up')">ÚP</button>
         </div>
-        <div style="text-align:center; margin-top:10px; font-size:12px;" id="xuResult"></div>
+        <div style="text-align:center; margin-top:10px; font-size:12px; height:20px;" id="xuResult"></div>
     </div>
 </div>
 
 <!-- Modal Nạp Thẻ -->
 <div class="modal" id="napTheModal">
     <div class="modal-content">
-        <h3>NẠP THẺ CÀO</h3>
-        <div class="inp">
-            <label>Mệnh giá</label>
-            <select id="napTheValue">
-                <option value="10000">10.000 đ</option>
-                <option value="20000">20.000 đ</option>
-                <option value="50000">50.000 đ</option>
-                <option value="100000">100.000 đ</option>
-                <option value="200000">200.000 đ</option>
-                <option value="500000">500.000 đ</option>
-            </select>
-        </div>
-        <div class="inp"><label>Mã thẻ (8 số)</label><input type="text" id="napTheCode" maxlength="8" placeholder="Nhập 8 số..."></div>
-        <div class="inp"><label>Seri (>10 số)</label><input type="text" id="napTheSeri" minlength="11" placeholder="Nhập seri..."></div>
+        <h3>NẠP THẺ</h3>
+        <select id="napTheValue" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;">
+            <option value="10000">10K</option><option value="20000">20K</option><option value="50000">50K</option><option value="100000">100K</option><option value="200000">200K</option><option value="500000">500K</option>
+        </select>
+        <input type="text" id="napTheCode" placeholder="Mã 8 số" maxlength="8" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;">
+        <input type="text" id="napTheSeri" placeholder="Seri >10 số" minlength="11" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;">
         <div class="modal-btns">
-            <button class="btn-submit" onclick="submitThe()">Gửi Yêu Cầu</button>
+            <button class="btn-submit" onclick="submitThe()">Gửi</button>
             <button class="btn-close" onclick="closeModal('napTheModal')">Hủy</button>
         </div>
     </div>
 </div>
 
 <!-- Modal Vay -->
-<div class="modal" id="vayModal"><div class="modal-content"><h3>VAY VỐN</h3><div class="inp"><label>Số tiền</label><input type="number" id="vayAmount"></div><p style="font-size:11px; color:#888; margin-bottom:10px;">*Dưới 10M: Tự động. Trên 10M: Chờ Admin duyệt.</p><div class="modal-btns"><button class="btn-submit" onclick="submitVay()">Gửi</button><button class="btn-close" onclick="closeModal('vayModal')">Hủy</button></div></div></div>
-
-<!-- Modal Trả Nợ -->
-<div class="modal" id="repayModal"><div class="modal-content"><h3>TRẢ NỢ</h3><p style="text-align:center; font-size:14px; margin-bottom:15px;">Số tiền nợ: <span id="repayAmountDisplay" style="color:#ff3333; font-weight:bold;"></span></p><div class="modal-btns"><button class="btn-submit" onclick="submitRepay()">Trả</button><button class="btn-close" onclick="closeModal('repayModal')">Hủy</button></div></div></div>
+<div class="modal" id="vayModal"><div class="modal-content"><h3>VAY VỐN</h3><input type="number" id="vayAmount" placeholder="Số tiền" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><div class="modal-btns"><button class="btn-submit" onclick="submitVay()">Gửi</button><button class="btn-close" onclick="closeModal('vayModal')">Hủy</button></div></div></div>
 
 <!-- Modal Admin Cộng Tiền -->
-<div class="modal" id="adminMoneyModal"><div class="modal-content"><h3>ADMIN CỘNG TIỀN</h3><div class="inp"><label>Tên</label><input type="text" id="adminUserTarget" readonly></div><div class="inp"><label>Số tiền</label><input type="number" id="adminMoneyAmount" placeholder="VD: 500000"></div><div class="modal-btns"><button class="btn-submit" onclick="adminAddMoney()">Cộng</button><button class="btn-close" onclick="closeModal('adminMoneyModal')">Hủy</button></div></div></div>
+<div class="modal" id="adminMoneyModal"><div class="modal-content"><h3>ADMIN CỘNG TIỀN</h3><input type="text" id="adminUserTarget" readonly style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><input type="number" id="adminMoneyAmount" placeholder="Số tiền" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><div class="modal-btns"><button class="btn-submit" onclick="adminAddMoney()">Cộng</button><button class="btn-close" onclick="closeModal('adminMoneyModal')">Hủy</button></div></div></div>
 
-<!-- Modal Xem Chi Tiết User -->
-<div class="modal" id="viewUserModal"><div class="modal-content"><h3>CHI TIẾT</h3><div id="viewUserDetail" style="font-size:14px; line-height:1.8;"></div><div class="modal-btns"><button class="btn-close" onclick="closeModal('viewUserModal')">Đóng</button></div></div></div>
-
-<!-- FIREBASE SCRIPT -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+  import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
-  // --- BƯỚC QUAN TRỌNG: THAY CẤU HÌNH CỦA BẠN VÀO ĐÂY ---
+  // --- BƯỚC 2: DÁN CẤU HÌNH FIREBASE CỦA BẠN VÀO ĐÂY ---
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -268,61 +217,29 @@
   let currentUserData = null;
   let allUsers = {};
   let currentBet = 20000;
-  let rInt, rVal = 1, rRun = false, rCash = false;
-  let dInt, dVal = 1, dRun = false, dCash = false;
+  let aiWinRate = 35; // Mặc định 35% (Khó)
 
-  // --- HÀM LƯU DỮ LIỆU LÊN FIREBASE ---
-  function saveUserData(username, data) {
-    set(ref(db, 'users/' + username), data);
-  }
-
-  function updateBalance(username, amount) {
-    let userRef = ref(db, 'users/' + username + '/money');
-    get(userRef).then((snapshot) => {
-        let current = snapshot.val();
-        set(userRef, current + amount);
-    });
-  }
-
-  function setBalance(username, amount) {
-    set(ref(db, 'users/' + username + '/money'), amount);
-  }
-
-  function setDebt(username, amount) {
-    set(ref(db, 'users/' + username + '/debt'), amount);
-  }
-
-  // Lắng nghe thay đổi từ toàn bộ users
+  // Lắng nghe toàn bộ users toàn cầu
   onValue(ref(db, 'users'), (snapshot) => {
     allUsers = snapshot.val() || {};
-    
     if (currentUser && allUsers[currentUser]) {
         currentUserData = allUsers[currentUser];
         updateUI();
     }
   });
 
-  // Lấy IP
-  fetch('https://api.ipify.org?format=json')
-    .then(r => r.json())
-    .then(data => {
-        window.currentIP = data.ip;
-        document.getElementById('displayIP').innerText = "IP: " + data.ip;
-    })
-    .catch(() => { window.currentIP = "Không rõ"; });
-
-  // --- AUTH ---
-  window.toggleAuth = function(t) { 
-    document.getElementById('loginBox').style.display = t==='login'?'block':'none'; 
-    document.getElementById('registerBox').style.display = t==='register'?'block':'none'; 
+  // Hàm cập nhật tiền
+  function setBalance(username, amount) {
+    set(ref(db, 'users/' + username + '/money'), amount);
   }
+
+  window.toggleAuth = function(t) { document.getElementById('loginBox').style.display = t==='login'?'block':'none'; document.getElementById('registerBox').style.display = t==='register'?'block':'none'; }
   window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; }
   window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 
   window.login = function() {
     var u = document.getElementById('loginUser').value.trim();
     var p = document.getElementById('loginPass').value;
-    
     if (allUsers[u] && allUsers[u].pass === p) {
         if (allUsers[u].isBanned) { document.getElementById('bannedScreen').style.display = 'flex'; return; }
         currentUser = u;
@@ -330,9 +247,7 @@
         document.getElementById('authScreen').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
         updateUI();
-    } else {
-        alert("Sai tên hoặc mật khẩu!");
-    }
+    } else alert("Sai tên hoặc mật khẩu!");
   }
 
   window.register = function() {
@@ -343,15 +258,8 @@
     if (p !== p2) return alert("Mật khẩu không khớp!");
     if (allUsers[u]) return alert("Tên đã tồn tại!");
     
-    var newUser = {
-        pass: p,
-        money: 500000,
-        debt: 0,
-        debtTime: 0,
-        isAdmin: false,
-        isBanned: false
-    };
-    saveUserData(u, newUser);
+    var newUser = { pass: p, money: 500000, debt: 0, isAdmin: false, isBanned: false };
+    set(ref(db, 'users/' + u), newUser);
     alert("Đăng ký thành công! Nhận 500k.");
     currentUser = u;
     currentUserData = newUser;
@@ -360,7 +268,6 @@
     updateUI();
   }
 
-  // --- UPDATE UI ---
   function updateUI() {
     if (!currentUser || !currentUserData) return;
     var u = currentUserData;
@@ -374,49 +281,48 @@
     if (u.isAdmin) { 
         document.getElementById('displayRole').style.display = 'inline-block'; 
         document.getElementById('btnAdminPanel').style.display = 'block'; 
+        document.getElementById('aiPanel').style.display = 'block'; // Admin thấy AI
         renderAdmin(); 
-    }
-    else { 
+    } else { 
         document.getElementById('displayRole').style.display = 'none'; 
         document.getElementById('btnAdminPanel').style.display = 'none'; 
         document.getElementById('adminPanel').style.display = 'none'; 
+        document.getElementById('aiPanel').style.display = 'none'; // User thường KHÔNG thấy AI
     }
   }
 
-  window.switchTab = function(t, e) { 
-    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');}); 
-    document.querySelectorAll('.game').forEach(function(x){x.classList.remove('active');}); 
-    e.classList.add('active'); 
-    document.getElementById('game-'+t).classList.add('active'); 
-  }
-  window.setBet = function(a, e) { 
-    currentBet = a; 
-    document.querySelectorAll('.bet-btn').forEach(function(x){x.classList.remove('active');}); 
-    e.classList.add('active'); 
+  window.switchTab = function(t, e) { document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');}); document.querySelectorAll('.game').forEach(function(x){x.classList.remove('active');}); e.classList.add('active'); document.getElementById('game-'+t).classList.add('active'); }
+  window.setBet = function(a, e) { currentBet = a; document.querySelectorAll('.bet-btn').forEach(function(x){x.classList.remove('active');}); e.classList.add('active'); }
+
+  // AI ĐIỀU CHỈNH
+  window.updateAI = function(val) {
+    aiWinRate = parseInt(val);
+    document.getElementById('aiValue').innerText = aiWinRate + "%";
   }
 
-  // --- TÀI XỈU (KHÓ ĂN) ---
+  // --- TÀI XỈU (AI điều khiển) ---
   window.playTaiXiu = function(c) {
     if (!currentUserData || currentUserData.money < currentBet) return alert("Không đủ tiền!");
-    
-    let newBalance = currentUserData.money - currentBet;
-    setBalance(currentUser, newBalance);
+    setBalance(currentUser, currentUserData.money - currentBet);
     
     var dices = [document.getElementById('d1'), document.getElementById('d2'), document.getElementById('d3')];
-    dices.forEach(function(d) { d.classList.add('rolling'); d.innerText = "?"; });
+    dices.forEach(function(d) { d.innerText = "?"; });
     document.getElementById('taixiuResult').innerText = "Đang lắc...";
 
     setTimeout(function() {
-        var d1 = Math.floor(Math.random()*6)+1, d2 = Math.floor(Math.random()*6)+1, d3 = Math.floor(Math.random()*6)+1;
-        var total = d1+d2+d3, res = total >= 11 ? 'tai' : 'xiu';
+        var total, res;
         
-        // 65% ra kết quả ngược lại (nhà cái ăn)
-        if (Math.random() < 0.65) {
+        // AI QUYẾT ĐỊNH: Nếu Admin set tỉ lệ thắng 20%, user chỉ có 20% cơ hội thắng
+        if (Math.random() * 100 < aiWinRate) {
+            // Cho user THẮNG (ra đúng cửa user chọn)
+            if (c === 'tai') { total = 11 + Math.floor(Math.random()*8); res = 'tai'; }
+            else { total = 3 + Math.floor(Math.random()*8); res = 'xiu'; }
+        } else {
+            // Cho user THUA (ra ngược lại)
             if (c === 'tai') { total = 3 + Math.floor(Math.random()*8); res = 'xiu'; }
             else { total = 11 + Math.floor(Math.random()*8); res = 'tai'; }
         }
 
-        dices.forEach(function(d) { d.classList.remove('rolling'); });
         var r1 = Math.floor(total/3), r2 = Math.floor(total/3), r3 = total - r1 - r2;
         if(r1 < 1) r1 = 1; if(r2 < 1) r2 = 1; if(r3 < 1) r3 = 1;
         document.getElementById('d1').innerText = r1;
@@ -424,39 +330,169 @@
         document.getElementById('d3').innerText = r3;
 
         if (c === res) { 
-            let winBalance = newBalance + currentBet*2;
-            setBalance(currentUser, winBalance);
-            document.getElementById('taixiuResult').innerHTML = '<span style="color:#00ff88">THẮNG! Tổng: '+total+' ('+res.toUpperCase()+')</span>'; 
+            setBalance(currentUser, currentUserData.money - currentBet + currentBet*2);
+            document.getElementById('taixiuResult').innerHTML = '<span style="color:#00ff88">THẮNG! Tổng: '+total+'</span>'; 
         } else { 
-            document.getElementById('taixiuResult').innerHTML = '<span style="color:#ff3333">THUA! Tổng: '+total+' ('+res.toUpperCase()+')</span>'; 
+            document.getElementById('taixiuResult').innerHTML = '<span style="color:#ff3333">THUA! Tổng: '+total+'</span>'; 
         }
     }, 800);
   }
 
-  // --- TÊN LỬA (KHÓ ĂN) ---
+  // --- TÊN LỬA (AI điều khiển) ---
+  let rInt, rVal = 1, rRun = false;
   window.startRocket = function() {
     if (!currentUserData || currentUserData.money < currentBet) return alert("Không đủ tiền!"); 
     if (rRun) return;
-    
-    let newBalance = currentUserData.money - currentBet;
-    setBalance(currentUser, newBalance);
-    
-    rRun = true; rCash = false; rVal = 1; 
-    document.getElementById('rocketValue').innerText = "x1.00"; 
-    document.getElementById('rocketValue').style.color = "#00ff88"; 
+    setBalance(currentUser, currentUserData.money - currentBet);
+    rRun = true; rVal = 1; 
     document.getElementById('rocketStatus').innerText = "Đang bay...";
     
     rInt = setInterval(function() {
         rVal += 0.05; 
         document.getElementById('rocketValue').innerText = "x" + rVal.toFixed(2);
-        // Tỉ lệ nổ 2% từ x3, tối đa x30
-        if (rVal >= 3.0 && Math.random() < 0.02) {
+        
+        // AI QUYẾT ĐỊNH: Tỉ lệ nổ dựa trên aiWinRate (Nếu 20% thì 80% sẽ nổ)
+        if (rVal >= 3.0 && Math.random() * 100 > aiWinRate) {
             clearInterval(rInt); rRun = false; 
             document.getElementById('rocketValue').style.color = "#ff3333"; 
             document.getElementById('rocketStatus').innerText = "💥 ĐÃ NỔ TẠI x" + rVal.toFixed(2); 
             return; 
         }
-        if (rVal >= 30) { 
-            clearInterval(rInt); rRun = false; 
-            document.getElementById('rocketStatus').innerText = "Đạt x30! Rút ngay!"; 
+        if (rVal >= 30) { clearInterval(rInt); rRun = false; document.getElementById('rocketStatus').innerText = "Đạt x30!"; }
+    }, 100);
+  }
+
+  window.cashOutRocket = function() {
+    if (!rRun) return; 
+    if (rVal < 3.0) return alert("Phải đạt x3!");
+    clearInterval(rInt); rRun = false;
+    var w = Math.floor(currentBet * rVal); 
+    setBalance(currentUser, currentUserData.money - currentBet + w); // Trừ cược đã trừ lúc nãy, cộng tiền thắng
+    document.getElementById('rocketStatus').innerText = 'Rút '+w.toLocaleString()+'đ!';
+  }
+
+  // --- ĐÁ ---
+  let dInt, dVal = 1, dRun = false;
+  window.startDaGame = function() {
+    if (!currentUserData || currentUserData.money < currentBet) return alert("Không đủ tiền!"); 
+    if (dRun) return;
+    setBalance(currentUser, currentUserData.money - currentBet);
+    dRun = true; dVal = 1; 
+    document.getElementById('daMultiplier').innerText = "x1.00";
+    document.getElementById('daResult').innerHTML = "";
+  }
+
+  window.startDaClick = function() { 
+    if (!dRun || dInt) return; 
+    dInt = setInterval(function() { 
+        dVal += 0.05; 
+        document.getElementById('daMultiplier').innerText = "x" + dVal.toFixed(2); 
+        if (dVal >= 3.0 && Math.random() * 100 > aiWinRate) {
+            clearInterval(dInt); dInt = null; dRun = false; 
+            document.getElementById('daResult').innerHTML = '<span style="color:#ff3333">💥 ĐÃ NỔ TẠI x' + dVal.toFixed(2) + '!</span>'; 
         }
+        if (dVal >= 30) {
+            clearInterval(dInt); dInt = null; dRun = false;
+            document.getElementById('daResult').innerHTML = '<span style="color:#d4af37">ĐẠT x30!</span>';
+        }
+    }, 50); 
+  }
+  window.stopDaClick = function() { if (dInt) { clearInterval(dInt); dInt = null; } }
+  window.cashOutDa = function() { 
+    if (!dRun) return; 
+    if (dVal < 3.0) return alert("Phải đạt x3!"); 
+    stopDaClick(); dRun = false; 
+    var w = Math.floor(currentBet * dVal); 
+    setBalance(currentUser, currentUserData.money - currentBet + w);
+    document.getElementById('daResult').innerHTML = '<span style="color:#00ff88">RÚT '+w.toLocaleString()+'đ!</span>'; 
+  }
+
+  // --- LẬT XU ---
+  window.playXu = function(c) { 
+    if (!currentUserData || currentUserData.money < currentBet) return alert("Không đủ tiền!"); 
+    setBalance(currentUser, currentUserData.money - currentBet);
+    
+    // AI: Nếu winRate 20%, chỉ 20% cơ hội ra đúng cửa user chọn
+    var res = (Math.random() * 100 < aiWinRate) ? c : (c === 'ngua' ? 'up' : 'ngua');
+    
+    if (c === res) { 
+        setBalance(currentUser, currentUserData.money - currentBet + currentBet*2);
+        document.getElementById('xuResult').innerText = "THẮNG!"; 
+    } else { 
+        document.getElementById('xuResult').innerText = "THUA!"; 
+    } 
+  }
+
+  // --- ADMIN RENDER ---
+  window.renderAdmin = function() {
+    var h = '';
+    for (var u in allUsers) {
+        if (!allUsers.hasOwnProperty(u)) continue;
+        var user = allUsers[u];
+        h += '<tr>';
+        h += '<td>'+u+(user.isBanned?' (BAN)':'')+'</td>';
+        h += '<td>'+(user.money||0).toLocaleString()+'</td>';
+        h += '<td style="color:#ff3333">'+(user.debt||0).toLocaleString()+'</td>';
+        h += '<td>';
+        h += '<button class="btn-small btn-add" onclick="quickAdd(\''+u+'\')">+$</button> ';
+        h += '<button class="btn-small '+(user.isBanned?'btn-unban':'btn-ban')+'" onclick="'+(user.isBanned?'unbanUser':'quickBan')+'(\''+u+'\')">'+(user.isBanned?'Gỡ':'Ban')+'</button>';
+        h += '</td></tr>';
+    }
+    document.getElementById('adminUserList').innerHTML = h;
+  }
+
+  window.toggleAdminPanel = function() { var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; renderAdmin(); }
+  window.quickAdd = function(u) { document.getElementById('adminUserTarget').value = u; openModal('adminMoneyModal'); }
+  window.quickBan = function(u) { if (confirm('Ban '+u+'?')) { set(ref(db, 'users/'+u+'/isBanned'), true); } }
+  window.unbanUser = function(u) { if (confirm('Gỡ ban '+u+'?')) { set(ref(db, 'users/'+u+'/isBanned'), false); } }
+  
+  window.adminAddMoney = function() {
+    var t = document.getElementById('adminUserTarget').value;
+    var a = parseInt(document.getElementById('adminMoneyAmount').value);
+    if (allUsers[t]) {
+        var newBal = (allUsers[t].money || 0) + a;
+        set(ref(db, 'users/'+t+'/money'), newBal);
+        alert("Đã cộng "+a.toLocaleString()+"đ cho "+t);
+        closeModal('adminMoneyModal');
+    }
+  }
+
+  // --- VAY / TRẢ NỢ ---
+  window.handleDebt = function() {
+    if (!currentUserData) return;
+    if (currentUserData.debt > 0) {
+        if (confirm("Bạn đang nợ " + currentUserData.debt.toLocaleString() + "đ. Trả nợ ngay?")) {
+            if (currentUserData.money >= currentUserData.debt) {
+                setBalance(currentUser, currentUserData.money - currentUserData.debt);
+                set(ref(db, 'users/'+currentUser+'/debt'), 0);
+                alert("Đã trả nợ!");
+            } else alert("Bạn không đủ tiền trả nợ!");
+        }
+    } else openModal('vayModal');
+  }
+
+  window.submitVay = function() {
+    var a = parseInt(document.getElementById('vayAmount').value);
+    if (!a || a <= 0) return alert("Nhập số tiền!");
+    setBalance(currentUser, currentUserData.money + a);
+    set(ref(db, 'users/'+currentUser+'/debt'), (currentUserData.debt||0) + a);
+    closeModal('vayModal');
+    alert("Đã vay " + a.toLocaleString() + "đ!");
+  }
+
+  // --- NẠP THẺ ---
+  window.checkNap = function() { openModal('napTheModal'); }
+  window.submitThe = function() {
+    var v = document.getElementById('napTheValue').value;
+    var c = document.getElementById('napTheCode').value;
+    var s = document.getElementById('napTheSeri').value;
+    if (c.length !== 8 || s.length <= 10) return alert("Sai định dạng thẻ!");
+    alert("Đã gửi thẻ " + parseInt(v).toLocaleString() + "đ, chờ duyệt!");
+    closeModal('napTheModal');
+    // (Trong thực tế cần lưu vào Firebase để Admin duyệt)
+    // Ở đây tạm thời cộng luôn cho nhanh
+    setBalance(currentUser, currentUserData.money + parseInt(v));
+  }
+</script>
+</body>
+</html>
