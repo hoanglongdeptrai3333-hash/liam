@@ -3,77 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PUBLIC IN CLUB - Tài Xỉu</title>
+<title>PUBLIC IN CLUB</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
     * { box-sizing: border-box; font-family: 'Roboto', sans-serif; margin: 0; padding: 0; }
     body { background: #050505; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh; }
-    .app { width: 100%; max-width: 480px; background: #111; padding: 15px; border-left: 1px solid #333; border-right: 1px solid #333; }
-    
-    /* Auth */
+    .app { width: 100%; max-width: 480px; background: #111; padding: 15px; }
     #authScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
-    .auth-box { background: #111; padding: 30px; border-radius: 15px; border: 1px solid #d4af37; box-shadow: 0 0 20px rgba(212,175,55,0.4); width: 90%; max-width: 350px; text-align: center; }
-    .auth-box h2 { color: #d4af37; margin-bottom: 20px; text-transform: uppercase; }
-    .auth-box input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 5px; outline: none; }
-    .auth-box input:focus { border-color: #d4af37; }
+    .auth-box { background: #111; padding: 30px; border-radius: 15px; border: 1px solid #d4af37; width: 90%; max-width: 350px; text-align: center; }
+    .auth-box h2 { color: #d4af37; margin-bottom: 20px; }
+    .auth-box input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 5px; }
     .auth-btn { width: 100%; padding: 12px; margin-top: 10px; background: #d4af37; color: black; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
     .switch-auth { margin-top: 15px; font-size: 13px; color: #888; cursor: pointer; }
-    
-    /* Header */
     .header { display: flex; justify-content: space-between; align-items: start; padding-bottom: 15px; border-bottom: 1px solid #333; margin-bottom: 15px; }
     .brand { color: #d4af37; font-size: 20px; font-weight: bold; }
     .balance { font-size: 22px; color: #00ff88; font-weight: bold; text-align: right; }
-    
-    /* Toolbar */
     .toolbar { display: flex; gap: 10px; margin-bottom: 15px; }
     .btn-tool { flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: white; }
     .btn-nap { background: #9b59b6; }
     .btn-admin { background: #d4af37; color: black; }
-
-    /* Tài Xỉu */
-    .game-box { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-    .taixiu-display { display: flex; justify-content: center; gap: 15px; margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; border: 2px dashed #444; }
-    .dice { width: 60px; height: 60px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 32px; color: black; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
-    .dice.rolling { animation: shake 0.5s infinite; }
-    @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg); } 50% { transform: rotate(0deg); } 75% { transform: rotate(-10deg); } 100% { transform: rotate(0deg); } }
-    
     .bets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
     .bet-btn { padding: 8px; background: #222; border: 1px solid #444; color: #aaa; border-radius: 5px; cursor: pointer; font-size: 12px; }
-    .bet-btn.active { background: rgba(212,175,55,0.2); border-color: #d4af37; color: #d4af37; font-weight: bold; }
-    
-    .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+    .bet-btn.active { background: rgba(212,175,55,0.2); border-color: #d4af37; color: #d4af37; }
+    .game-box { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px; }
+    .taixiu-display { display: flex; justify-content: center; gap: 15px; margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; }
+    .dice { width: 60px; height: 60px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 32px; color: black; font-weight: bold; }
+    .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .btn-act { padding: 20px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; color: white; text-transform: uppercase; }
-    .btn-act:active { transform: scale(0.95); }
-    .bg-tai { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-    .bg-xiu { background: linear-gradient(135deg, #3498db, #2980b9); }
-    
+    .bg-tai { background: #e74c3c; }
+    .bg-xiu { background: #3498db; }
     .result-text { text-align: center; font-size: 18px; font-weight: bold; height: 30px; margin-top: 10px; }
-    .history-cau { display: flex; gap: 5px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #222; min-height: 30px; }
-    .cau-item { width: 25px; height: 25px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; font-weight: bold; }
-    .c-tai { background: #ff3333; color: white; } .c-xiu { background: #3388ff; color: white; }
-
-    /* Admin */
     .admin-panel { display: none; background: #111; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #d4af37; }
-    .user-table { width: 100%; font-size: 12px; border-collapse: collapse; } .user-table th, .user-table td { padding: 8px; border-bottom: 1px solid #333; text-align: left; }
+    .user-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+    .user-table th, .user-table td { padding: 8px; border-bottom: 1px solid #333; text-align: left; }
     .btn-small { padding: 4px 8px; border-radius: 3px; border: none; cursor: pointer; font-size: 10px; font-weight: bold; }
-    .btn-add { background: #00ff88; color: black; } .btn-ban { background: #ff3333; color: white; } .btn-unban { background: #f39c12; color: black; }
-
-    /* AI Slider */
+    .btn-add { background: #00ff88; color: black; }
+    .btn-ban { background: #ff3333; color: white; }
     .ai-panel { display: none; background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #9b59b6; }
     .ai-panel label { color: #9b59b6; font-weight: bold; font-size: 14px; }
     .ai-panel input[type="range"] { width: 100%; margin-top: 10px; }
     .ai-panel .ai-val { color: #00ff88; font-weight: bold; font-size: 18px; text-align: center; margin-top: 5px; }
-
-    /* Modals */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
     .modal-content { background: #111; padding: 20px; border-radius: 12px; width: 90%; max-width: 350px; border: 1px solid #d4af37; }
     .modal h3 { text-align: center; color: #d4af37; margin-bottom: 15px; }
-    .inp { margin-bottom: 15px; } .inp label { display: block; margin-bottom: 5px; font-size: 13px; color: #ccc; }
-    .inp input, .inp select { width: 100%; padding: 10px; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 5px; }
+    .inp input, .inp select { width: 100%; padding: 10px; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 5px; margin-bottom: 10px; }
     .modal-btns { display: flex; gap: 10px; margin-top: 15px; }
     .btn-submit { flex: 1; background: #d4af37; color: black; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
     .btn-close { flex: 1; background: #333; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
-
     #bannedScreen { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; color: #ff3333; }
 </style>
 </head>
@@ -88,7 +64,7 @@
         <div class="switch-auth" onclick="toggleAuth('register')">Chưa có tài khoản? Đăng ký ngay</div>
     </div>
     <div class="auth-box" id="registerBox" style="display:none;">
-        <h2>ĐĂNG KÝ VIP</h2>
+        <h2>ĐĂNG KÝ</h2>
         <input type="text" id="regUser" placeholder="Tên đăng nhập">
         <input type="password" id="regPass" placeholder="Mật khẩu">
         <input type="password" id="regPassConfirm" placeholder="Nhập lại mật khẩu">
@@ -105,9 +81,7 @@
             <div class="brand">PUBLIC IN CLUB</div>
             <div style="font-size:13px;"><span id="displayUser"></span> <span id="displayRole" style="display:none; background:#333; color:#d4af37; padding:2px 5px; border-radius:3px; font-size:10px;">ADMIN</span></div>
         </div>
-        <div>
-            <div class="balance" id="displayBalance">0 đ</div>
-        </div>
+        <div><div class="balance" id="displayBalance">0 đ</div></div>
     </div>
 
     <div class="toolbar">
@@ -115,25 +89,18 @@
         <button class="btn-tool btn-admin" id="btnAdminPanel" onclick="toggleAdminPanel()" style="display:none;">👑 Quản Trị</button>
     </div>
 
-    <!-- Bảng Admin -->
     <div class="admin-panel" id="adminPanel">
-        <div style="color:#d4af37; font-weight:bold; margin-bottom:10px;">Quản Lý Người Chơi</div>
+        <div style="color:#d4af37; font-weight:bold; margin-bottom:10px;">Danh Sách Người Chơi</div>
         <table class="user-table"><thead><tr><th>Tên</th><th>Tiền</th><th>Hành Động</th></tr></thead><tbody id="adminUserList"></tbody></table>
     </div>
 
-    <!-- AI Panel (Chỉ Admin) -->
     <div class="ai-panel" id="aiPanel">
         <label>🤖 AI Tỉ Lệ Thắng (0% Khó - 100% Dễ)</label>
         <input type="range" id="aiSlider" min="0" max="100" value="35" oninput="updateAI(this.value)">
         <div class="ai-val" id="aiValue">35%</div>
-        <div style="font-size:10px; color:#888; margin-top:5px;">*Chỉ Admin thấy. Người chơi không biết.</div>
     </div>
 
-    <!-- Tài Xỉu -->
     <div class="game-box">
-        <div style="font-size:12px; color:#888; margin-bottom:5px;">Lịch sử cầu:</div>
-        <div class="history-cau" id="cauHistory"></div>
-        
         <div class="taixiu-display" id="diceContainer">
             <div class="dice" id="d1">?</div>
             <div class="dice" id="d2">?</div>
@@ -159,24 +126,20 @@
     </div>
 </div>
 
-<!-- Modal Nạp Thẻ -->
 <div class="modal" id="napTheModal"><div class="modal-content"><h3>NẠP THẺ</h3><select id="napTheValue" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><option value="10000">10K</option><option value="20000">20K</option><option value="50000">50K</option><option value="100000">100K</option><option value="200000">200K</option><option value="500000">500K</option></select><input type="text" id="napTheCode" placeholder="Mã 8 số" maxlength="8" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><input type="text" id="napTheSeri" placeholder="Seri >10 số" minlength="11" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><div class="modal-btns"><button class="btn-submit" onclick="submitThe()">Gửi</button><button class="btn-close" onclick="closeModal('napTheModal')">Hủy</button></div></div></div>
 
-<!-- Modal Admin Cộng Tiền -->
 <div class="modal" id="adminMoneyModal"><div class="modal-content"><h3>ADMIN CỘNG TIỀN</h3><input type="text" id="adminUserTarget" readonly style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><input type="number" id="adminMoneyAmount" placeholder="Số tiền" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><div class="modal-btns"><button class="btn-submit" onclick="adminAddMoney()">Cộng</button><button class="btn-close" onclick="closeModal('adminMoneyModal')">Hủy</button></div></div></div>
 
 <script>
-    // --- DATA LOCALSTORAGE ---
     var users = JSON.parse(localStorage.getItem('clubUsers')) || { 'liam': { pass: '231213', money: 2000200000, isAdmin: true, isBanned: false } };
-    var currentUser = null, currentBet = 20000, cauData = [];
-    var aiWinRate = 35; // Mặc định 35%
+    var currentUser = null, currentBet = 20000;
+    var aiWinRate = 35;
 
     function save() { localStorage.setItem('clubUsers', JSON.stringify(users)); }
     function toggleAuth(t) { document.getElementById('loginBox').style.display = t==='login'?'block':'none'; document.getElementById('registerBox').style.display = t==='register'?'block':'none'; }
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // --- AUTH ---
     function login() {
         var u = document.getElementById('loginUser').value.trim(), p = document.getElementById('loginPass').value;
         if (users[u] && users[u].pass === p) {
@@ -195,7 +158,6 @@
         currentUser = u; document.getElementById('authScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; updateUI();
     }
 
-    // --- UI ---
     function updateUI() {
         if (!currentUser) return;
         var u = users[currentUser];
@@ -216,61 +178,42 @@
     }
 
     function setBet(a, e) { currentBet = a; document.querySelectorAll('.bet-btn').forEach(function(x){x.classList.remove('active');}); e.classList.add('active'); }
+    function updateAI(val) { aiWinRate = parseInt(val); document.getElementById('aiValue').innerText = aiWinRate + "%"; }
 
-    // --- AI ---
-    function updateAI(val) {
-        aiWinRate = parseInt(val);
-        document.getElementById('aiValue').innerText = aiWinRate + "%";
-    }
-
-    // --- GAME TÀI XỈU (CÓ AI ĐIỀU KHIỂN) ---
     function playTaiXiu(c) {
         var u = users[currentUser]; 
         if (u.money < currentBet) return alert("Không đủ tiền!");
         u.money -= currentBet; updateUI();
         
         var dices = [document.getElementById('d1'), document.getElementById('d2'), document.getElementById('d3')];
-        dices.forEach(function(d) { d.classList.add('rolling'); d.innerText = "?"; });
+        dices.forEach(function(d) { d.innerText = "?"; });
         document.getElementById('taixiuResult').innerText = "Đang lắc...";
 
         setTimeout(function() {
             var total, res;
-            
-            // AI QUYẾT ĐỊNH: Nếu aiWinRate là 35%, người chơi có 35% cơ hội thắng
             if (Math.random() * 100 < aiWinRate) {
-                // Cho THẮNG
                 if (c === 'tai') { total = 11 + Math.floor(Math.random()*8); res = 'tai'; }
                 else { total = 3 + Math.floor(Math.random()*8); res = 'xiu'; }
             } else {
-                // Cho THUA
                 if (c === 'tai') { total = 3 + Math.floor(Math.random()*8); res = 'xiu'; }
                 else { total = 11 + Math.floor(Math.random()*8); res = 'tai'; }
             }
-
-            // Hiển thị xí ngầu
             var r1 = Math.floor(total/3), r2 = Math.floor(total/3), r3 = total - r1 - r2;
             if(r1 < 1) r1 = 1; if(r2 < 1) r2 = 1; if(r3 < 1) r3 = 1;
-            dices.forEach(function(d) { d.classList.remove('rolling'); });
             document.getElementById('d1').innerText = r1;
             document.getElementById('d2').innerText = r2;
             document.getElementById('d3').innerText = r3;
 
-            // Cập nhật cầu
-            cauData.push(res);
-            if (cauData.length > 20) cauData.shift();
-            document.getElementById('cauHistory').innerHTML = cauData.map(function(x){ return '<div class="cau-item '+(x==='tai'?'c-tai':'c-xiu')+'">'+(x==='tai'?'T':'X')+'</div>'; }).join('');
-
             if (c === res) { 
                 u.money += currentBet*2; 
-                document.getElementById('taixiuResult').innerHTML = '<span style="color:#00ff88">THẮNG! Tổng: '+total+' ('+res.toUpperCase()+')</span>'; 
+                document.getElementById('taixiuResult').innerHTML = '<span style="color:#00ff88">THẮNG! Tổng: '+total+'</span>'; 
             } else { 
-                document.getElementById('taixiuResult').innerHTML = '<span style="color:#ff3333">THUA! Tổng: '+total+' ('+res.toUpperCase()+')</span>'; 
+                document.getElementById('taixiuResult').innerHTML = '<span style="color:#ff3333">THUA! Tổng: '+total+'</span>'; 
             }
             save(); updateUI();
         }, 800);
     }
 
-    // --- NẠP THẺ ---
     function submitThe() {
         var v = parseInt(document.getElementById('napTheValue').value);
         var c = document.getElementById('napTheCode').value;
@@ -280,9 +223,7 @@
         alert("Nạp thành công " + v.toLocaleString() + "đ!"); closeModal('napTheModal');
     }
 
-    // --- ADMIN ---
     function toggleAdminPanel() { var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; renderAdmin(); }
-
     function renderAdmin() {
         var h = '';
         for (var u in users) {
@@ -291,7 +232,6 @@
         }
         document.getElementById('adminUserList').innerHTML = h;
     }
-
     function quickAdd(u) { document.getElementById('adminUserTarget').value = u; openModal('adminMoneyModal'); }
     function quickBan(u) { if (confirm('Ban '+u+'?')) { users[u].isBanned = true; save(); updateUI(); } }
     function unbanUser(u) { if (confirm('Gỡ ban '+u+'?')) { users[u].isBanned = false; save(); updateUI(); } }
@@ -302,4 +242,4 @@
     }
 </script>
 </body>
-    </html>
+</html>
