@@ -7,8 +7,8 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
     * { box-sizing: border-box; font-family: 'Roboto', sans-serif; margin: 0; padding: 0; }
-    body { background: #050505; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh; }
-    .app-container { width: 100%; max-width: 480px; background: #111; padding: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.8); min-height: 100vh; border-left: 1px solid #333; border-right: 1px solid #333; }
+    body { background: #050505; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+    .app-container { width: 100%; max-width: 480px; background: #111; padding: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.8); min-height: 100vh; border-left: 1px solid #333; border-right: 1px solid #333; position: relative; }
     
     /* Auth Screen */
     #authScreen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
@@ -58,8 +58,13 @@
     .btn-action:active { transform: scale(0.95); }
     .bg-tai { background: #e74c3c; }
     .bg-xiu { background: #3498db; }
-    .bg-da { background: #f39c12; }
     .bg-xu { background: #9b59b6; }
+
+    /* Đá (Click) */
+    .da-area { text-align: center; padding: 30px; background: #222; border: 2px dashed #f39c12; border-radius: 15px; cursor: pointer; user-select: none; transition: 0.1s; }
+    .da-area:active { background: #333; transform: scale(0.98); }
+    .da-value { font-size: 48px; font-weight: bold; color: #f39c12; margin-bottom: 10px; }
+    .da-hint { font-size: 12px; color: #888; }
 
     /* Tên Lửa */
     .rocket-display { font-size: 48px; font-weight: bold; color: #00ff88; text-align: center; margin: 20px 0; font-family: monospace; }
@@ -69,10 +74,16 @@
 
     /* Log */
     .log-area { text-align: center; font-size: 12px; color: #666; margin-top: 20px; padding: 10px; border-top: 1px dashed #333; }
+    
+    /* Lịch sử giao dịch */
+    .history-log { max-height: 150px; overflow-y: auto; font-size: 12px; background: #111; border: 1px solid #333; border-radius: 8px; padding: 10px; margin-top: 15px; }
+    .log-item { border-bottom: 1px solid #222; padding: 5px 0; display: flex; justify-content: space-between; }
+    .log-win { color: #00ff88; }
+    .log-lose { color: #ff3333; }
 
     /* Modals */
     .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
-    .modal-content { background: #111; padding: 20px; border-radius: 12px; width: 90%; max-width: 350px; border: 1px solid #d4af37; }
+    .modal-content { background: #111; padding: 20px; border-radius: 12px; width: 90%; max-width: 350px; border: 1px solid #d4af37; max-height: 80vh; overflow-y: auto; }
     .modal-content h3 { text-align: center; color: #d4af37; margin-bottom: 15px; }
     .input-group { margin-bottom: 15px; }
     .input-group label { display: block; margin-bottom: 5px; font-size: 13px; color: #ccc; }
@@ -82,7 +93,7 @@
     .btn-modal-close { flex: 1; background: #333; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
 
     /* Admin List */
-    .user-table { width: 100%; font-size: 12px; margin-top: 10px; }
+    .user-table { width: 100%; font-size: 12px; margin-top: 10px; border-collapse: collapse; }
     .user-table th, .user-table td { padding: 8px; border-bottom: 1px solid #333; text-align: left; }
     .btn-small { padding: 4px 8px; border-radius: 3px; border: none; cursor: pointer; font-size: 10px; font-weight: bold; }
     .btn-add { background: #00ff88; color: black; }
@@ -90,9 +101,56 @@
 
     /* Banned */
     #bannedScreen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; color: #ff3333; }
+    
+    /* Ads (Quảng cáo vay) */
+    .ad-banner { display: none; background: linear-gradient(45deg, #d4af37, #ffcc00); color: black; text-align: center; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-weight: bold; cursor: pointer; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(212,175,55,0.7); } 70% { box-shadow: 0 0 0 15px rgba(212,175,55,0); } 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); } }
+
+    /* GLOBAL ANNOUNCEMENT (THÔNG BÁO TOÀN SERVER) */
+    .global-announce {
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.5);
+        background: linear-gradient(135deg, #ff0000, #ffcc00, #ff0000);
+        color: #000;
+        padding: 20px 40px;
+        border-radius: 15px;
+        font-size: 20px;
+        font-weight: 900;
+        text-align: center;
+        z-index: 99999;
+        box-shadow: 0 0 50px rgba(255, 204, 0, 0.9), 0 0 100px rgba(255, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 4px solid #fff;
+        text-transform: uppercase;
+        text-shadow: 2px 2px 0px #fff;
+        width: 90%;
+        max-width: 450px;
+    }
+    .global-announce.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    .global-announce .announce-name { color: #fff; text-shadow: 2px 2px 0px #000; font-size: 24px; }
+    .global-announce .announce-money { color: #fff; text-shadow: 2px 2px 0px #000; font-size: 28px; display: block; margin-top: 5px; }
 </style>
 </head>
 <body>
+
+<!-- Âm thanh -->
+<audio id="soundWin" src="https://www.myinstants.com/media/sounds/win.mp3" preload="auto"></audio>
+<audio id="soundLose" src="https://www.myinstants.com/media/sounds/lose.mp3" preload="auto"></audio>
+<audio id="soundBet" src="https://www.myinstants.com/media/sounds/click.mp3" preload="auto"></audio>
+
+<!-- Global Announcement -->
+<div class="global-announce" id="globalAnnounce">
+    <div class="announce-name" id="announceName">PLAYER</div>
+    <div style="font-size: 16px; margin: 5px 0;">BỐ MÀY LÀM NHÀ VUA</div>
+    <div class="announce-money" id="announceMoney">+0 đ</div>
+</div>
 
 <!-- Auth -->
 <div id="authScreen">
@@ -129,23 +187,30 @@
         <div class="balance" id="displayBalance">0 đ</div>
     </div>
 
+    <!-- Quảng cáo Vay (Chỉ hiện khi hết tiền) -->
+    <div class="ad-banner" id="adBanner" onclick="openVayModal()">
+        💰 HẾT TIỀN? VAY NGAY! BẤM VÀO ĐÂY ĐỂ VAY VỐN 💰
+    </div>
+
     <div class="toolbar">
-        <button class="btn-tool btn-nap" onclick="openModal('napModal')">💳 Nạp Thẻ</button>
+        <button class="btn-tool btn-nap" id="btnNap" onclick="checkNapCondition()">💳 Nạp Thẻ</button>
         <button class="btn-tool btn-admin" id="btnAdminPanel" onclick="toggleAdminPanel()" style="display:none;">👑 Quản Trị</button>
     </div>
 
     <div id="adminPanel" style="display:none; background:#111; padding:10px; border-radius:8px; margin-bottom:15px; border:1px solid #d4af37;">
-        <div style="color:#d4af37; font-weight:bold; margin-bottom:10px;">Danh Sách Người Chơi</div>
+        <div style="color:#d4af37; font-weight:bold; margin-bottom:10px;">Quản Lý Người Chơi</div>
         <table class="user-table">
             <thead><tr><th>Tên</th><th>Tiền</th><th>Hành Động</th></tr></thead>
             <tbody id="adminUserList"></tbody>
         </table>
+        <div style="color:#d4af37; font-weight:bold; margin-top:20px; margin-bottom:10px;">Duyệt Yêu Cầu Vay (>10M)</div>
+        <div id="adminLoanList" style="font-size:12px; color:#ccc;">Không có yêu cầu nào.</div>
     </div>
 
     <div class="tabs">
         <div class="tab active" onclick="switchTab('taixiu', this)">Tài Xỉu</div>
         <div class="tab" onclick="switchTab('tenlua', this)">Tên Lửa</div>
-        <div class="tab" onclick="switchTab('da', this)">Đá</div>
+        <div class="tab" onclick="switchTab('da', this)">Đá (Click)</div>
         <div class="tab" onclick="switchTab('xu', this)">Lật Xu</div>
     </div>
 
@@ -179,15 +244,19 @@
             <button class="btn-rocket-start" onclick="startRocket()">BẮT ĐẦU</button>
             <button class="btn-rocket-cashout" onclick="cashOutRocket()">RÚT</button>
         </div>
-        <p style="text-align:center; font-size:10px; color:#555; margin-top:15px;">*50/50. Không nổ x2,x3,x4. Chỉ nổ từ x5.</p>
+        <p style="text-align:center; font-size:10px; color:#555; margin-top:15px;">*Tỉ lệ nổ: 60% (7x-11x), 45% (11x-45x), còn lại bay cao.</p>
     </div>
 
-    <!-- ĐÁ -->
+    <!-- ĐÁ (CLICK) -->
     <div id="game-da" class="game-panel">
-        <div style="text-align:center; margin-bottom:15px; color:#888;">Chọn 1 trong 2 (50/50)</div>
-        <div class="action-buttons">
-            <button class="btn-action bg-da" onclick="playDa('da1')">ĐÁ 1</button>
-            <button class="btn-action bg-da" onclick="playDa('da2')">ĐÁ 2</button>
+        <div style="text-align:center; margin-bottom:15px; color:#888;">NHẤN LIÊN TỤC VÀO Ô BÊN DƯỚI ĐỂ TĂNG HỆ SỐ</div>
+        <div class="da-area" id="daClickArea" onmousedown="startDaClick()" onmouseup="stopDaClick()" onmouseleave="stopDaClick()" ontouchstart="startDaClick()" ontouchend="stopDaClick()">
+            <div class="da-value" id="daMultiplier">x1.00</div>
+            <div class="da-hint">Giữ chuột / Chạm để đập đá</div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn-action" style="background:#00ff88; color:black; flex:1;" onclick="startDaGame()">BẮT ĐẦU (Cược)</button>
+            <button class="btn-action" style="background:#d4af37; color:black; flex:1;" onclick="cashOutDa()">RÚT TIỀN</button>
         </div>
         <div style="text-align:center; margin-top:10px; font-size:12px; height: 20px;" id="daResult"></div>
     </div>
@@ -200,6 +269,14 @@
             <button class="btn-action bg-xu" onclick="playXu('up')">ÚP</button>
         </div>
         <div style="text-align:center; margin-top:10px; font-size:12px; height: 20px;" id="xuResult"></div>
+    </div>
+
+    <!-- LỊCH SỬ GIAO DỊCH -->
+    <div style="margin-top:20px;">
+        <div style="color:#d4af37; font-weight:bold; margin-bottom:5px;">Lịch Sử Giao Dịch</div>
+        <div class="history-log" id="historyLog">
+            <div style="color:#555; text-align:center;">Chưa có giao dịch...</div>
+        </div>
     </div>
 
     <div class="log-area" id="bottomLog">"Ngày em đi, anh all in vào tài"</div>
@@ -235,6 +312,23 @@
     </div>
 </div>
 
+<!-- Modal Vay Tiền -->
+<div class="modal" id="vayModal">
+    <div class="modal-content">
+        <h3>VAY VỐN</h3>
+        <p style="font-size:12px; color:#ccc; margin-bottom:15px; text-align:center;">Bạn đang hết tiền. Hãy vay vốn để tiếp tục chơi!</p>
+        <div class="input-group">
+            <label>Số tiền muốn vay</label>
+            <input type="number" id="vayAmount" placeholder="Nhập số tiền...">
+        </div>
+        <p style="font-size:11px; color:#888; margin-bottom:10px;">*Dưới 10.000.000 đ: Duyệt tự động.<br>*Trên 10.000.000 đ: Chờ Admin duyệt.</p>
+        <div class="modal-btns">
+            <button class="btn-modal-submit" onclick="submitVay()">Gửi Yêu Cầu</button>
+            <button class="btn-modal-close" onclick="closeModal('vayModal')">Hủy</button>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Admin Cộng Tiền -->
 <div class="modal" id="adminMoneyModal">
     <div class="modal-content">
@@ -255,22 +349,54 @@
 </div>
 
 <script>
-    // --- BIẾN TOÀN CỤC ---
+    // --- DATA ---
     let users = {
         'liam': { pass: '231213', money: 2000200000, isAdmin: true, isBanned: false }
     };
     let currentUser = null;
     let currentBet = 20000;
     let cauHistoryData = [];
+    
+    // Biến Tên Lửa
     let rocketInterval, rocketVal = 1.00, isRocketRunning = false, rocketCashed = false;
+    
+    // Biến Đá (Click)
+    let daVal = 1.00, isDaRunning = false, daCashed = false, daClickInterval = null;
+    
+    // Hàng chờ vay
+    let loanRequests = [];
 
     // --- KHỞI TẠO ---
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('logDate').innerText = "Log: " + new Date().toLocaleDateString('vi-VN');
         renderCauHistory();
+        updateHistoryLog();
     });
 
-    // --- CHỨC NĂNG AUTH ---
+    // --- ÂM THANH ---
+    function playSound(type) {
+        let sound = document.getElementById(type === 'bet' ? 'soundBet' : type === 'win' ? 'soundWin' : 'soundLose');
+        if (sound) {
+            sound.currentTime = 0;
+            sound.play().catch(e => console.log("Audio play blocked"));
+        }
+    }
+
+    // --- GLOBAL ANNOUNCEMENT ---
+    function showGlobalAnnounce(playerName, amount) {
+        let ann = document.getElementById('globalAnnounce');
+        document.getElementById('announceName').innerText = playerName;
+        document.getElementById('announceMoney').innerText = "+" + amount.toLocaleString('vi-VN') + " đ";
+        
+        ann.classList.add('show');
+        
+        // Tự động ẩn sau 5 giây
+        setTimeout(() => {
+            ann.classList.remove('show');
+        }, 5000);
+    }
+
+    // --- AUTH ---
     function toggleAuth(type) {
         document.getElementById('loginBox').style.display = type === 'login' ? 'block' : 'none';
         document.getElementById('registerBox').style.display = type === 'register' ? 'block' : 'none';
@@ -299,7 +425,7 @@
         let p2 = document.getElementById('regPassConfirm').value;
         if (!u || !p) { alert("Vui lòng nhập đủ thông tin!"); return; }
         if (p !== p2) { alert("Mật khẩu không khớp!"); return; }
-        if (users[u]) { alert("Tên đăng nhập đã tồn tại! Vui lòng chọn tên khác."); return; }
+        if (users[u]) { alert("Tên đăng nhập đã tồn tại!"); return; }
         users[u] = { pass: p, money: 100000, isAdmin: false, isBanned: false };
         alert("Đăng ký thành công! Đã đăng nhập.");
         currentUser = u;
@@ -308,17 +434,31 @@
         updateUI();
     }
 
-    // --- CẬP NHẬT UI ---
+    // --- UPDATE UI ---
     function updateUI() {
         if (!currentUser) return;
         let user = users[currentUser];
         document.getElementById('displayUser').innerText = currentUser;
         document.getElementById('displayBalance').innerText = user.money.toLocaleString('vi-VN') + " đ";
         
+        let adBanner = document.getElementById('adBanner');
+        let btnNap = document.getElementById('btnNap');
+        
+        if (user.money <= 0) {
+            adBanner.style.display = 'block';
+            btnNap.style.opacity = '0.5';
+            btnNap.style.pointerEvents = 'none';
+        } else {
+            adBanner.style.display = 'none';
+            btnNap.style.opacity = '1';
+            btnNap.style.pointerEvents = 'auto';
+        }
+
         if (user.isAdmin) {
             document.getElementById('displayRole').style.display = 'inline-block';
             document.getElementById('btnAdminPanel').style.display = 'block';
             renderAdminList();
+            renderAdminLoans();
         } else {
             document.getElementById('displayRole').style.display = 'none';
             document.getElementById('btnAdminPanel').style.display = 'none';
@@ -326,7 +466,7 @@
         }
     }
 
-    // --- GAME TABS ---
+    // --- TABS & BET ---
     function switchTab(tabId, element) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
@@ -340,194 +480,18 @@
         btnElement.classList.add('active');
     }
 
-    // --- TÀI XỈU ---
-    function playTaiXiu(choice) {
-        let user = users[currentUser];
-        if (user.money < currentBet) { alert("Không đủ tiền cược!"); return; }
-        user.money -= currentBet;
-        updateUI();
-
-        let d1 = Math.floor(Math.random() * 6) + 1;
-        let d2 = Math.floor(Math.random() * 6) + 1;
-        let d3 = Math.floor(Math.random() * 6) + 1;
-        let total = d1 + d2 + d3;
-        let result = total >= 11 ? 'tai' : 'xiu';
-        let resultText = total >= 11 ? 'TÀI' : 'XỈU';
-
-        cauHistoryData.push(result);
-        if (cauHistoryData.length > 20) cauHistoryData.shift();
-        renderCauHistory();
-
-        setTimeout(() => {
-            if (choice === result) {
-                user.money += currentBet * 2;
-                document.getElementById('taixiuResult').innerHTML = `<span style="color:#00ff88">THẮNG! ${d1}-${d2}-${d3} = ${total} (${resultText})</span>`;
-            } else {
-                document.getElementById('taixiuResult').innerHTML = `<span style="color:#ff3333">THUA! ${d1}-${d2}-${d3} = ${total} (${resultText})</span>`;
-            }
-            updateUI();
-        }, 500);
-    }
-
-    function renderCauHistory() {
-        let html = '';
-        cauHistoryData.forEach(item => {
-            html += `<div class="history-item ${item === 'tai' ? 'h-tai' : 'h-xiu'}">${item === 'tai' ? 'T' : 'X'}</div>`;
-        });
-        if (cauHistoryData.length === 0) html = `<div style="font-size:12px; color:#555;">Chưa có phiên nào...</div>`;
-        document.getElementById('cauHistory').innerHTML = html;
-    }
-
-    // --- TÊN LỬA ---
-    function startRocket() {
-        let user = users[currentUser];
-        if (user.money < currentBet) { alert("Không đủ tiền cược!"); return; }
-        if (isRocketRunning) return;
-        user.money -= currentBet;
-        updateUI();
-
-        isRocketRunning = true;
-        rocketCashed = false;
-        rocketVal = 1.00;
-        document.getElementById('rocketValue').innerText = "x1.00";
-        document.getElementById('rocketValue').style.color = "#00ff88";
-        document.getElementById('rocketStatus').innerText = "Đang bay...";
-
-        let crashPoint = (Math.random() < 0.5) ? (5.0 + Math.random() * 5.0) : 10.0;
-
-        rocketInterval = setInterval(() => {
-            rocketVal += 0.02;
-            document.getElementById('rocketValue').innerText = "x" + rocketVal.toFixed(2);
-            if (rocketVal >= crashPoint) {
-                clearInterval(rocketInterval);
-                isRocketRunning = false;
-                document.getElementById('rocketValue').style.color = "#ff3333";
-                document.getElementById('rocketStatus').innerText = "💥 ĐÃ NỔ! Mất tiền cược.";
-                return;
-            }
-            if (rocketVal >= 10.0) {
-                clearInterval(rocketInterval);
-                isRocketRunning = false;
-                document.getElementById('rocketStatus').innerText = "Đã đạt x10. Rút ngay!";
-            }
-        }, 100);
-    }
-
-    function cashOutRocket() {
-        if (!isRocketRunning || rocketCashed) return;
-        rocketCashed = true;
-        isRocketRunning = false;
-        clearInterval(rocketInterval);
-        let win = Math.floor(currentBet * rocketVal);
-        users[currentUser].money += win;
-        updateUI();
-        document.getElementById('rocketValue').style.color = "#d4af37";
-        document.getElementById('rocketStatus').innerText = `Rút thành công ${win.toLocaleString()}đ tại x${rocketVal.toFixed(2)}!`;
-    }
-
-    // --- ĐÁ ---
-    function playDa(choice) {
-        let user = users[currentUser];
-        if (user.money < currentBet) { alert("Không đủ tiền cược!"); return; }
-        user.money -= currentBet; updateUI();
-        let result = Math.random() < 0.5 ? 'da1' : 'da2';
-        setTimeout(() => {
-            if (choice === result) {
-                user.money += currentBet * 2;
-                document.getElementById('daResult').innerHTML = `<span style="color:#00ff88">THẮNG! Kết quả: ${result.toUpperCase()}</span>`;
-            } else {
-                document.getElementById('daResult').innerHTML = `<span style="color:#ff3333">THUA! Kết quả: ${result.toUpperCase()}</span>`;
-            }
-            updateUI();
-        }, 500);
-    }
-
-    // --- LẬT XU ---
-    function playXu(choice) {
-        let user = users[currentUser];
-        if (user.money < currentBet) { alert("Không đủ tiền cược!"); return; }
-        user.money -= currentBet; updateUI();
-        let result = Math.random() < 0.5 ? 'ngua' : 'up';
-        setTimeout(() => {
-            if (choice === result) {
-                user.money += currentBet * 2;
-                document.getElementById('xuResult').innerHTML = `<span style="color:#00ff88">THẮNG! Kết quả: ${result === 'ngua' ? 'NGỬA' : 'ÚP'}</span>`;
-            } else {
-                document.getElementById('xuResult').innerHTML = `<span style="color:#ff3333">THUA! Kết quả: ${result === 'ngua' ? 'NGỬA' : 'ÚP'}</span>`;
-            }
-            updateUI();
-        }, 500);
-    }
-
-    // --- NẠP THẺ ---
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-    function submitNap() {
-        let code = document.getElementById('napCode').value;
-        let seri = document.getElementById('napSeri').value;
-        let value = parseInt(document.getElementById('napValue').value);
-        if (code.length !== 8) { alert("Mã thẻ phải đúng 8 số!"); return; }
-        if (seri.length <= 10) { alert("Seri phải trên 10 số!"); return; }
-        alert("Đã gửi yêu cầu. Vui lòng chờ 2-3 phút!");
-        closeModal('napModal');
-        setTimeout(() => {
-            users[currentUser].money += value;
-            updateUI();
-            alert(`Nạp thành công ${value.toLocaleString('vi-VN')} đ!`);
-        }, 3000); // Test 3s, thực tế sửa thành 180000
-    }
-
-    // --- ADMIN ---
-    function toggleAdminPanel() {
-        let p = document.getElementById('adminPanel');
-        p.style.display = p.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function renderAdminList() {
-        let html = '';
-        for (let u in users) {
-            html += `<tr>
-                <td>${u} ${users[u].isBanned ? '(BAN)' : ''}</td>
-                <td>${users[u].money.toLocaleString('vi-VN')}</td>
-                <td>
-                    <button class="btn-small btn-add" onclick="quickAddMoney('${u}')">+$</button>
-                    <button class="btn-small btn-ban" onclick="quickBan('${u}')">Ban</button>
-                </td>
-            </tr>`;
+    // --- GHI LOG & THÔNG BÁO ---
+    function addHistoryLog(game, amount, result) {
+        let historyDiv = document.getElementById('historyLog');
+        let logItem = document.createElement('div');
+        logItem.className = 'log-item';
+        let time = new Date().toLocaleTimeString('vi-VN');
+        let color = result === 'THẮNG' ? 'log-win' : (result === 'THUA' ? 'log-lose' : '');
+        logItem.innerHTML = `<span>${time} - ${game}</span><span class="${color}">${result}: ${amount.toLocaleString('vi-VN')} đ</span>`;
+        
+        if (historyDiv.children[0] && historyDiv.children[0].innerText === 'Chưa có giao dịch...') {
+            historyDiv.innerHTML = '';
         }
-        document.getElementById('adminUserList').innerHTML = html;
-    }
-
-    function quickAddMoney(username) {
-        document.getElementById('adminUserTarget').value = username;
-        openModal('adminMoneyModal');
-    }
-
-    function quickBan(username) {
-        if (confirm(`Bạn có chắc muốn BAN tài khoản ${username}?`)) {
-            users[username].isBanned = true;
-            if (username === currentUser) {
-                document.getElementById('bannedScreen').style.display = 'flex';
-                document.getElementById('mainApp').style.display = 'none';
-            }
-            updateUI();
-            alert(`Đã BAN ${username}.`);
-        }
-    }
-
-    function adminAddMoney() {
-        let target = document.getElementById('adminUserTarget').value;
-        let amount = parseInt(document.getElementById('adminMoneyAmount').value);
-        if (users[target]) {
-            users[target].money += amount;
-            updateUI();
-            alert(`Đã cộng ${amount.toLocaleString('vi-VN')} đ cho ${target}.`);
-            closeModal('adminMoneyModal');
-        } else {
-            alert("Không tìm thấy user!");
-        }
-    }
-</script>
-</body>
-    </html>
+        historyDiv.prepend(logItem);
+        if (historyDiv.children.length > 20) {
+            historyDiv.removeChild(historyDiv.lastChild);
