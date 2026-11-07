@@ -3,214 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Tài Xỉu & Tên Lửa</title>
+    <title>Game Tài Xỉu - Tên Lửa</title>
     <style>
         body {
-            background-color: #0d0d0d;
-            color: white;
+            background-color: #0a0a0a;
+            color: #fff;
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 10px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
-        .container {
+        .app-container {
             width: 100%;
-            max-width: 400px;
-            background-color: #1a1a1a;
-            border: 1px solid #333;
+            max-width: 420px;
+            background: #111;
             border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            padding: 15px;
+            border: 1px solid #333;
             position: relative;
         }
-        .header {
+        
+        /* Phần Header Giống ảnh */
+        .header-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
-        .user-info {
-            font-size: 14px;
+        .username-display {
+            font-size: 16px;
             color: #888;
         }
-        .balance {
-            font-size: 24px;
-            color: #00ff88;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(0,255,136,0.5);
-        }
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .tab {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            background: #222;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 1px solid #333;
-        }
-        .tab.active {
+        .username-display span {
             background: #333;
-            border-color: #ffcc00;
-            color: #ffcc00;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #fff;
+        }
+        .money-display {
+            font-size: 22px;
+            color: #2ecc71;
+            font-weight: bold;
         }
         
-        /* Các nút cược */
-        .bet-buttons {
+        /* Thanh công cụ Admin */
+        .admin-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            border: 1px dashed #444;
+            display: none; /* Ẩn mặc định */
+        }
+        .admin-toolbar button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .btn-admin-money { background: #f1c40f; color: #000; }
+        .btn-admin-ban { background: #e74c3c; color: #fff; }
+
+        /* Khung Game Tài Xỉu */
+        .game-taixiu-box {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+        }
+        .tabs-bet {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        .tab-bet {
+            flex: 1;
+            padding: 10px;
+            background: #222;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #888;
+        }
+        .tab-bet.active {
+            background: #332a00;
+            color: #ffcc00;
+            border: 1px solid #ffcc00;
+        }
+        .bet-buttons-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 20px;
         }
-        .bet-btn {
+        .btn-bet {
             padding: 15px;
             border: none;
             border-radius: 8px;
             font-weight: bold;
-            cursor: pointer;
             font-size: 16px;
-            transition: 0.2s;
+            cursor: pointer;
+            color: #fff;
         }
-        .btn-tai { background: #ff4d4d; color: white; }
-        .btn-xiu { background: #4da6ff; color: white; }
-        .bet-btn:active { transform: scale(0.95); }
+        .btn-tai { background: #c0392b; }
+        .btn-xiu { background: #2980b9; }
+
+        /* Khung Game Tên Lửa */
+        .game-rocket-box {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+        }
+        .rocket-display {
+            font-size: 40px;
+            font-weight: bold;
+            color: #2ecc71;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .rocket-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-rocket-start { background: #2ecc71; color: #000; flex: 2; }
+        .btn-rocket-cashout { background: #f1c40f; color: #000; flex: 1; }
+
+        /* Nút Nạp Thẻ */
+        .btn-open-nap {
+            width: 100%;
+            padding: 12px;
+            background: #9b59b6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
 
         /* Modal Nạp Thẻ */
-        .modal-overlay {
+        .modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
-        .modal {
+        .modal-content {
             background: #1e1e1e;
+            padding: 20px;
+            border-radius: 12px;
             width: 90%;
             max-width: 350px;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #ffcc00;
+            border: 1px solid #9b59b6;
         }
-        .modal h3 { text-align: center; color: #ffcc00; margin-top: 0; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; }
-        .form-group input, .form-group select {
+        .modal-content h3 { text-align: center; color: #9b59b6; margin-top: 0; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #ccc; }
+        .input-group input, .input-group select {
             width: 100%;
             padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #444;
             background: #2a2a2a;
+            border: 1px solid #444;
             color: white;
+            border-radius: 5px;
             box-sizing: border-box;
         }
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background: #ffcc00;
-            color: black;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .btn-close {
-            background: transparent;
-            border: 1px solid #888;
-            color: #888;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            width: 100%;
-        }
+        .btn-submit { background: #9b59b6; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-close-modal { background: transparent; color: #888; border: 1px solid #555; padding: 10px; width: 100%; border-radius: 5px; margin-top: 10px; cursor: pointer; }
 
-        /* Game Tên Lửa */
-        .rocket-area {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
+        /* Bảng quản lý User (Giả lập) */
+        .user-list {
+            margin-top: 15px;
+            font-size: 14px;
         }
-        .multiplier {
-            font-size: 48px;
-            font-weight: bold;
-            color: #00ff88;
-            margin: 20px 0;
+        .user-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+            align-items: center;
         }
-        .rocket-status {
-            color: #ffcc00;
-            font-size: 18px;
-        }
+        .user-row input { width: 80px; padding: 4px; background: #333; border: 1px solid #555; color: white; }
+        .btn-action { padding: 4px 8px; border: none; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px; }
+        .btn-add-money { background: #f1c40f; color: #000; }
+        .btn-ban { background: #e74c3c; color: #fff; }
         
-        /* Admin Panel */
-        .admin-panel {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px dashed #444;
-            font-size: 12px;
+        /* Trạng thái bị ban */
+        .banned-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.95);
             display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            border-radius: 15px;
+            flex-direction: column;
+            color: #e74c3c;
+            font-size: 24px;
+            font-weight: bold;
         }
-        .admin-panel input { width: 60px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Phần Header -->
-    <div class="header">
-        <div>
-            <div class="user-info">Chào, <span id="username">liam</span> (ADMIN)</div>
-            <div class="balance" id="balanceDisplay">2.000.200.000 đ</div>
+<div class="app-container" id="mainApp">
+    <!-- Lớp phủ nếu bị ban -->
+    <div class="banned-overlay" id="bannedScreen">
+        <div>🚫 TÀI KHOẢN ĐÃ BỊ BAN</div>
+        <div style="font-size:14px; color:#888; margin-top:10px;">Vui lòng liên hệ Admin (liam) để mở khóa.</div>
+    </div>
+
+    <!-- Header -->
+    <div class="header-info">
+        <div class="username-display">
+            Chào, <span id="currentUser">liam</span> <span id="roleBadge" style="background:#9b59b6; color:white;">ADMIN</span>
         </div>
-        <button onclick="openNapThe()" style="background:#ffcc00; border:none; padding:8px; border-radius:5px; cursor:pointer;">Nạp Thẻ</button>
+        <div class="money-display" id="mainBalance">2.000.200.000 đ</div>
     </div>
 
-    <!-- Tabs -->
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('taixiu')">Tài Xỉu</div>
-        <div class="tab" onclick="switchTab('rocket')">Tên Lửa</div>
+    <!-- Thanh công cụ Admin (Chỉ hiện khi là liam) -->
+    <div class="admin-toolbar" id="adminToolbar">
+        <button class="btn-admin-money" onclick="openAdminAddMoney()">💰 Thêm Tiền (Admin)</button>
+        <button class="btn-admin-ban" onclick="openAdminBan()">⛔ Ban User</button>
     </div>
 
-    <!-- Giao diện Tài Xỉu -->
-    <div id="gameTaixiu">
-        <div class="bet-buttons">
-            <button class="bet-btn btn-tai" onclick="playTaiXiu('tai')">TÀI (50/50)</button>
-            <button class="bet-btn btn-xiu" onclick="playTaiXiu('xiu')">XỈU (50/50)</button>
+    <!-- Nút Nạp Thẻ -->
+    <button class="btn-open-nap" onclick="openNapCard()">💳 NẠP THẺ CÀO</button>
+
+    <!-- Game Tài Xỉu (Giữ nguyên) -->
+    <div class="game-taixiu-box">
+        <div class="tabs-bet">
+            <div class="tab-bet active">Tài Xỉu</div>
+            <div class="tab-bet">Tên Lửa</div>
+            <div class="tab-bet">Đá</div>
+            <div class="tab-bet">Xụ</div>
         </div>
+        <div class="bet-buttons-grid">
+            <button class="btn-bet btn-tai" onclick="playTaiXiu('tai')">TÀI</button>
+            <button class="btn-bet btn-xiu" onclick="playTaiXiu('xiu')">XỈU</button>
+        </div>
+        <p style="text-align:center; font-size:12px; color:#888; margin-top:10px;">Cược mặc định: 10.000đ</p>
     </div>
 
-    <!-- Giao diện Tên Lửa -->
-    <div id="gameRocket" class="rocket-area">
-        <div class="rocket-status" id="rocketStatus">Sẵn sàng bay...</div>
-        <div class="multiplier" id="multiplierDisplay">x1.00</div>
-        <button class="bet-btn" style="background: #00ff88; color: black; width: 100%; margin-bottom:10px;" onclick="startRocket()">BẮT ĐẦU BAY (Cược 10k)</button>
-        <button class="bet-btn" style="background: #ffcc00; color: black; width: 100%;" onclick="cashOutRocket()">RÚT TIỀN</button>
-        <p style="font-size:12px; color:#888; margin-top:10px;">*Tỉ lệ nổ ngẫu nhiên 50/50, nhưng không bao giờ nổ ở x2, x3, x4.</p>
+    <!-- Game Tên Lửa (Đã sửa logic) -->
+    <div class="game-rocket-box">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:#ffcc00;">GAME TÊN LỬA</strong>
+            <span style="font-size:12px; color:#888;">Cược: 10.000đ</span>
+        </div>
+        <div class="rocket-display" id="rocketMultiplier">x1.00</div>
+        <div id="rocketStatus" style="text-align:center; font-size:12px; margin-bottom:10px; color:#ccc;">Sẵn sàng...</div>
+        <div class="rocket-btn-group">
+            <button class="btn-bet btn-rocket-start" onclick="startRocket()">BẮT ĐẦU BAY</button>
+            <button class="btn-bet btn-rocket-cashout" onclick="cashOutRocket()">RÚT</button>
+        </div>
+        <p style="font-size:11px; color:#555; margin-top:10px; text-align:center;">*Tỉ lệ nổ: 50/50, không bao giờ nổ ở x2, x3, x4. Chỉ nổ từ x5 trở lên.</p>
     </div>
 
-    <!-- Admin Panel (Chỉ hiện khi là Admin) -->
-    <div class="admin-panel" id="adminPanel">
-        <strong>ADMIN PANEL (Chỉnh sửa User)</strong><br><br>
-        <label>Nhập số tiền mới:</label><br>
-        <input type="number" id="adminMoneyInput" placeholder="VD: 500000">
-        <button onclick="adminSetMoney()" style="background:#ff4d4d; color:white; border:none; padding:5px; cursor:pointer;">Cập nhật</button>
+    <!-- Danh sách User (Dành cho Admin) -->
+    <div class="user-list" id="userListContainer">
+        <div style="color:#888; font-size:12px; margin-bottom:5px;">Quản lý User (Admin)</div>
+        <!-- Render danh sách user ở đây -->
     </div>
 </div>
 
 <!-- Modal Nạp Thẻ -->
-<div class="modal-overlay" id="napTheModal">
-    <div class="modal">
+<div class="modal" id="napCardModal">
+    <div class="modal-content">
         <h3>NẠP THẺ CÀO</h3>
-        <div class="form-group">
+        <div class="input-group">
             <label>Mệnh giá (Tối đa 500k)</label>
             <select id="cardValue">
                 <option value="10000">10.000 đ</option>
@@ -221,71 +297,114 @@
                 <option value="500000">500.000 đ</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="input-group">
             <label>Mã Thẻ (8 số)</label>
-            <input type="text" id="cardCode" placeholder="Nhập 8 số..." maxlength="8">
+            <input type="text" id="cardCode" maxlength="8" placeholder="Nhập 8 số...">
         </div>
-        <div class="form-group">
+        <div class="input-group">
             <label>Seri (Trên 10 số)</label>
-            <input type="text" id="cardSeri" placeholder="Nhập seri..." minlength="11">
+            <input type="text" id="cardSeri" minlength="11" placeholder="Nhập seri...">
         </div>
-        <button class="btn-submit" onclick="submitNapThe()">Gửi Yêu Cầu</button>
-        <button class="btn-close" onclick="closeNapThe()">Đóng</button>
+        <button class="btn-submit" onclick="submitCard()">Gửi Yêu Cầu (Chờ 2-3p)</button>
+        <button class="btn-close-modal" onclick="closeNapCard()">Đóng</button>
+    </div>
+</div>
+
+<!-- Modal Admin Nhập Tiền -->
+<div class="modal" id="adminMoneyModal">
+    <div class="modal-content" style="border-color:#f1c40f;">
+        <h3 style="color:#f1c40f;">ADMIN: THÊM TIỀN</h3>
+        <div class="input-group">
+            <label>Tên User (Ví dụ: liam, user1...)</label>
+            <input type="text" id="adminTargetUser" placeholder="Nhập tên user...">
+        </div>
+        <div class="input-group">
+            <label>Số tiền muốn thêm</label>
+            <input type="number" id="adminAddAmount" placeholder="VD: 500000">
+        </div>
+        <button class="btn-submit" style="background:#f1c40f; color:black;" onclick="adminAddMoney()">Xác Nhận Cộng Tiền</button>
+        <button class="btn-close-modal" onclick="closeAdminModal('adminMoneyModal')">Đóng</button>
+    </div>
+</div>
+
+<!-- Modal Admin Ban -->
+<div class="modal" id="adminBanModal">
+    <div class="modal-content" style="border-color:#e74c3c;">
+        <h3 style="color:#e74c3c;">ADMIN: BAN USER</h3>
+        <div class="input-group">
+            <label>Tên User cần Ban</label>
+            <input type="text" id="adminBanUser" placeholder="Nhập tên user...">
+        </div>
+        <button class="btn-submit" style="background:#e74c3c; color:white;" onclick="adminBanUser()">Xác Nhận BAN</button>
+        <button class="btn-close-modal" onclick="closeAdminModal('adminBanModal')">Đóng</button>
     </div>
 </div>
 
 <script>
     // --- BIẾN TOÀN CỤC ---
-    let currentMoney = 2000200000; // Số dư ban đầu
-    let isAdmin = true; // Giả lập đăng nhập admin
+    // Giả lập Database người dùng
+    let users = {
+        'liam': { password: '231213', money: 2000200000, isAdmin: true, isBanned: false },
+        'user1': { password: '123', money: 500000, isAdmin: false, isBanned: false },
+        'user2': { password: '123', money: 100000, isAdmin: false, isBanned: false }
+    };
     
-    // Trạng thái Game Tên Lửa
+    let currentUser = 'liam'; // Tài khoản đang đăng nhập
+    let isAdmin = users[currentUser].isAdmin;
+
+    // Trạng thái game Tên Lửa
     let rocketInterval;
     let currentMultiplier = 1.00;
     let isRocketRunning = false;
-    let betAmount = 10000;
-    let isCashedOut = false;
+    let rocketBet = 10000;
+    let hasCashedOut = false;
 
     // --- KHỞI TẠO ---
     document.addEventListener("DOMContentLoaded", () => {
-        updateBalance();
+        updateUI();
         if(isAdmin) {
-            document.getElementById("adminPanel").style.display = "block";
+            document.getElementById('adminToolbar').style.display = 'flex';
         }
     });
 
-    function updateBalance() {
-        document.getElementById("balanceDisplay").innerText = currentMoney.toLocaleString('vi-VN') + " đ";
-    }
-
-    function switchTab(tabName) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        if(tabName === 'taixiu') {
-            document.querySelectorAll('.tab')[0].classList.add('active');
-            document.getElementById('gameTaixiu').style.display = 'block';
-            document.getElementById('gameRocket').style.display = 'none';
-        } else {
-            document.querySelectorAll('.tab')[1].classList.add('active');
-            document.getElementById('gameTaixiu').style.display = 'none';
-            document.getElementById('gameRocket').style.display = 'block';
+    function updateUI() {
+        // Cập nhật số dư
+        let money = users[currentUser].money;
+        document.getElementById('mainBalance').innerText = money.toLocaleString('vi-VN') + " đ";
+        document.getElementById('currentUser').innerText = currentUser;
+        
+        // Render danh sách user nếu là admin
+        if (isAdmin) {
+            let html = '';
+            for (let u in users) {
+                html += `
+                    <div class="user-row">
+                        <span>${u} ${users[u].isBanned ? '(BANNED)' : ''}</span>
+                        <span>${users[u].money.toLocaleString('vi-VN')}</span>
+                        <div>
+                            <button class="btn-action btn-add-money" onclick="quickAddMoney('${u}')">+$</button>
+                            <button class="btn-action btn-ban" onclick="quickBan('${u}')">Ban</button>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('userListContainer').innerHTML = `<div style="color:#888; font-size:12px; margin-bottom:5px;">Quản lý User (Admin)</div>` + html;
         }
     }
 
-    // --- CHỨC NĂNG NẠP THẺ ---
-    function openNapThe() {
-        document.getElementById('napTheModal').style.display = 'flex';
+    // --- LOGIC NẠP THẺ ---
+    function openNapCard() {
+        document.getElementById('napCardModal').style.display = 'flex';
+    }
+    function closeNapCard() {
+        document.getElementById('napCardModal').style.display = 'none';
     }
 
-    function closeNapThe() {
-        document.getElementById('napTheModal').style.display = 'none';
-    }
-
-    function submitNapThe() {
+    function submitCard() {
         let code = document.getElementById('cardCode').value;
         let seri = document.getElementById('cardSeri').value;
         let value = parseInt(document.getElementById('cardValue').value);
 
-        // Kiểm tra điều kiện
         if (code.length !== 8) {
             alert("Mã thẻ phải đúng 8 số!");
             return;
@@ -299,144 +418,163 @@
             return;
         }
 
-        alert("Đã gửi yêu cầu! Vui lòng đợi 2-3 phút để duyệt tiền.");
-        closeNapThe();
+        alert("Đã gửi yêu cầu nạp thẻ. Vui lòng đợi 2-3 phút để hệ thống duyệt!");
+        closeNapCard();
 
-        // Giả lập chờ 2-3 phút (Ở đây set 3 giây để test)
-        // Trong thực tế sẽ có một interval kiểm tra API server
+        // Giả lập chờ 3 giây (Thực tế là 2-3 phút)
         setTimeout(() => {
-            currentMoney += value;
-            updateBalance();
-            alert(`Nạp thành công ${value.toLocaleString('vi-VN')} đ!`);
+            users[currentUser].money += value;
+            updateUI();
+            alert(`Nạp thành công ${value.toLocaleString('vi-VN')} đ vào tài khoản!`);
         }, 3000); 
     }
 
-    // --- CHỨC NĂNG ADMIN ---
-    function adminSetMoney() {
+    // --- LOGIC ADMIN ---
+    function openAdminAddMoney() { document.getElementById('adminMoneyModal').style.display = 'flex'; }
+    function openAdminBan() { document.getElementById('adminBanModal').style.display = 'flex'; }
+    function closeAdminModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function quickAddMoney(username) {
+        document.getElementById('adminTargetUser').value = username;
+        openAdminAddMoney();
+    }
+    function quickBan(username) {
+        document.getElementById('adminBanUser').value = username;
+        openAdminBan();
+    }
+
+    function adminAddMoney() {
         if (!isAdmin) return;
-        let newMoney = document.getElementById('adminMoneyInput').value;
-        if (newMoney) {
-            currentMoney = parseInt(newMoney);
-            updateBalance();
-            alert("Đã cập nhật số dư người chơi!");
+        let target = document.getElementById('adminTargetUser').value;
+        let amount = parseInt(document.getElementById('adminAddAmount').value);
+
+        if (users[target]) {
+            users[target].money += amount;
+            updateUI();
+            alert(`Đã cộng ${amount.toLocaleString('vi-VN')} đ cho ${target}.`);
+            closeAdminModal('adminMoneyModal');
+        } else {
+            alert("Không tìm thấy user!");
         }
     }
 
-    // --- CHỨC NĂNG GAME TÀI XỈU (Mô phỏng) ---
+    function adminBanUser() {
+        if (!isAdmin) return;
+        let target = document.getElementById('adminBanUser').value;
+        if (users[target]) {
+            users[target].isBanned = true;
+            updateUI();
+            alert(`Đã BAN tài khoản ${target}.`);
+            closeAdminModal('adminBanModal');
+            
+            // Nếu tự ban chính mình (Admin liam) thì hiện màn hình ban
+            if (target === currentUser) {
+                document.getElementById('bannedScreen').style.display = 'flex';
+            }
+        } else {
+            alert("Không tìm thấy user!");
+        }
+    }
+
+    // --- LOGIC GAME TÀI XỈU ---
     function playTaiXiu(choice) {
-        if (currentMoney < 10000) {
+        if (users[currentUser].isBanned) {
+            alert("Tài khoản của bạn đã bị ban!");
+            return;
+        }
+        if (users[currentUser].money < 10000) {
             alert("Bạn không đủ tiền cược!");
             return;
         }
-        currentMoney -= 10000;
-        updateBalance();
+        users[currentUser].money -= 10000;
+        updateUI();
 
-        // Random 50/50
+        // Random 50/50 đơn giản
         let result = Math.random() < 0.5 ? 'tai' : 'xiu';
-        // Giả lập xúc xắc
-        let dice1 = Math.floor(Math.random() * 6) + 1;
-        let dice2 = Math.floor(Math.random() * 6) + 1;
-        let dice3 = Math.floor(Math.random() * 6) + 1;
-        let total = dice1 + dice2 + dice3;
-        let actualResult = total >= 11 ? 'tai' : 'xiu';
-
+        
         setTimeout(() => {
-            if (choice === actualResult) {
-                currentMoney += 20000; // Thắng x2
-                updateBalance();
-                alert(`Kết quả: ${dice1} + ${dice2} + ${dice3} = ${total} (${actualResult.toUpperCase()}). Bạn THẮNG!`);
+            if (choice === result) {
+                users[currentUser].money += 20000;
+                updateUI();
+                alert(`Kết quả: ${result.toUpperCase()}. Bạn THẮNG!`);
             } else {
-                alert(`Kết quả: ${dice1} + ${dice2} + ${dice3} = ${total} (${actualResult.toUpperCase()}). Bạn THUA!`);
+                alert(`Kết quả: ${result.toUpperCase()}. Bạn THUA!`);
             }
         }, 500);
     }
 
-    // --- CHỨC NĂNG GAME TÊN LỬA (Yêu cầu đặc biệt) ---
+    // --- LOGIC GAME TÊN LỬA (YÊU CẦU ĐẶC BIỆT) ---
     function startRocket() {
+        if (users[currentUser].isBanned) {
+            alert("Tài khoản của bạn đã bị ban!");
+            return;
+        }
         if (isRocketRunning) return;
-        if (currentMoney < betAmount) {
+        if (users[currentUser].money < rocketBet) {
             alert("Bạn không đủ tiền cược!");
             return;
         }
 
-        currentMoney -= betAmount;
-        updateBalance();
-        
-        isRocketRunning = true;
-        isCashedOut = false;
-        currentMultiplier = 1.00;
-        document.getElementById('rocketStatus').innerText = "Đang bay...";
-        document.getElementById('multiplierDisplay').style.color = "#00ff88";
+        users[currentUser].money -= rocketBet;
+        updateUI();
 
-        // Logic Nổ: 
-        // Yêu cầu: 50/50 thắng thua, nhưng KHÔNG BAO GIỜ nổ ở x2, x3, x4. 
-        // => Nếu nổ thì phải nổ từ x5 trở lên. Nếu không nổ thì bay mãi (hoặc đến x10 thì dừng).
-        
-        // Tạo ngẫu nhiên điểm nổ (Crash Point)
-        // 50% cơ hội nổ (từ x5 đến x10), 50% cơ hội không nổ (bay đến x10)
-        let isCrash = Math.random() < 0.5; 
-        let crashPoint = 999; // Mặc định không nổ (bay đến x10)
+        isRocketRunning = true;
+        hasCashedOut = false;
+        currentMultiplier = 1.00;
+        document.getElementById('rocketMultiplier').innerText = "x1.00";
+        document.getElementById('rocketMultiplier').style.color = "#2ecc71";
+        document.getElementById('rocketStatus').innerText = "Đang bay...";
+
+        // LOGIC NỔ: 50/50. Không nổ ở x2, x3, x4. Chỉ nổ từ x5.
+        // Tạo điểm nổ ngẫu nhiên
+        let crashPoint;
+        let isCrash = Math.random() < 0.5; // 50% nổ, 50% không nổ (bay đến x10)
 
         if (isCrash) {
-            // Nếu nổ, chọn ngẫu nhiên từ x5.0 đến x10.0
-            // Công thức: 5 + random(0 đến 5)
-            crashPoint = 5.0 + (Math.random() * 5.0); 
+            // Nếu nổ, chọn ngẫu nhiên từ 5.00 đến 10.00
+            crashPoint = 5.0 + (Math.random() * 5.0);
         } else {
-            // Không nổ, cho bay đến x10 (sau đó tự động dừng để rút)
-            crashPoint = 10.0; 
+            // Không nổ, bay đến x10
+            crashPoint = 10.0;
         }
 
-        // Bắt đầu đếm
         rocketInterval = setInterval(() => {
-            currentMultiplier += 0.01;
-            
-            // Cập nhật hiển thị
-            document.getElementById('multiplierDisplay').innerText = "x" + currentMultiplier.toFixed(2);
+            currentMultiplier += 0.02; // Tốc độ bay
+            document.getElementById('rocketMultiplier').innerText = "x" + currentMultiplier.toFixed(2);
 
-            // Kiểm tra điều kiện nổ
-            // Nếu vượt qua crashPoint (và crashPoint >= 5) thì nổ
+            // Kiểm tra nổ
             if (currentMultiplier >= crashPoint) {
                 clearInterval(rocketInterval);
                 isRocketRunning = false;
-                document.getElementById('rocketStatus').innerText = "ĐÃ NỔ! Bạn mất tiền cược.";
-                document.getElementById('multiplierDisplay').style.color = "red";
-                alert(`Tên lửa nổ tại x${currentMultiplier.toFixed(2)}! Bạn thua.`);
+                document.getElementById('rocketMultiplier').style.color = "#e74c3c";
+                document.getElementById('rocketStatus').innerText = "💥 ĐÃ NỔ! Bạn mất tiền cược.";
+                document.getElementById('rocketMultiplier').innerText = "x" + currentMultiplier.toFixed(2);
                 return;
             }
 
-            // Nếu đạt x10 thì dừng (giới hạn max)
+            // Dừng ở x10 nếu không nổ
             if (currentMultiplier >= 10.0) {
                 clearInterval(rocketInterval);
                 isRocketRunning = false;
-                document.getElementById('rocketStatus').innerText = "Đã đạt giới hạn x10. Hãy rút tiền!";
+                document.getElementById('rocketStatus').innerText = "Đã đạt x10. Hãy rút!";
             }
-
-        }, 100); // Tốc độ bay
+        }, 100);
     }
 
     function cashOutRocket() {
-        if (!isRocketRunning) {
-            alert("Chưa có phiên bay nào!");
-            return;
-        }
-        if (isCashedOut) {
-            alert("Bạn đã rút rồi!");
-            return;
-        }
+        if (!isRocketRunning || hasCashedOut) return;
         
-        // Nếu đang bay mà bấm rút
-        isCashedOut = true;
+        hasCashedOut = true;
         isRocketRunning = false;
         clearInterval(rocketInterval);
 
-        // Tiền thắng = Tiền cược * Hệ số hiện tại
-        let winAmount = Math.floor(betAmount * currentMultiplier);
-        currentMoney += winAmount;
-        updateBalance();
+        let winAmount = Math.floor(rocketBet * currentMultiplier);
+        users[currentUser].money += winAmount;
+        updateUI();
 
+        document.getElementById('rocketMultiplier').style.color = "#f1c40f";
         document.getElementById('rocketStatus').innerText = `Đã rút thành công tại x${currentMultiplier.toFixed(2)}!`;
-        document.getElementById('multiplierDisplay').style.color = "#ffcc00";
-        alert(`Bạn đã rút thành công ${winAmount.toLocaleString('vi-VN')} đ!`);
+        alert(`Bạn đã rút ${winAmount.toLocaleString('vi-VN')} đ!`);
     }
 
 </script>
