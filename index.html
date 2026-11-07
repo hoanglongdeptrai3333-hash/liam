@@ -347,7 +347,37 @@
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('logDate').innerText = "Log: " + new Date().toLocaleDateString('vi-VN');
         renderCauHistory();
+        updateUI();
     });
+
+    // --- ÂM THANH ---
+    function playSound(type) {
+        let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let oscillator = audioCtx.createOscillator();
+        let gainNode = audioCtx.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        if (type === 'bet') {
+            oscillator.frequency.value = 800;
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.1);
+        } else if (type === 'win') {
+            oscillator.frequency.value = 1000;
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.3);
+        } else {
+            oscillator.frequency.value = 300;
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.3);
+        }
+    }
 
     // --- GLOBAL ANNOUNCEMENT ---
     function showGlobalAnnounce(playerName, amount) {
@@ -455,24 +485,4 @@
             historyDiv.innerHTML = '';
         }
         historyDiv.prepend(logItem);
-        if (historyDiv.children.length > 20) {
-            historyDiv.removeChild(historyDiv.lastChild);
-        }
-    }
-
-    // --- TÀI XỈU ---
-    function playTaiXiu(choice) {
-        let user = users[currentUser];
-        if (user.money < currentBet) { alert("Không đủ tiền cược!"); return; }
-        user.money -= currentBet;
-        updateUI();
-
-        let d1 = Math.floor(Math.random() * 6) + 1;
-        let d2 = Math.floor(Math.random() * 6) + 1;
-        let d3 = Math.floor(Math.random() * 6) + 1;
-        let total = d1 + d2 + d3;
-        let result = total >= 11 ? 'tai' : 'xiu';
-        let resultText = total >= 11 ? 'TÀI' : 'XỈU';
-
-        cauHistoryData.push(result);
-        if (cauHistoryData.length > 20) cauHistoryData.shift();
+        if (historyDiv.children.length
