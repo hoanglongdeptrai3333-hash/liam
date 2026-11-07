@@ -3,46 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PUBLIC IN CLUB</title>
+<title>PUBLIC IN CLUB - Casino</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
     * { box-sizing: border-box; font-family: 'Roboto', sans-serif; margin: 0; padding: 0; }
-    body { background: #050505; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh; }
-    .app { width: 100%; max-width: 480px; background: #111; padding: 15px; }
+    body { 
+        background: #0a0a0a; 
+        color: #e0e0e0; 
+        display: flex; 
+        justify-content: center; 
+        min-height: 100vh;
+        background-image: url('https://images.unsplash.com/photo-1541278107931-e006523892df?q=80&w=1920&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        backdrop-filter: blur(3px);
+    }
+    .overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 0;
+    }
+    .app { 
+        width: 100%; max-width: 480px; 
+        background: rgba(17,17,17,0.95); 
+        padding: 15px; 
+        border-left: 1px solid #333; border-right: 1px solid #333;
+        position: relative; z-index: 1;
+    }
+    
+    /* Auth */
     #authScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
-    .auth-box { background: #111; padding: 30px; border-radius: 15px; border: 1px solid #d4af37; width: 90%; max-width: 350px; text-align: center; }
-    .auth-box h2 { color: #d4af37; margin-bottom: 20px; }
-    .auth-box input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 5px; }
-    .auth-btn { width: 100%; padding: 12px; margin-top: 10px; background: #d4af37; color: black; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+    .auth-box { background: #111; padding: 30px; border-radius: 15px; border: 1px solid #d4af37; box-shadow: 0 0 30px rgba(212,175,55,0.5); width: 90%; max-width: 350px; text-align: center; }
+    .auth-box h2 { color: #d4af37; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+    .auth-box p { color: #888; font-size: 12px; margin-bottom: 20px; }
+    .auth-box input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 5px; outline: none; }
+    .auth-box input:focus { border-color: #d4af37; }
+    .auth-btn { width: 100%; padding: 12px; margin-top: 10px; background: #d4af37; color: black; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 16px; }
     .switch-auth { margin-top: 15px; font-size: 13px; color: #888; cursor: pointer; }
+    .switch-auth:hover { color: #d4af37; }
+    
+    /* Header */
     .header { display: flex; justify-content: space-between; align-items: start; padding-bottom: 15px; border-bottom: 1px solid #333; margin-bottom: 15px; }
-    .brand { color: #d4af37; font-size: 20px; font-weight: bold; }
-    .balance { font-size: 22px; color: #00ff88; font-weight: bold; text-align: right; }
+    .brand { color: #d4af37; font-size: 20px; font-weight: bold; letter-spacing: 1px; }
+    .user-info { font-size: 13px; color: #ccc; margin-top: 3px; }
+    .balance-area { text-align: right; }
+    .balance { font-size: 22px; color: #00ff88; font-weight: bold; }
+    
+    /* Toolbar */
     .toolbar { display: flex; gap: 10px; margin-bottom: 15px; }
     .btn-tool { flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: white; }
     .btn-nap { background: #9b59b6; }
     .btn-admin { background: #d4af37; color: black; }
-    .bets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
-    .bet-btn { padding: 8px; background: #222; border: 1px solid #444; color: #aaa; border-radius: 5px; cursor: pointer; font-size: 12px; }
-    .bet-btn.active { background: rgba(212,175,55,0.2); border-color: #d4af37; color: #d4af37; }
-    .game-box { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px; }
-    .taixiu-display { display: flex; justify-content: center; gap: 15px; margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; }
-    .dice { width: 60px; height: 60px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 32px; color: black; font-weight: bold; }
-    .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn-act { padding: 20px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; color: white; text-transform: uppercase; }
-    .bg-tai { background: #e74c3c; }
-    .bg-xiu { background: #3498db; }
-    .result-text { text-align: center; font-size: 18px; font-weight: bold; height: 30px; margin-top: 10px; }
+
+    /* AI Panel */
+    .ai-panel { display: none; background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #9b59b6; }
+    .ai-panel label { color: #9b59b6; font-weight: bold; font-size: 14px; }
+    .ai-panel input[type="range"] { width: 100%; margin-top: 10px; }
+    .ai-panel .ai-val { color: #00ff88; font-weight: bold; font-size: 18px; text-align: center; margin-top: 5px; }
+
+    /* Admin Panel */
     .admin-panel { display: none; background: #111; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #d4af37; }
     .user-table { width: 100%; font-size: 12px; border-collapse: collapse; }
     .user-table th, .user-table td { padding: 8px; border-bottom: 1px solid #333; text-align: left; }
     .btn-small { padding: 4px 8px; border-radius: 3px; border: none; cursor: pointer; font-size: 10px; font-weight: bold; }
     .btn-add { background: #00ff88; color: black; }
     .btn-ban { background: #ff3333; color: white; }
-    .ai-panel { display: none; background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #9b59b6; }
-    .ai-panel label { color: #9b59b6; font-weight: bold; font-size: 14px; }
-    .ai-panel input[type="range"] { width: 100%; margin-top: 10px; }
-    .ai-panel .ai-val { color: #00ff88; font-weight: bold; font-size: 18px; text-align: center; margin-top: 5px; }
+    .btn-unban { background: #f39c12; color: black; }
+
+    /* Game Area */
+    .game-box { background: rgba(26,26,26,0.9); border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+    .game-title { color: #d4af37; font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 10px; }
+    
+    /* Dealer Image */
+    .dealer-img {
+        width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; border: 2px solid #d4af37;
+        box-shadow: 0 0 20px rgba(212,175,55,0.3);
+    }
+    
+    /* Dice Display */
+    .taixiu-display { display: flex; justify-content: center; gap: 15px; margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; border: 2px dashed #444; }
+    .dice { width: 60px; height: 60px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 32px; color: black; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
+    .dice.rolling { animation: shake 0.5s infinite; }
+    @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg); } 50% { transform: rotate(0deg); } 75% { transform: rotate(-10deg); } 100% { transform: rotate(0deg); } }
+
+    /* Bets */
+    .bets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
+    .bet-btn { padding: 8px; background: #222; border: 1px solid #444; color: #aaa; border-radius: 5px; cursor: pointer; font-size: 12px; }
+    .bet-btn.active { background: rgba(212,175,55,0.2); border-color: #d4af37; color: #d4af37; font-weight: bold; }
+
+    /* Action Buttons */
+    .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+    .btn-act { padding: 20px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; color: white; text-transform: uppercase; }
+    .btn-act:active { transform: scale(0.95); }
+    .bg-tai { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+    .bg-xiu { background: linear-gradient(135deg, #3498db, #2980b9); }
+
+    /* Result */
+    .result-text { text-align: center; font-size: 18px; font-weight: bold; height: 30px; margin-top: 10px; }
+
+    /* Modals */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
     .modal-content { background: #111; padding: 20px; border-radius: 12px; width: 90%; max-width: 350px; border: 1px solid #d4af37; }
     .modal h3 { text-align: center; color: #d4af37; margin-bottom: 15px; }
@@ -50,21 +108,26 @@
     .modal-btns { display: flex; gap: 10px; margin-top: 15px; }
     .btn-submit { flex: 1; background: #d4af37; color: black; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
     .btn-close { flex: 1; background: #333; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+
     #bannedScreen { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; color: #ff3333; }
 </style>
 </head>
 <body>
 
+<div class="overlay"></div>
+
 <div id="authScreen">
     <div class="auth-box" id="loginBox">
         <h2>PUBLIC IN CLUB</h2>
+        <p>Đẳng cấp cá cược - Uy tín hàng đầu</p>
         <input type="text" id="loginUser" placeholder="Tên đăng nhập">
         <input type="password" id="loginPass" placeholder="Mật khẩu">
         <button class="auth-btn" onclick="login()">Đăng Nhập</button>
         <div class="switch-auth" onclick="toggleAuth('register')">Chưa có tài khoản? Đăng ký ngay</div>
     </div>
     <div class="auth-box" id="registerBox" style="display:none;">
-        <h2>ĐĂNG KÝ</h2>
+        <h2>ĐĂNG KÝ VIP</h2>
+        <p>Nhận ngay 500.000đ khi đăng ký</p>
         <input type="text" id="regUser" placeholder="Tên đăng nhập">
         <input type="password" id="regPass" placeholder="Mật khẩu">
         <input type="password" id="regPassConfirm" placeholder="Nhập lại mật khẩu">
@@ -73,15 +136,17 @@
     </div>
 </div>
 
-<div id="bannedScreen"><h2>🚫 TÀI KHOẢN ĐÃ BỊ KHÓA</h2></div>
+<div id="bannedScreen"><h2>🚫 TÀI KHOẢN ĐÃ BỊ KHÓA</h2><p style="color:#888; margin-top:10px;">Liên hệ Admin (liam) để mở khóa.</p></div>
 
 <div class="app" id="mainApp" style="display:none;">
     <div class="header">
         <div>
             <div class="brand">PUBLIC IN CLUB</div>
-            <div style="font-size:13px;"><span id="displayUser"></span> <span id="displayRole" style="display:none; background:#333; color:#d4af37; padding:2px 5px; border-radius:3px; font-size:10px;">ADMIN</span></div>
+            <div class="user-info"><span id="displayUser"></span> <span id="displayRole" style="display:none; background:#333; color:#d4af37; padding:2px 5px; border-radius:3px; font-size:10px;">ADMIN</span></div>
         </div>
-        <div><div class="balance" id="displayBalance">0 đ</div></div>
+        <div class="balance-area">
+            <div class="balance" id="displayBalance">0 đ</div>
+        </div>
     </div>
 
     <div class="toolbar">
@@ -89,18 +154,24 @@
         <button class="btn-tool btn-admin" id="btnAdminPanel" onclick="toggleAdminPanel()" style="display:none;">👑 Quản Trị</button>
     </div>
 
+    <div class="ai-panel" id="aiPanel">
+        <label>🤖 AI Tỉ Lệ Thắng (0% Khó - 100% Dễ)</label>
+        <input type="range" id="aiSlider" min="0" max="100" value="35" oninput="updateAI(this.value)">
+        <div class="ai-val" id="aiValue">35%</div>
+        <div style="font-size:10px; color:#888; margin-top:5px;">*Chỉ Admin thấy. Người chơi không biết.</div>
+    </div>
+
     <div class="admin-panel" id="adminPanel">
         <div style="color:#d4af37; font-weight:bold; margin-bottom:10px;">Danh Sách Người Chơi</div>
         <table class="user-table"><thead><tr><th>Tên</th><th>Tiền</th><th>Hành Động</th></tr></thead><tbody id="adminUserList"></tbody></table>
     </div>
 
-    <div class="ai-panel" id="aiPanel">
-        <label>🤖 AI Tỉ Lệ Thắng (0% Khó - 100% Dễ)</label>
-        <input type="range" id="aiSlider" min="0" max="100" value="35" oninput="updateAI(this.value)">
-        <div class="ai-val" id="aiValue">35%</div>
-    </div>
-
     <div class="game-box">
+        <div class="game-title">🎲 TÀI XỈU 🎲</div>
+        
+        <!-- Hình cô gái xinh đẹp -->
+        <img class="dealer-img" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop" alt="Dealer">
+        
         <div class="taixiu-display" id="diceContainer">
             <div class="dice" id="d1">?</div>
             <div class="dice" id="d2">?</div>
@@ -186,11 +257,12 @@
         u.money -= currentBet; updateUI();
         
         var dices = [document.getElementById('d1'), document.getElementById('d2'), document.getElementById('d3')];
-        dices.forEach(function(d) { d.innerText = "?"; });
+        dices.forEach(function(d) { d.classList.add('rolling'); d.innerText = "?"; });
         document.getElementById('taixiuResult').innerText = "Đang lắc...";
 
         setTimeout(function() {
             var total, res;
+            // AI QUYẾT ĐỊNH
             if (Math.random() * 100 < aiWinRate) {
                 if (c === 'tai') { total = 11 + Math.floor(Math.random()*8); res = 'tai'; }
                 else { total = 3 + Math.floor(Math.random()*8); res = 'xiu'; }
@@ -200,6 +272,7 @@
             }
             var r1 = Math.floor(total/3), r2 = Math.floor(total/3), r3 = total - r1 - r2;
             if(r1 < 1) r1 = 1; if(r2 < 1) r2 = 1; if(r3 < 1) r3 = 1;
+            dices.forEach(function(d) { d.classList.remove('rolling'); });
             document.getElementById('d1').innerText = r1;
             document.getElementById('d2').innerText = r2;
             document.getElementById('d3').innerText = r3;
@@ -242,4 +315,4 @@
     }
 </script>
 </body>
-</html>
+    </html>
