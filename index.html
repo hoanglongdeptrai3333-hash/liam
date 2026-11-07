@@ -8,27 +8,12 @@
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
     * { box-sizing: border-box; font-family: 'Roboto', sans-serif; margin: 0; padding: 0; }
     body { 
-        background: #0a0a0a; 
-        color: #e0e0e0; 
-        display: flex; 
-        justify-content: center; 
-        min-height: 100vh;
-        background-image: url('https://images.unsplash.com/photo-1541278107931-e006523892df?q=80&w=1920&auto=format&fit=crop');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        backdrop-filter: blur(3px);
+        background: #0a0a0a; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh;
+        background-image: url('https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=1920&auto=format&fit=crop'); /* Nền Casino */
+        background-size: cover; background-position: center; background-attachment: fixed;
     }
-    .overlay {
-        position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 0;
-    }
-    .app { 
-        width: 100%; max-width: 480px; 
-        background: rgba(17,17,17,0.95); 
-        padding: 15px; 
-        border-left: 1px solid #333; border-right: 1px solid #333;
-        position: relative; z-index: 1;
-    }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 0; }
+    .app { width: 100%; max-width: 480px; background: rgba(17,17,17,0.95); padding: 15px; border-left: 1px solid #333; border-right: 1px solid #333; position: relative; z-index: 1; }
     
     /* Auth */
     #authScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
@@ -44,7 +29,6 @@
     /* Header */
     .header { display: flex; justify-content: space-between; align-items: start; padding-bottom: 15px; border-bottom: 1px solid #333; margin-bottom: 15px; }
     .brand { color: #d4af37; font-size: 20px; font-weight: bold; letter-spacing: 1px; }
-    .user-info { font-size: 13px; color: #ccc; margin-top: 3px; }
     .balance-area { text-align: right; }
     .balance { font-size: 22px; color: #00ff88; font-weight: bold; }
     
@@ -53,12 +37,6 @@
     .btn-tool { flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: white; }
     .btn-nap { background: #9b59b6; }
     .btn-admin { background: #d4af37; color: black; }
-
-    /* AI Panel */
-    .ai-panel { display: none; background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #9b59b6; }
-    .ai-panel label { color: #9b59b6; font-weight: bold; font-size: 14px; }
-    .ai-panel input[type="range"] { width: 100%; margin-top: 10px; }
-    .ai-panel .ai-val { color: #00ff88; font-weight: bold; font-size: 18px; text-align: center; margin-top: 5px; }
 
     /* Admin Panel */
     .admin-panel { display: none; background: #111; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #d4af37; }
@@ -69,21 +47,27 @@
     .btn-ban { background: #ff3333; color: white; }
     .btn-unban { background: #f39c12; color: black; }
 
+    /* Tabs */
+    .tabs { display: flex; gap: 5px; margin-bottom: 15px; background: #1a1a1a; padding: 5px; border-radius: 10px; }
+    .tab { flex: 1; padding: 10px; text-align: center; font-size: 12px; color: #888; cursor: pointer; border-radius: 8px; font-weight: bold; }
+    .tab.active { background: #333; color: #d4af37; }
+
     /* Game Area */
-    .game-box { background: rgba(26,26,26,0.9); border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-    .game-title { color: #d4af37; font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 10px; }
+    .game-box { background: rgba(26,26,26,0.9); border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: none; }
+    .game-box.active { display: block; }
     
     /* Dealer Image */
-    .dealer-img {
-        width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; border: 2px solid #d4af37;
-        box-shadow: 0 0 20px rgba(212,175,55,0.3);
-    }
+    .dealer-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; border: 2px solid #d4af37; box-shadow: 0 0 15px rgba(212,175,55,0.3); }
     
-    /* Dice Display */
-    .taixiu-display { display: flex; justify-content: center; gap: 15px; margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; border: 2px dashed #444; }
-    .dice { width: 60px; height: 60px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 32px; color: black; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
+    /* Tài Xỉu */
+    .taixiu-display { display: flex; justify-content: center; gap: 15px; margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; }
+    .dice { width: 60px; height: 60px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 32px; color: black; font-weight: bold; }
     .dice.rolling { animation: shake 0.5s infinite; }
     @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg); } 50% { transform: rotate(0deg); } 75% { transform: rotate(-10deg); } 100% { transform: rotate(0deg); } }
+
+    /* Tên Lửa / Đá */
+    .rocket-val, .da-val { font-size: 48px; font-weight: bold; text-align: center; margin: 20px 0; }
+    .rocket-val { color: #00ff88; } .da-val { color: #f39c12; }
 
     /* Bets */
     .bets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
@@ -91,11 +75,10 @@
     .bet-btn.active { background: rgba(212,175,55,0.2); border-color: #d4af37; color: #d4af37; font-weight: bold; }
 
     /* Action Buttons */
-    .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
     .btn-act { padding: 20px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; color: white; text-transform: uppercase; }
     .btn-act:active { transform: scale(0.95); }
-    .bg-tai { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-    .bg-xiu { background: linear-gradient(135deg, #3498db, #2980b9); }
+    .bg-tai { background: #e74c3c; } .bg-xiu { background: #3498db; } .bg-xu { background: #9b59b6; }
 
     /* Result */
     .result-text { text-align: center; font-size: 18px; font-weight: bold; height: 30px; margin-top: 10px; }
@@ -142,11 +125,9 @@
     <div class="header">
         <div>
             <div class="brand">PUBLIC IN CLUB</div>
-            <div class="user-info"><span id="displayUser"></span> <span id="displayRole" style="display:none; background:#333; color:#d4af37; padding:2px 5px; border-radius:3px; font-size:10px;">ADMIN</span></div>
+            <div style="font-size:13px;"><span id="displayUser"></span> <span id="displayRole" style="display:none; background:#333; color:#d4af37; padding:2px 5px; border-radius:3px; font-size:10px;">ADMIN</span></div>
         </div>
-        <div class="balance-area">
-            <div class="balance" id="displayBalance">0 đ</div>
-        </div>
+        <div class="balance-area"><div class="balance" id="displayBalance">0 đ</div></div>
     </div>
 
     <div class="toolbar">
@@ -154,46 +135,75 @@
         <button class="btn-tool btn-admin" id="btnAdminPanel" onclick="toggleAdminPanel()" style="display:none;">👑 Quản Trị</button>
     </div>
 
-    <div class="ai-panel" id="aiPanel">
-        <label>🤖 AI Tỉ Lệ Thắng (0% Khó - 100% Dễ)</label>
-        <input type="range" id="aiSlider" min="0" max="100" value="35" oninput="updateAI(this.value)">
-        <div class="ai-val" id="aiValue">35%</div>
-        <div style="font-size:10px; color:#888; margin-top:5px;">*Chỉ Admin thấy. Người chơi không biết.</div>
-    </div>
-
     <div class="admin-panel" id="adminPanel">
         <div style="color:#d4af37; font-weight:bold; margin-bottom:10px;">Danh Sách Người Chơi</div>
         <table class="user-table"><thead><tr><th>Tên</th><th>Tiền</th><th>Hành Động</th></tr></thead><tbody id="adminUserList"></tbody></table>
     </div>
 
-    <div class="game-box">
-        <div class="game-title">🎲 TÀI XỈU 🎲</div>
-        
-        <!-- Hình cô gái xinh đẹp -->
-        <img class="dealer-img" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop" alt="Dealer">
-        
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('taixiu', this)">Tài Xỉu</div>
+        <div class="tab" onclick="switchTab('tenlua', this)">Tên Lửa</div>
+        <div class="tab" onclick="switchTab('da', this)">Đá (Click)</div>
+        <div class="tab" onclick="switchTab('xu', this)">Lật Xu</div>
+    </div>
+
+    <div class="bets">
+        <button class="bet-btn active" onclick="setBet(20000, this)">20K</button>
+        <button class="bet-btn" onclick="setBet(100000, this)">100K</button>
+        <button class="bet-btn" onclick="setBet(500000, this)">500K</button>
+        <button class="bet-btn" onclick="setBet(1000000, this)">1M</button>
+        <button class="bet-btn" onclick="setBet(10000000, this)">10M</button>
+        <button class="bet-btn" onclick="setBet(100000000, this)">100M</button>
+        <button class="bet-btn" onclick="setBet(500000000, this)">500M</button>
+        <button class="bet-btn" onclick="setBet(1000000000, this)">1B</button>
+    </div>
+
+    <!-- TÀI XỈU -->
+    <div id="game-taixiu" class="game-box active">
+        <!-- Ảnh gái quyến rũ -->
+        <img class="dealer-img" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=800&auto=format&fit=crop" alt="Dealer">
         <div class="taixiu-display" id="diceContainer">
             <div class="dice" id="d1">?</div>
             <div class="dice" id="d2">?</div>
             <div class="dice" id="d3">?</div>
         </div>
-
-        <div class="bets">
-            <button class="bet-btn active" onclick="setBet(20000, this)">20K</button>
-            <button class="bet-btn" onclick="setBet(100000, this)">100K</button>
-            <button class="bet-btn" onclick="setBet(500000, this)">500K</button>
-            <button class="bet-btn" onclick="setBet(1000000, this)">1M</button>
-            <button class="bet-btn" onclick="setBet(10000000, this)">10M</button>
-            <button class="bet-btn" onclick="setBet(100000000, this)">100M</button>
-            <button class="bet-btn" onclick="setBet(500000000, this)">500M</button>
-            <button class="bet-btn" onclick="setBet(1000000000, this)">1B</button>
-        </div>
-
-        <div class="action-buttons">
+        <div class="actions">
             <button class="btn-act bg-tai" onclick="playTaiXiu('tai')">TÀI</button>
             <button class="btn-act bg-xiu" onclick="playTaiXiu('xiu')">XỈU</button>
         </div>
         <div class="result-text" id="taixiuResult"></div>
+    </div>
+
+    <!-- TÊN LỬA -->
+    <div id="game-tenlua" class="game-box">
+        <div class="rocket-val" id="rocketValue">x1.00</div>
+        <div style="text-align:center; color:#888; font-size:12px;" id="rocketStatus">Sẵn sàng...</div>
+        <div class="actions">
+            <button class="btn-act" style="background:#00ff88; color:black;" onclick="startRocket()">BẮT ĐẦU</button>
+            <button class="btn-act" style="background:#d4af37; color:black;" onclick="cashOutRocket()">RÚT</button>
+        </div>
+    </div>
+
+    <!-- ĐÁ -->
+    <div id="game-da" class="game-box">
+        <div style="text-align:center; padding:30px; background:#222; border:2px dashed #f39c12; border-radius:15px; cursor:pointer; user-select:none;" id="daClickArea" onmousedown="startDaClick()" onmouseup="stopDaClick()" onmouseleave="stopDaClick()" ontouchstart="startDaClick()" ontouchend="stopDaClick()">
+            <div class="da-val" id="daMultiplier">x1.00</div>
+            <div style="font-size:12px; color:#888;">Giữ chuột / Chạm</div>
+        </div>
+        <div class="actions">
+            <button class="btn-act" style="background:#00ff88; color:black;" onclick="startDaGame()">BẮT ĐẦU</button>
+            <button class="btn-act" style="background:#d4af37; color:black;" onclick="cashOutDa()">RÚT</button>
+        </div>
+        <div class="result-text" id="daResult"></div>
+    </div>
+
+    <!-- LẬT XU -->
+    <div id="game-xu" class="game-box">
+        <div class="actions">
+            <button class="btn-act bg-xu" onclick="playXu('ngua')">NGỬA</button>
+            <button class="btn-act bg-xu" onclick="playXu('up')">ÚP</button>
+        </div>
+        <div class="result-text" id="xuResult"></div>
     </div>
 </div>
 
@@ -202,9 +212,16 @@
 <div class="modal" id="adminMoneyModal"><div class="modal-content"><h3>ADMIN CỘNG TIỀN</h3><input type="text" id="adminUserTarget" readonly style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><input type="number" id="adminMoneyAmount" placeholder="Số tiền" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><div class="modal-btns"><button class="btn-submit" onclick="adminAddMoney()">Cộng</button><button class="btn-close" onclick="closeModal('adminMoneyModal')">Hủy</button></div></div></div>
 
 <script>
-    var users = JSON.parse(localStorage.getItem('clubUsers')) || { 'liam': { pass: '231213', money: 2000200000, isAdmin: true, isBanned: false } };
+    // RESET TIỀN ADMIN VỀ 1 TỶ
+    var defaultUsers = { 'liam': { pass: '231213', money: 1000000000, isAdmin: true, isBanned: false } };
+    var users = JSON.parse(localStorage.getItem('clubUsers')) || defaultUsers;
+    
+    // Nếu user liam bị lỗi hoặc chưa có, gán lại
+    if (!users['liam'] || !users['liam'].isAdmin) { users['liam'] = defaultUsers['liam']; }
+    
     var currentUser = null, currentBet = 20000;
-    var aiWinRate = 35;
+    var rInt, rVal = 1, rRun = false;
+    var dInt, dVal = 1, dRun = false;
 
     function save() { localStorage.setItem('clubUsers', JSON.stringify(users)); }
     function toggleAuth(t) { document.getElementById('loginBox').style.display = t==='login'?'block':'none'; document.getElementById('registerBox').style.display = t==='register'?'block':'none'; }
@@ -237,45 +254,34 @@
         if (u.isAdmin) { 
             document.getElementById('displayRole').style.display = 'inline-block'; 
             document.getElementById('btnAdminPanel').style.display = 'block'; 
-            document.getElementById('aiPanel').style.display = 'block';
             renderAdmin(); 
         }
         else { 
             document.getElementById('displayRole').style.display = 'none'; 
             document.getElementById('btnAdminPanel').style.display = 'none'; 
             document.getElementById('adminPanel').style.display = 'none'; 
-            document.getElementById('aiPanel').style.display = 'none';
         }
     }
 
+    function switchTab(t, e) { document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');}); document.querySelectorAll('.game-box').forEach(function(x){x.classList.remove('active');}); e.classList.add('active'); document.getElementById('game-'+t).classList.add('active'); }
     function setBet(a, e) { currentBet = a; document.querySelectorAll('.bet-btn').forEach(function(x){x.classList.remove('active');}); e.classList.add('active'); }
-    function updateAI(val) { aiWinRate = parseInt(val); document.getElementById('aiValue').innerText = aiWinRate + "%"; }
 
+    // --- GAME TÀI XỈU ---
     function playTaiXiu(c) {
-        var u = users[currentUser]; 
-        if (u.money < currentBet) return alert("Không đủ tiền!");
+        var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!");
         u.money -= currentBet; updateUI();
-        
         var dices = [document.getElementById('d1'), document.getElementById('d2'), document.getElementById('d3')];
         dices.forEach(function(d) { d.classList.add('rolling'); d.innerText = "?"; });
         document.getElementById('taixiuResult').innerText = "Đang lắc...";
 
         setTimeout(function() {
-            var total, res;
-            // AI QUYẾT ĐỊNH
-            if (Math.random() * 100 < aiWinRate) {
-                if (c === 'tai') { total = 11 + Math.floor(Math.random()*8); res = 'tai'; }
-                else { total = 3 + Math.floor(Math.random()*8); res = 'xiu'; }
-            } else {
-                if (c === 'tai') { total = 3 + Math.floor(Math.random()*8); res = 'xiu'; }
-                else { total = 11 + Math.floor(Math.random()*8); res = 'tai'; }
-            }
-            var r1 = Math.floor(total/3), r2 = Math.floor(total/3), r3 = total - r1 - r2;
-            if(r1 < 1) r1 = 1; if(r2 < 1) r2 = 1; if(r3 < 1) r3 = 1;
+            var d1 = Math.floor(Math.random()*6)+1, d2 = Math.floor(Math.random()*6)+1, d3 = Math.floor(Math.random()*6)+1;
+            var total = d1+d2+d3;
+            var res = total >= 11 ? 'tai' : 'xiu';
             dices.forEach(function(d) { d.classList.remove('rolling'); });
-            document.getElementById('d1').innerText = r1;
-            document.getElementById('d2').innerText = r2;
-            document.getElementById('d3').innerText = r3;
+            document.getElementById('d1').innerText = d1;
+            document.getElementById('d2').innerText = d2;
+            document.getElementById('d3').innerText = d3;
 
             if (c === res) { 
                 u.money += currentBet*2; 
@@ -287,6 +293,59 @@
         }, 800);
     }
 
+    // --- TÊN LỬA ---
+    function startRocket() {
+        var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!"); if (rRun) return;
+        u.money -= currentBet; updateUI(); save();
+        rRun = true; rVal = 1; 
+        document.getElementById('rocketValue').innerText = "x1.00"; 
+        document.getElementById('rocketStatus').innerText = "Đang bay...";
+        rInt = setInterval(function() {
+            rVal += 0.05; document.getElementById('rocketValue').innerText = "x" + rVal.toFixed(2);
+            if (rVal >= 3.0 && Math.random() < 0.02) { clearInterval(rInt); rRun = false; document.getElementById('rocketStatus').innerText = "💥 ĐÃ NỔ!"; return; }
+            if (rVal >= 50) { clearInterval(rInt); rRun = false; document.getElementById('rocketStatus').innerText = "Đạt x50!"; }
+        }, 100);
+    }
+    function cashOutRocket() {
+        if (!rRun) return; if (rVal < 3.0) return alert("Phải đạt x3!");
+        clearInterval(rInt); rRun = false;
+        var w = Math.floor(currentBet * rVal); users[currentUser].money += w; save(); updateUI();
+        document.getElementById('rocketStatus').innerText = 'Rút '+w.toLocaleString()+'đ!';
+    }
+
+    // --- ĐÁ ---
+    function startDaGame() {
+        var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!"); if (dRun) return;
+        u.money -= currentBet; updateUI(); save();
+        dRun = true; dVal = 1; document.getElementById('daMultiplier').innerText = "x1.00"; document.getElementById('daResult').innerHTML = "";
+    }
+    function startDaClick() {
+        if (!dRun || dInt) return;
+        dInt = setInterval(function() {
+            dVal += 0.05; document.getElementById('daMultiplier').innerText = "x" + dVal.toFixed(2);
+            if (dVal >= 3.0 && Math.random() < 0.02) { clearInterval(dInt); dInt = null; dRun = false; document.getElementById('daResult').innerHTML = '<span style="color:#ff3333">💥 ĐÃ NỔ!</span>'; }
+            if (dVal >= 50) { clearInterval(dInt); dInt = null; dRun = false; document.getElementById('daResult').innerHTML = '<span style="color:#d4af37">ĐẠT x50!</span>'; }
+        }, 50);
+    }
+    function stopDaClick() { if (dInt) { clearInterval(dInt); dInt = null; } }
+    function cashOutDa() {
+        if (!dRun) return; if (dVal < 3.0) return alert("Phải đạt x3!");
+        stopDaClick(); dRun = false;
+        var w = Math.floor(currentBet * dVal); users[currentUser].money += w; save(); updateUI();
+        document.getElementById('daResult').innerHTML = '<span style="color:#00ff88">RÚT '+w.toLocaleString()+'đ!</span>';
+    }
+
+    // --- LẬT XU ---
+    function playXu(c) {
+        var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!");
+        u.money -= currentBet;
+        var res = Math.random() < 0.5 ? 'ngua' : 'up';
+        if (c === res) { u.money += currentBet*2; document.getElementById('xuResult').innerText = "THẮNG!"; }
+        else { document.getElementById('xuResult').innerText = "THUA!"; }
+        save(); updateUI();
+    }
+
+    // --- NẠP THẺ ---
     function submitThe() {
         var v = parseInt(document.getElementById('napTheValue').value);
         var c = document.getElementById('napTheCode').value;
@@ -296,6 +355,7 @@
         alert("Nạp thành công " + v.toLocaleString() + "đ!"); closeModal('napTheModal');
     }
 
+    // --- ADMIN ---
     function toggleAdminPanel() { var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; renderAdmin(); }
     function renderAdmin() {
         var h = '';
