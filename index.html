@@ -9,13 +9,12 @@
     * { box-sizing: border-box; font-family: 'Roboto', sans-serif; margin: 0; padding: 0; }
     body { 
         background: #0a0a0a; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh;
-        background-image: url('https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=1920&auto=format&fit=crop'); /* Nền Casino */
+        background-image: url('https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=1920&auto=format&fit=crop');
         background-size: cover; background-position: center; background-attachment: fixed;
     }
-    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 0; }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 0; }
     .app { width: 100%; max-width: 480px; background: rgba(17,17,17,0.95); padding: 15px; border-left: 1px solid #333; border-right: 1px solid #333; position: relative; z-index: 1; }
     
-    /* Auth */
     #authScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
     .auth-box { background: #111; padding: 30px; border-radius: 15px; border: 1px solid #d4af37; box-shadow: 0 0 30px rgba(212,175,55,0.5); width: 90%; max-width: 350px; text-align: center; }
     .auth-box h2 { color: #d4af37; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
@@ -26,19 +25,16 @@
     .switch-auth { margin-top: 15px; font-size: 13px; color: #888; cursor: pointer; }
     .switch-auth:hover { color: #d4af37; }
     
-    /* Header */
     .header { display: flex; justify-content: space-between; align-items: start; padding-bottom: 15px; border-bottom: 1px solid #333; margin-bottom: 15px; }
     .brand { color: #d4af37; font-size: 20px; font-weight: bold; letter-spacing: 1px; }
     .balance-area { text-align: right; }
     .balance { font-size: 22px; color: #00ff88; font-weight: bold; }
     
-    /* Toolbar */
     .toolbar { display: flex; gap: 10px; margin-bottom: 15px; }
     .btn-tool { flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: white; }
     .btn-nap { background: #9b59b6; }
     .btn-admin { background: #d4af37; color: black; }
 
-    /* Admin Panel */
     .admin-panel { display: none; background: #111; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #d4af37; }
     .user-table { width: 100%; font-size: 12px; border-collapse: collapse; }
     .user-table th, .user-table td { padding: 8px; border-bottom: 1px solid #333; text-align: left; }
@@ -47,43 +43,34 @@
     .btn-ban { background: #ff3333; color: white; }
     .btn-unban { background: #f39c12; color: black; }
 
-    /* Tabs */
     .tabs { display: flex; gap: 5px; margin-bottom: 15px; background: #1a1a1a; padding: 5px; border-radius: 10px; }
     .tab { flex: 1; padding: 10px; text-align: center; font-size: 12px; color: #888; cursor: pointer; border-radius: 8px; font-weight: bold; }
     .tab.active { background: #333; color: #d4af37; }
 
-    /* Game Area */
     .game-box { background: rgba(26,26,26,0.9); border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: none; }
     .game-box.active { display: block; }
     
-    /* Dealer Image */
-    .dealer-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; border: 2px solid #d4af37; box-shadow: 0 0 15px rgba(212,175,55,0.3); }
+    .dealer-img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; border: 2px solid #d4af37; box-shadow: 0 0 15px rgba(212,175,55,0.3); }
     
-    /* Tài Xỉu */
     .taixiu-display { display: flex; justify-content: center; gap: 15px; margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; }
     .dice { width: 60px; height: 60px; background: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 32px; color: black; font-weight: bold; }
     .dice.rolling { animation: shake 0.5s infinite; }
     @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg); } 50% { transform: rotate(0deg); } 75% { transform: rotate(-10deg); } 100% { transform: rotate(0deg); } }
 
-    /* Tên Lửa / Đá */
     .rocket-val, .da-val { font-size: 48px; font-weight: bold; text-align: center; margin: 20px 0; }
     .rocket-val { color: #00ff88; } .da-val { color: #f39c12; }
 
-    /* Bets */
     .bets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
     .bet-btn { padding: 8px; background: #222; border: 1px solid #444; color: #aaa; border-radius: 5px; cursor: pointer; font-size: 12px; }
     .bet-btn.active { background: rgba(212,175,55,0.2); border-color: #d4af37; color: #d4af37; font-weight: bold; }
 
-    /* Action Buttons */
     .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
     .btn-act { padding: 20px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; color: white; text-transform: uppercase; }
     .btn-act:active { transform: scale(0.95); }
     .bg-tai { background: #e74c3c; } .bg-xiu { background: #3498db; } .bg-xu { background: #9b59b6; }
 
-    /* Result */
     .result-text { text-align: center; font-size: 18px; font-weight: bold; height: 30px; margin-top: 10px; }
 
-    /* Modals */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
     .modal-content { background: #111; padding: 20px; border-radius: 12px; width: 90%; max-width: 350px; border: 1px solid #d4af37; }
     .modal h3 { text-align: center; color: #d4af37; margin-bottom: 15px; }
@@ -160,8 +147,8 @@
 
     <!-- TÀI XỈU -->
     <div id="game-taixiu" class="game-box active">
-        <!-- Ảnh gái quyến rũ -->
-        <img class="dealer-img" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=800&auto=format&fit=crop" alt="Dealer">
+        <!-- Hình ảnh cô gái Thái (đại diện cho Babiloster) -->
+        <img class="dealer-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop" alt="Dealer Babiloster">
         <div class="taixiu-display" id="diceContainer">
             <div class="dice" id="d1">?</div>
             <div class="dice" id="d2">?</div>
@@ -209,14 +196,11 @@
 
 <div class="modal" id="napTheModal"><div class="modal-content"><h3>NẠP THẺ</h3><select id="napTheValue" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><option value="10000">10K</option><option value="20000">20K</option><option value="50000">50K</option><option value="100000">100K</option><option value="200000">200K</option><option value="500000">500K</option></select><input type="text" id="napTheCode" placeholder="Mã 8 số" maxlength="8" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><input type="text" id="napTheSeri" placeholder="Seri >10 số" minlength="11" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><div class="modal-btns"><button class="btn-submit" onclick="submitThe()">Gửi</button><button class="btn-close" onclick="closeModal('napTheModal')">Hủy</button></div></div></div>
 
-<div class="modal" id="adminMoneyModal"><div class="modal-content"><h3>ADMIN CỘNG TIỀN</h3><input type="text" id="adminUserTarget" readonly style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><input type="number" id="adminMoneyAmount" placeholder="Số tiền" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><div class="modal-btns"><button class="btn-submit" onclick="adminAddMoney()">Cộng</button><button class="btn-close" onclick="closeModal('adminMoneyModal')">Hủy</button></div></div></div>
+<div class="modal" id="adminMoneyModal"><div class="modal-content"><h3>ADMIN CỘNG TIỀN</h3><input type="text" id="adminUserTarget" placeholder="Nhập tên người chơi..." style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><input type="number" id="adminMoneyAmount" placeholder="Số tiền" style="width:100%;padding:10px;margin-bottom:10px;background:#1a1a1a;border:1px solid #444;color:white;"><div class="modal-btns"><button class="btn-submit" onclick="adminAddMoney()">Cộng</button><button class="btn-close" onclick="closeModal('adminMoneyModal')">Hủy</button></div></div></div>
 
 <script>
-    // RESET TIỀN ADMIN VỀ 1 TỶ
     var defaultUsers = { 'liam': { pass: '231213', money: 1000000000, isAdmin: true, isBanned: false } };
     var users = JSON.parse(localStorage.getItem('clubUsers')) || defaultUsers;
-    
-    // Nếu user liam bị lỗi hoặc chưa có, gán lại
     if (!users['liam'] || !users['liam'].isAdmin) { users['liam'] = defaultUsers['liam']; }
     
     var currentUser = null, currentBet = 20000;
@@ -266,7 +250,7 @@
     function switchTab(t, e) { document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');}); document.querySelectorAll('.game-box').forEach(function(x){x.classList.remove('active');}); e.classList.add('active'); document.getElementById('game-'+t).classList.add('active'); }
     function setBet(a, e) { currentBet = a; document.querySelectorAll('.bet-btn').forEach(function(x){x.classList.remove('active');}); e.classList.add('active'); }
 
-    // --- GAME TÀI XỈU ---
+    // --- GAMES ---
     function playTaiXiu(c) {
         var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!");
         u.money -= currentBet; updateUI();
@@ -283,17 +267,12 @@
             document.getElementById('d2').innerText = d2;
             document.getElementById('d3').innerText = d3;
 
-            if (c === res) { 
-                u.money += currentBet*2; 
-                document.getElementById('taixiuResult').innerHTML = '<span style="color:#00ff88">THẮNG! Tổng: '+total+'</span>'; 
-            } else { 
-                document.getElementById('taixiuResult').innerHTML = '<span style="color:#ff3333">THUA! Tổng: '+total+'</span>'; 
-            }
+            if (c === res) { u.money += currentBet*2; document.getElementById('taixiuResult').innerHTML = '<span style="color:#00ff88">THẮNG! Tổng: '+total+'</span>'; }
+            else { document.getElementById('taixiuResult').innerHTML = '<span style="color:#ff3333">THUA! Tổng: '+total+'</span>'; }
             save(); updateUI();
         }, 800);
     }
 
-    // --- TÊN LỬA ---
     function startRocket() {
         var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!"); if (rRun) return;
         u.money -= currentBet; updateUI(); save();
@@ -313,7 +292,6 @@
         document.getElementById('rocketStatus').innerText = 'Rút '+w.toLocaleString()+'đ!';
     }
 
-    // --- ĐÁ ---
     function startDaGame() {
         var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!"); if (dRun) return;
         u.money -= currentBet; updateUI(); save();
@@ -335,7 +313,6 @@
         document.getElementById('daResult').innerHTML = '<span style="color:#00ff88">RÚT '+w.toLocaleString()+'đ!</span>';
     }
 
-    // --- LẬT XU ---
     function playXu(c) {
         var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!");
         u.money -= currentBet;
@@ -345,7 +322,6 @@
         save(); updateUI();
     }
 
-    // --- NẠP THẺ ---
     function submitThe() {
         var v = parseInt(document.getElementById('napTheValue').value);
         var c = document.getElementById('napTheCode').value;
@@ -357,6 +333,7 @@
 
     // --- ADMIN ---
     function toggleAdminPanel() { var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; renderAdmin(); }
+    
     function renderAdmin() {
         var h = '';
         for (var u in users) {
@@ -365,13 +342,29 @@
         }
         document.getElementById('adminUserList').innerHTML = h;
     }
-    function quickAdd(u) { document.getElementById('adminUserTarget').value = u; openModal('adminMoneyModal'); }
+    
+    function quickAdd(u) { 
+        // Điền sẵn tên người chơi vào ô input
+        document.getElementById('adminUserTarget').value = u; 
+        openModal('adminMoneyModal'); 
+    }
+    
     function quickBan(u) { if (confirm('Ban '+u+'?')) { users[u].isBanned = true; save(); updateUI(); } }
     function unbanUser(u) { if (confirm('Gỡ ban '+u+'?')) { users[u].isBanned = false; save(); updateUI(); } }
+    
     function adminAddMoney() {
-        var t = document.getElementById('adminUserTarget').value;
+        var t = document.getElementById('adminUserTarget').value.trim(); // Lấy tên từ ô input
         var a = parseInt(document.getElementById('adminMoneyAmount').value);
-        if (users[t]) { users[t].money += a; save(); updateUI(); alert("Đã cộng "+a.toLocaleString()+"đ cho "+t); closeModal('adminMoneyModal'); }
+        
+        if (!t) return alert("Vui lòng nhập tên người chơi!");
+        if (users[t]) { 
+            users[t].money += a; 
+            save(); updateUI(); 
+            alert("Đã cộng "+a.toLocaleString()+"đ cho "+t); 
+            closeModal('adminMoneyModal'); 
+        } else {
+            alert("Không tìm thấy người chơi tên: " + t);
+        }
     }
 </script>
 </body>
