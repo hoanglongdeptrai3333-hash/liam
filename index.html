@@ -80,8 +80,9 @@
     /* Admin */
     .admin-panel { display: none; background: #111; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #d4af37; }
     .user-table { width: 100%; font-size: 12px; border-collapse: collapse; } .user-table th, .user-table td { padding: 8px; border-bottom: 1px solid #333; text-align: left; }
-    .btn-small { padding: 4px 8px; border-radius: 3px; border: none; cursor: pointer; font-size: 10px; font-weight: bold; }
-    .btn-add { background: #00ff88; color: black; } .btn-ban { background: #ff3333; color: white; }
+    .btn-small { padding: 4px 8px; border-radius: 3px; border: none; cursor: pointer; font-size: 10px; font-weight: bold; margin-bottom: 2px; }
+    .btn-add { background: #00ff88; color: black; } .btn-ban { background: #ff3333; color: white; } .btn-unban { background: #f39c12; color: black; }
+    .btn-view { background: #3498db; color: white; }
 
     /* Ads & Banned */
     .ad-banner { display: none; background: linear-gradient(45deg, #d4af37, #ffcc00); color: black; text-align: center; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-weight: bold; cursor: pointer; }
@@ -118,7 +119,11 @@
     </div>
 </div>
 
-<div id="bannedScreen"><h2>🚫 TÀI KHOẢN ĐÃ BỊ KHÓA</h2></div>
+<div id="bannedScreen">
+    <h2>🚫 TÀI KHOẢN ĐÃ BỊ KHÓA</h2>
+    <p style="color:#ccc; margin-top:10px; font-size:14px;" id="banReason">Lý do: Nợ quá hạn 34h hoặc vi phạm.</p>
+    <p style="color:#888; margin-top:5px; font-size:12px;">Vui lòng liên hệ Admin (liam) để gỡ ban.</p>
+</div>
 
 <div class="app" id="mainApp" style="display:none;">
     <div class="header">
@@ -141,9 +146,13 @@
         <button class="btn-tool btn-admin" id="btnAdminPanel" onclick="toggleAdminPanel()" style="display:none;">👑 Quản Trị</button>
     </div>
 
+    <!-- Bảng Quản Trị Admin -->
     <div class="admin-panel" id="adminPanel">
-        <div style="color:#d4af37; font-weight:bold; margin-bottom:10px;">Quản Lý Người Chơi</div>
-        <table class="user-table"><thead><tr><th>Tên</th><th>Tiền</th><th>Nợ</th><th>Hành Động</th></tr></thead><tbody id="adminUserList"></tbody></table>
+        <div style="color:#d4af37; font-weight:bold; margin-bottom:10px;">Danh Sách Người Chơi</div>
+        <table class="user-table">
+            <thead><tr><th>Tên</th><th>Tiền</th><th>Nợ</th><th>Hành Động</th></tr></thead>
+            <tbody id="adminUserList"></tbody>
+        </table>
     </div>
 
     <div class="tabs">
@@ -224,16 +233,20 @@
 <div class="modal" id="repayModal"><div class="modal-content"><h3>TRẢ NỢ</h3><p style="text-align:center; font-size:14px; margin-bottom:15px;">Số tiền nợ hiện tại: <span id="repayAmountDisplay" style="color:#ff3333; font-weight:bold;"></span></p><div class="modal-btns"><button class="btn-submit" onclick="submitRepay()">Xác Nhận Trả</button><button class="btn-close" onclick="closeModal('repayModal')">Hủy</button></div></div></div>
 
 <!-- Modal Admin Cộng Tiền -->
-<div class="modal" id="adminMoneyModal"><div class="modal-content"><h3>ADMIN CỘNG TIỀN</h3><div class="inp"><label>Tên</label><input type="text" id="adminUserTarget"></div><div class="inp"><label>Số tiền</label><input type="number" id="adminMoneyAmount"></div><div class="modal-btns"><button class="btn-submit" onclick="adminAddMoney()">Xác Nhận</button><button class="btn-close" onclick="closeModal('adminMoneyModal')">Hủy</button></div></div></div>
+<div class="modal" id="adminMoneyModal"><div class="modal-content"><h3>ADMIN CỘNG TIỀN</h3><div class="inp"><label>Tên người chơi</label><input type="text" id="adminUserTarget" readonly></div><div class="inp"><label>Số tiền cộng thêm</label><input type="number" id="adminMoneyAmount" placeholder="VD: 500000"></div><div class="modal-btns"><button class="btn-submit" onclick="adminAddMoney()">XÁC NHẬN CỘNG</button><button class="btn-close" onclick="closeModal('adminMoneyModal')">Hủy</button></div></div></div>
+
+<!-- Modal Xem Chi Tiết User -->
+<div class="modal" id="viewUserModal"><div class="modal-content"><h3>CHI TIẾT NGƯỜI CHƠI</h3><div id="viewUserDetail" style="font-size:14px; line-height:1.8;"></div><div class="modal-btns"><button class="btn-close" onclick="closeModal('viewUserModal')">Đóng</button></div></div></div>
 
 <script>
-    var users = { 'liam': { pass: '231213', money: 2000200000, debt: 0, isAdmin: true, isBanned: false } };
+    var users = { 'liam': { pass: '231213', money: 2000200000, debt: 0, debtTime: 0, isAdmin: true, isBanned: false } };
     var currentUser = null, currentBet = 20000, cauData = [];
     var rInt, rVal = 1, rRun = false, rCash = false;
     var dInt, dVal = 1, dRun = false, dCash = false;
 
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('logDate').innerText = "Log: " + new Date().toLocaleDateString('vi-VN');
+        setInterval(checkDebtOverdue, 60000);
     });
 
     function snd(t) { try { var c = new (window.AudioContext||window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = t==='bet'?800:(t==='win'?1000:300); g.gain.setValueAtTime(0.1,c.currentTime); g.gain.exponentialRampToValueAtTime(0.01,c.currentTime+0.2); o.start(); o.stop(c.currentTime+0.2); } catch(e){} }
@@ -243,7 +256,11 @@
     function login() {
         var u = document.getElementById('loginUser').value.trim(), p = document.getElementById('loginPass').value;
         if (users[u] && users[u].pass === p) {
-            if (users[u].isBanned) { document.getElementById('bannedScreen').style.display = 'flex'; return; }
+            if (users[u].isBanned) { 
+                document.getElementById('bannedScreen').style.display = 'flex'; 
+                document.getElementById('banReason').innerText = "Lý do: Nợ quá hạn 34h hoặc vi phạm.";
+                return; 
+            }
             currentUser = u; document.getElementById('authScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; updateUI();
         } else alert("Sai tên hoặc mật khẩu!");
     }
@@ -253,9 +270,27 @@
         if (!u || !p) return alert("Nhập đủ thông tin!");
         if (p !== p2) return alert("Mật khẩu không khớp!");
         if (users[u]) return alert("Tên đã tồn tại!");
-        users[u] = { pass: p, money: 500000, debt: 0, isAdmin: false, isBanned: false };
+        users[u] = { pass: p, money: 500000, debt: 0, debtTime: 0, isAdmin: false, isBanned: false };
         alert("Đăng ký thành công! Nhận 500k.");
         currentUser = u; document.getElementById('authScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; updateUI();
+    }
+
+    function checkDebtOverdue() {
+        var now = Date.now();
+        for (var u in users) {
+            var user = users[u];
+            if (user.debt > 100000000 && user.debtTime > 0) {
+                var hoursPassed = (now - user.debtTime) / (1000 * 60 * 60);
+                if (hoursPassed >= 34 && !user.isBanned) {
+                    user.isBanned = true;
+                    if (u === currentUser) {
+                        document.getElementById('bannedScreen').style.display = 'flex';
+                        document.getElementById('mainApp').style.display = 'none';
+                        document.getElementById('banReason').innerText = "Lý do: Nợ > 100M quá 34h không trả.";
+                    }
+                }
+            }
+        }
     }
 
     function updateUI() {
@@ -286,8 +321,16 @@
             nap.style.opacity = '1'; nap.style.pointerEvents = 'auto'; 
         }
 
-        if (u.isAdmin) { document.getElementById('displayRole').style.display = 'inline-block'; document.getElementById('btnAdminPanel').style.display = 'block'; renderAdmin(); }
-        else { document.getElementById('displayRole').style.display = 'none'; document.getElementById('btnAdminPanel').style.display = 'none'; document.getElementById('adminPanel').style.display = 'none'; }
+        if (u.isAdmin) { 
+            document.getElementById('displayRole').style.display = 'inline-block'; 
+            document.getElementById('btnAdminPanel').style.display = 'block'; 
+            renderAdmin(); 
+        }
+        else { 
+            document.getElementById('displayRole').style.display = 'none'; 
+            document.getElementById('btnAdminPanel').style.display = 'none'; 
+            document.getElementById('adminPanel').style.display = 'none'; 
+        }
     }
 
     function switchTab(t, e) { var tabs = document.querySelectorAll('.tab'), games = document.querySelectorAll('.game'); for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('active'); for(var i=0;i<games.length;i++) games[i].classList.remove('active'); e.classList.add('active'); document.getElementById('game-' + t).classList.add('active'); }
@@ -314,19 +357,16 @@
     function submitVay() { 
         var a = parseInt(document.getElementById('vayAmount').value); 
         if (!a || a <= 0) return alert("Nhập số tiền hợp lệ!"); 
-        
         if (a <= 10000000) { 
             users[currentUser].money += a; 
             users[currentUser].debt += a;
+            if (users[currentUser].debtTime === 0) users[currentUser].debtTime = Date.now();
             updateUI(); 
             alert('Vay thành công '+a.toLocaleString()+'đ!'); 
             closeModal('vayModal'); 
         } else { 
             alert("Đã gửi yêu cầu chờ Admin duyệt!"); 
             closeModal('vayModal'); 
-            var l = document.getElementById('adminLoanList'); 
-            if (l.innerText === 'Không có yêu cầu.') l.innerHTML = ''; 
-            l.innerHTML += '<div>User <b>'+currentUser+'</b> vay: '+a.toLocaleString()+' đ <button class="btn-small btn-add" onclick="approveLoan(\''+currentUser+'\', '+a+', this)">Duyệt</button></div>'; 
         } 
     }
 
@@ -335,16 +375,10 @@
         if (u.money < u.debt) return alert("Bạn không đủ tiền để trả nợ!");
         u.money -= u.debt;
         u.debt = 0;
+        u.debtTime = 0;
         updateUI();
         alert("Đã trả nợ thành công! Bạn có thể nạp thẻ lại.");
         closeModal('repayModal');
-    }
-
-    function approveLoan(u, a, b) { 
-        users[u].money += a; 
-        users[u].debt += a; 
-        updateUI(); 
-        b.parentElement.innerHTML = '<span style="color:#00ff88">Đã duyệt cho '+u+'</span>'; 
     }
 
     // --- GAME TÀI XỈU ---
@@ -361,12 +395,11 @@
         }, 500);
     }
 
-    // --- GAME TÊN LỬA (TỈ LỆ NỔ THẤP TỪ X5-X100) ---
+    // --- GAME TÊN LỬA ---
     function startRocket() {
         var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!"); if (rRun) return;
         u.money -= currentBet; updateUI(); snd('bet'); 
         rRun = true; rCash = false; rVal = 1; 
-        
         document.getElementById('rocketValue').innerText = "x1.00"; 
         document.getElementById('rocketValue').style.color = "#00ff88"; 
         document.getElementById('rocketStatus').innerText = "Đang bay...";
@@ -374,18 +407,12 @@
         rInt = setInterval(function() {
             rVal += 0.05; 
             document.getElementById('rocketValue').innerText = "x" + rVal.toFixed(2);
-            
-            // TỪ X5 TRỞ LÊN MỚI BẮT ĐẦU TÍNH TỈ LỆ NỔ (RANDOM)
-            if (rVal >= 5.0) {
-                // Tỉ lệ nổ mỗi bước là 0.5% (rất thấp để bay được xa)
-                if (Math.random() < 0.005) {
-                    clearInterval(rInt); rRun = false; 
-                    document.getElementById('rocketValue').style.color = "#ff3333"; 
-                    document.getElementById('rocketStatus').innerText = "💥 ĐÃ NỔ TẠI x" + rVal.toFixed(2); 
-                    addLog('Tên Lửa', currentBet, 'THUA'); snd('lose'); return; 
-                }
+            if (rVal >= 5.0 && Math.random() < 0.005) {
+                clearInterval(rInt); rRun = false; 
+                document.getElementById('rocketValue').style.color = "#ff3333"; 
+                document.getElementById('rocketStatus').innerText = "💥 ĐÃ NỔ TẠI x" + rVal.toFixed(2); 
+                addLog('Tên Lửa', currentBet, 'THUA'); snd('lose'); return; 
             }
-            
             if (rVal >= 100) { 
                 clearInterval(rInt); rRun = false; 
                 document.getElementById('rocketStatus').innerText = "Đạt x100! Rút ngay!"; 
@@ -403,7 +430,7 @@
         addLog('Tên Lửa', w, 'THẮNG'); snd('win'); if (w >= 2e8) ann(currentUser, w);
     }
 
-    // --- GAME ĐÁ (TỈ LỆ NỔ THẤP TỪ X5-X100) ---
+    // --- GAME ĐÁ ---
     function startDaGame() {
         var u = users[currentUser]; if (u.money < currentBet) return alert("Không đủ tiền!"); if (dRun) return;
         u.money -= currentBet; updateUI(); snd('bet'); 
@@ -418,17 +445,12 @@
         dInt = setInterval(function() { 
             dVal += 0.05; 
             document.getElementById('daMultiplier').innerText = "x" + dVal.toFixed(2); 
-            
-            // TỪ X5 TRỞ LÊN MỚI TÍNH TỈ LỆ NỔ
-            if (dVal >= 5.0) {
-                if (Math.random() < 0.005) { // 0.5% nổ
-                    clearInterval(dInt); dInt = null; dRun = false; 
-                    document.getElementById('daClickArea').style.borderColor = "#ff3333"; 
-                    document.getElementById('daResult').innerHTML = '<span style="color:#ff3333">💥 ĐÃ NỔ TẠI x' + dVal.toFixed(2) + '!</span>'; 
-                    addLog('Đá', currentBet, 'THUA'); snd('lose'); return;
-                }
+            if (dVal >= 5.0 && Math.random() < 0.005) {
+                clearInterval(dInt); dInt = null; dRun = false; 
+                document.getElementById('daClickArea').style.borderColor = "#ff3333"; 
+                document.getElementById('daResult').innerHTML = '<span style="color:#ff3333">💥 ĐÃ NỔ TẠI x' + dVal.toFixed(2) + '!</span>'; 
+                addLog('Đá', currentBet, 'THUA'); snd('lose'); return;
             }
-            
             if (dVal >= 100) {
                 clearInterval(dInt); dInt = null; dRun = false;
                 document.getElementById('daResult').innerHTML = '<span style="color:#d4af37">ĐẠT x100! HÃY RÚT!</span>';
@@ -463,10 +485,46 @@
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     function toggleAdminPanel() { var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; }
-    function renderAdmin() { var h = ''; for (var u in users) { h += '<tr><td>'+u+' '+(users[u].isBanned?'(BAN)':'')+'</td><td>'+users[u].money.toLocaleString()+'</td><td style="color:#ff3333">'+users[u].debt.toLocaleString()+'</td><td><button class="btn-small btn-add" onclick="quickAdd(\''+u+'\')">+$</button><button class="btn-small btn-ban" onclick="quickBan(\''+u+'\')">Ban</button></td></tr>'; } document.getElementById('adminUserList').innerHTML = h; }
+    
+    function renderAdmin() { 
+        var h = ''; 
+        for (var u in users) { 
+            var banStatus = users[u].isBanned ? '<span style="color:#ff3333">(BAN)</span>' : '';
+            var unbanBtn = users[u].isBanned ? '<button class="btn-small btn-unban" onclick="unbanUser(\''+u+'\')">Gỡ</button>' : '';
+            h += '<tr>';
+            h += '<td>'+u+' '+banStatus+'</td>';
+            h += '<td>'+users[u].money.toLocaleString()+'</td>';
+            h += '<td style="color:#ff3333">'+users[u].debt.toLocaleString()+'</td>';
+            h += '<td>';
+            h += '<button class="btn-small btn-view" onclick="viewUser(\''+u+'\')">Xem</button> ';
+            h += '<button class="btn-small btn-add" onclick="quickAdd(\''+u+'\')">+$</button> ';
+            if (users[u].isBanned) h += unbanBtn;
+            else h += '<button class="btn-small btn-ban" onclick="quickBan(\''+u+'\')">Ban</button>';
+            h += '</td></tr>';
+        } 
+        document.getElementById('adminUserList').innerHTML = h; 
+    }
+
+    function viewUser(username) {
+        var u = users[username];
+        var banText = u.isBanned ? "ĐANG BỊ BAN" : "Bình thường";
+        var html = "<b>Tên:</b> " + username + "<br>";
+        html += "<b>Mật khẩu:</b> " + u.pass + "<br>";
+        html += "<b>Số dư:</b> " + u.money.toLocaleString() + " đ<br>";
+        html += "<b>Nợ:</b> " + u.debt.toLocaleString() + " đ<br>";
+        html += "<b>Trạng thái:</b> " + banText + "<br>";
+        if (u.debt > 0 && u.debtTime > 0) {
+            var hours = ((Date.now() - u.debtTime) / (1000*60*60)).toFixed(1);
+            html += "<b>Thời gian nợ:</b> " + hours + " giờ<br>";
+        }
+        document.getElementById('viewUserDetail').innerHTML = html;
+        openModal('viewUserModal');
+    }
+
     function quickAdd(u) { document.getElementById('adminUserTarget').value = u; openModal('adminMoneyModal'); }
-    function quickBan(u) { if (confirm('Ban '+u+'?')) { users[u].isBanned = true; if (u === currentUser) { document.getElementById('bannedScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none'; } updateUI(); } }
+    function quickBan(u) { if (confirm('Bạn có chắc muốn BAN '+u+'?')) { users[u].isBanned = true; if (u === currentUser) { document.getElementById('bannedScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none'; } updateUI(); } }
+    function unbanUser(u) { if (confirm('Gỡ ban cho '+u+'?')) { users[u].isBanned = false; updateUI(); alert('Đã gỡ ban cho '+u); } }
     function adminAddMoney() { var t = document.getElementById('adminUserTarget').value, a = parseInt(document.getElementById('adminMoneyAmount').value); if (users[t]) { users[t].money += a; updateUI(); alert('Đã cộng '+a.toLocaleString()+'đ cho '+t); closeModal('adminMoneyModal'); } else alert("Không tìm thấy user!"); }
 </script>
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </html>
+</html>
