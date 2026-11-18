@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gửi Cô Thảo - Ngày Nhà Giáo Việt Nam 20/11</title>
+<title>Gửi Cô Thảo - 8A6</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500;700&display=swap');
 
@@ -15,471 +15,531 @@
 
     body {
         font-family: 'Quicksand', sans-serif;
-        background-color: #0b0314; /* Nền tối vũ trụ */
+        background-color: #000;
         color: #fff;
         min-height: 100vh;
         overflow: hidden;
-        position: relative;
     }
 
     /* ==========================================
-       1. MÀN HÌNH INTRO (MỞ ĐẦU)
+       MÀN HÌNH 1: CẢNH MỞ ĐẦU (NHƯ ẢNH BẠN GỬI)
        ========================================== */
-    #intro-screen {
+    #scene-intro {
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(circle at center, #1a0b2e 0%, #05010a 100%);
+        background: linear-gradient(to bottom, #05010a 0%, #100b1a 60%, #1a0b2e 100%);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        z-index: 1000;
-        transition: opacity 1s ease;
+        z-index: 100;
+        transition: opacity 1.5s ease;
     }
 
-    .envelope {
-        position: relative;
-        width: 280px;
-        height: 180px;
-        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-        border-radius: 10px;
-        box-shadow: 0 20px 50px rgba(255, 100, 100, 0.3);
-        cursor: pointer;
-        animation: floatEnv 3s ease-in-out infinite;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    /* Nắp phong bì */
-    .envelope::before {
-        content: '';
+    /* Mặt đất cỏ */
+    .grass-ground {
         position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(135deg, #ff6b6b 0%, #ff9a9e 100%);
-        clip-path: polygon(0 0, 50% 50%, 100% 0);
+        bottom: 0; left: 0; width: 100%; height: 15%;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0,20 L0,10 Q5,0 10,10 T20,10 T30,10 T40,10 T50,10 T60,10 T70,10 T80,10 T90,10 T100,10 L100,20 Z" fill="%231a0b2e"/></svg>') repeat-x bottom;
+        background-size: 50px 100%;
         z-index: 2;
-        transition: transform 0.8s ease;
-        transform-origin: top;
     }
 
-    .envelope:hover {
-        transform: scale(1.05) translateY(-10px);
-        box-shadow: 0 30px 60px rgba(255, 100, 100, 0.5);
-    }
-
-    .envelope:hover::before {
-        transform: rotateX(180deg);
-    }
-
-    /* Con dấu sáp */
-    .wax-seal {
+    /* Hiệu ứng đom đóm/ánh sáng */
+    .firefly {
         position: absolute;
-        top: 45%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 50px; height: 50px;
-        background: #b8001f;
+        width: 3px; height: 3px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #ff6b6b, 0 0 20px #fff;
+        animation: floatFirefly infinite linear;
+    }
+
+    @keyframes floatFirefly {
+        0% { transform: translateY(0) translateX(0); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
+    }
+
+    /* Nhân vật Mầm non (Mascot) */
+    .mascot {
+        position: relative;
+        width: 120px;
+        height: 160px;
+        background: radial-gradient(circle at center, rgba(255, 107, 107, 0.2) 0%, transparent 70%);
         border-radius: 50%;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        font-size: 1.5rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        z-index: 3;
-        transition: all 0.3s;
+        z-index: 5;
+        animation: floatMascot 3s ease-in-out infinite;
     }
 
-    .envelope:hover .wax-seal {
-        transform: translate(-50%, -50%) scale(0);
-        opacity: 0;
+    .mascot-body {
+        width: 80px; height: 100px;
+        border: 3px solid #ff9a9e;
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        position: relative;
+        box-shadow: 0 0 20px rgba(255, 107, 107, 0.5), inset 0 0 15px rgba(255, 107, 107, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
     }
 
-    .intro-text {
-        margin-top: 40px;
-        font-size: 1.2rem;
-        color: #ff9a9e;
-        text-align: center;
-        animation: pulseText 2s infinite;
-        letter-spacing: 1px;
+    /* Mắt */
+    .eye {
+        width: 12px; height: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 5px #fff;
+    }
+    /* Miệng */
+    .mouth {
+        position: absolute;
+        bottom: 25px;
+        width: 10px; height: 5px;
+        border-bottom: 2px solid #fff;
+        border-radius: 50%;
     }
 
-    @keyframes floatEnv {
+    /* Lá mầm trên đầu */
+    .leaf {
+        position: absolute;
+        top: -25px;
+        width: 30px; height: 20px;
+        border: 2px solid #00ffcc;
+        border-radius: 50% 0;
+        box-shadow: 0 0 10px #00ffcc;
+    }
+    .leaf.left { transform: rotate(-30deg); left: 10px; }
+    .leaf.right { transform: rotate(30deg) scaleX(-1); right: 10px; }
+
+    /* Lá hai bên má */
+    .cheek-leaf {
+        position: absolute;
+        bottom: 10px;
+        width: 20px; height: 15px;
+        border: 2px solid #00ffcc;
+        border-radius: 50% 0;
+        box-shadow: 0 0 8px #00ffcc;
+    }
+    .cheek-leaf.left { transform: rotate(-45deg); left: -15px; }
+    .cheek-leaf.right { transform: rotate(45deg) scaleX(-1); right: -15px; }
+
+    @keyframes floatMascot {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-15px); }
     }
 
-    @keyframes pulseText {
-        0%, 100% { opacity: 0.6; }
-        50% { opacity: 1; text-shadow: 0 0 10px #ff9a9e; }
+    /* Phụ đề (Subtitle) */
+    .subtitle-box {
+        position: absolute;
+        bottom: 15%;
+        width: 90%;
+        max-width: 600px;
+        text-align: center;
+        z-index: 10;
+    }
+
+    .subtitle-text {
+        font-size: 1.1rem;
+        color: #fff;
+        text-shadow: 1px 1px 5px #000;
+        min-height: 30px;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    .subtitle-text.show {
+        opacity: 1;
+    }
+
+    /* Nút Tiếp theo */
+    .next-btn {
+        position: absolute;
+        bottom: 5%;
+        padding: 12px 30px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #ff6b6b;
+        color: #fff;
+        border-radius: 30px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        backdrop-filter: blur(5px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.5s ease;
+        z-index: 20;
+    }
+    .next-btn.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .next-btn:hover {
+        background: #ff6b6b;
+        box-shadow: 0 0 20px #ff6b6b;
     }
 
     /* ==========================================
-       2. KHUNG CẢNH VŨ TRỤ (SAU KHI MỞ THIỆP)
+       MÀN HÌNH 2: VŨ TRỤ HOA VÀ SAO
        ========================================== */
-    #universe-screen {
+    #scene-universe {
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background: radial-gradient(circle at center, #1a0b2e 0%, #05010a 100%);
         opacity: 0;
         visibility: hidden;
         transition: opacity 2s ease;
-        z-index: 500;
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         overflow: hidden;
     }
 
-    #universe-screen.active {
+    #scene-universe.active {
         opacity: 1;
         visibility: visible;
-    }
-
-    /* Hiệu ứng tinh vân (Nebula) */
-    .nebula {
-        position: absolute;
-        width: 600px; height: 600px;
-        background: radial-gradient(circle, rgba(184,0,31,0.15) 0%, rgba(0,0,0,0) 70%);
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        animation: rotateNebula 20s linear infinite;
-    }
-    .nebula-2 {
-        width: 400px; height: 400px;
-        background: radial-gradient(circle, rgba(100,0,255,0.1) 0%, rgba(0,0,0,0) 70%);
-        top: 30%; left: 30%;
-        animation: rotateNebula 15s linear infinite reverse;
-    }
-
-    @keyframes rotateNebula {
-        from { transform: translate(-50%, -50%) rotate(0deg); }
-        to { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
-    /* Nội dung chính giữa vũ trụ */
-    .universe-content {
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        z-index: 10;
-        width: 90%;
-        max-width: 600px;
     }
 
     .universe-title {
         font-family: 'Dancing Script', cursive;
         font-size: 3.5rem;
         color: #fff;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         text-shadow: 0 0 20px #ff6b6b, 0 0 40px #b8001f;
-        animation: fadeInScale 2s ease forwards;
+        text-align: center;
+        z-index: 10;
+        padding: 0 20px;
+    }
+
+    .final-message-box {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 107, 107, 0.5);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 600px;
+        width: 90%;
+        z-index: 10;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        transform: translateY(30px);
         opacity: 0;
-        transform: scale(0.8);
+        transition: all 1s ease;
     }
 
-    .universe-subtitle {
+    .final-message-box.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .final-message-box p {
         font-size: 1.2rem;
-        color: #ff9a9e;
-        letter-spacing: 2px;
-        margin-bottom: 30px;
-        animation: fadeInScale 2s ease 0.5s forwards;
-        opacity: 0;
-        transform: scale(0.8);
-    }
-
-    /* Các lời chúc rơi xuống */
-    .message-container {
-        position: relative;
-        height: 150px;
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .floating-message {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-        font-size: 1.2rem;
-        line-height: 1.6;
+        line-height: 1.8;
         color: #fff;
-        font-style: italic;
-        text-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
-        opacity: 0;
-        animation: dropMessage 4s ease-in-out forwards;
+        margin-bottom: 15px;
+        text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+    
+    .final-message-box .highlight {
+        color: #ff9a9e;
+        font-weight: bold;
+        font-size: 1.3rem;
     }
 
-    @keyframes dropMessage {
-        0% { opacity: 0; top: -50px; transform: translateX(-50%) scale(0.8); }
-        20% { opacity: 1; top: 20px; transform: translateX(-50%) scale(1); }
-        80% { opacity: 1; top: 20px; transform: translateX(-50%) scale(1); }
-        100% { opacity: 0; top: 80px; transform: translateX(-50%) scale(0.9); }
+    .signature {
+        font-family: 'Dancing Script', cursive;
+        font-size: 1.5rem;
+        color: #ff6b6b;
+        margin-top: 20px;
+        text-align: right;
     }
 
-    @keyframes fadeInScale {
-        to { opacity: 1; transform: scale(1); }
-    }
-
-    /* ==========================================
-       3. HIỆU ỨNG SAO BĂNG, TRÁI TIM, NGÔI SAO
-       ========================================== */
-    .star-particle {
+    /* Hiệu ứng Hoa và Sao rơi */
+    .particle {
         position: absolute;
-        border-radius: 50%;
-        background: #fff;
-        animation: twinkle infinite alternate;
-        box-shadow: 0 0 10px #fff, 0 0 20px #ff9a9e;
+        top: -50px;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    @keyframes fallFlower {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
 
     @keyframes twinkle {
-        0% { opacity: 0.2; transform: scale(0.5); }
-        100% { opacity: 1; transform: scale(1.2); }
+        0%, 100% { opacity: 0.3; transform: scale(0.8); }
+        50% { opacity: 1; transform: scale(1.2); }
     }
 
-    /* Trái tim bay lơ lửng */
-    .heart-particle {
-        position: absolute;
-        font-size: 1.5rem;
-        color: #ff2d55;
-        text-shadow: 0 0 15px #ff2d55, 0 0 30px #b8001f;
-        animation: floatHeart linear infinite;
-        opacity: 0.7;
-    }
-
-    @keyframes floatHeart {
-        0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
-        20% { opacity: 0.8; }
-        80% { opacity: 0.8; }
-        100% { transform: translateY(-100px) scale(1.5) rotate(360deg); opacity: 0; }
-    }
-
-    /* Sao băng */
-    .shooting-star {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: #fff;
-        border-radius: 50%;
-        box-shadow: 0 0 10px 2px #fff, 0 0 20px 4px #ff9a9e;
-        opacity: 0;
-    }
-
-    .shooting-star::after {
-        content: '';
-        position: absolute;
-        top: 50%; left: 0;
-        width: 100px; height: 2px;
-        background: linear-gradient(90deg, #fff, transparent);
-        transform: translateY(-50%);
-    }
-
-    .shooting-star.active {
-        animation: shoot 2s linear forwards;
-    }
-
-    @keyframes shoot {
-        0% { transform: translate(0, 0) rotate(-45deg); opacity: 1; }
-        100% { transform: translate(-300px, 300px) rotate(-45deg); opacity: 0; }
-    }
-
-    /* Nút chơi lại / Tương tác thêm */
-    .btn {
-        display: inline-block;
+    /* Nút chơi lại */
+    .replay-btn {
         margin-top: 30px;
-        padding: 12px 30px;
-        font-size: 1rem;
-        font-weight: bold;
-        font-family: 'Quicksand', sans-serif;
-        color: #fff;
+        padding: 10px 25px;
         background: transparent;
-        border: 2px solid #ff6b6b;
-        border-radius: 50px;
+        border: 1px solid #ff9a9e;
+        color: #ff9a9e;
+        border-radius: 30px;
         cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
-        opacity: 0;
-        animation: fadeInScale 2s ease 2s forwards;
+        transition: 0.3s;
+        z-index: 10;
     }
-
-    .btn:hover {
-        background: #ff6b6b;
-        color: #0b0314;
-        box-shadow: 0 0 30px rgba(255, 107, 107, 0.8);
-        transform: scale(1.05);
+    .replay-btn:hover {
+        background: #ff9a9e;
+        color: #000;
     }
 </style>
 </head>
 <body>
 
-<!-- MÀN HÌNH 1: PHONG BÌ KÍNH MỜI -->
-<div id="intro-screen">
-    <div class="envelope" onclick="openEnvelope()">
-        <div class="wax-seal">❤️</div>
+<!-- ==========================================
+     MÀN HÌNH 1: MỞ ĐẦU
+     ========================================== -->
+<div id="scene-intro">
+    <div class="grass-ground"></div>
+    
+    <!-- Nhân vật Mầm non -->
+    <div class="mascot">
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+        <div class="mascot-body">
+            <div class="cheek-leaf left"></div>
+            <div class="cheek-leaf right"></div>
+            <div class="eye"></div>
+            <div class="eye"></div>
+            <div class="mouth"></div>
+        </div>
     </div>
-    <div class="intro-text">Chạm vào phong bì để mở thiệp...</div>
+
+    <!-- Phụ đề chạy chữ -->
+    <div class="subtitle-box">
+        <div class="subtitle-text" id="subText">tớ là Mầm - nàng tiên nhỏ của vườn</div>
+    </div>
+
+    <!-- Nút tiếp theo -->
+    <button class="next-btn" id="nextBtn" onclick="goToUniverse()">Tiếp theo ➔</button>
 </div>
 
-<!-- MÀN HÌNH 2: VŨ TRỤ VÀ LỜI CHÚC -->
-<div id="universe-screen">
-    <div class="nebula"></div>
-    <div class="nebula nebula-2"></div>
+<!-- ==========================================
+     MÀN HÌNH 2: VŨ TRỤ HOA & SAO
+     ========================================== -->
+<div id="scene-universe">
+    <h1 class="universe-title">Gửi Cô Thảo kính yêu!</h1>
     
-    <div class="universe-content">
-        <h1 class="universe-title">Gửi Cô Thảo</h1>
-        <p class="universe-subtitle">Người mẹ hiền thứ hai của chúng em</p>
-        
-        <div class="message-container" id="messageContainer">
-            <!-- Các lời chúc sẽ được chèn bằng JS -->
-        </div>
-
-        <button class="btn" onclick="replayUniverse()">🌟 Xem Lại Từ Đầu</button>
+    <div class="final-message-box" id="finalBox">
+        <p>Nhân ngày 20/11, thay mặt tập thể lớp <strong>8A6</strong>, em xin gửi đến Cô những lời chúc tốt đẹp nhất.</p>
+        <p>Cô không chỉ là người truyền đạt kiến thức, mà còn là <span class="highlight">người mẹ thứ hai</span> luôn lắng nghe, thấu hiểu và bao dung cho những lỗi lầm của chúng em.</p>
+        <p>Cô đã phải quản lý, lo toan cho một tập thể 8A6 đầy nghịch ngợm, vất vả cho Cô rồi! Chúng em muốn dùng những bông hoa đẹp nhất và những ngôi sao sáng nhất để tri ân Cô.</p>
+        <p class="highlight">Chúc Cô ngày 20/11 thật tuyệt vời, luôn mạnh khỏe, xinh đẹp và hạnh phúc ạ! ❤️</p>
+        <div class="signature">- Học trò của Cô -</div>
     </div>
+
+    <button class="replay-btn" onclick="replay()">Xem lại từ đầu ↺</button>
 </div>
 
 <script>
     // ==========================================
-    // 1. XỬ LÝ CHUYỂN CẢNH
+    // KỊCH BẢN CHẠY CHỮ (SCENE 1)
     // ==========================================
-    const introScreen = document.getElementById('intro-screen');
-    const universeScreen = document.getElementById('universe-screen');
+    const script = [
+        { text: "tớ là Mầm - nàng tiên nhỏ của vườn", delay: 2000 },
+        { text: "Hôm nay là một ngày đặc biệt...", delay: 2500 },
+        { text: "Hello Cô Thảo! Em là Long.", delay: 3000 },
+        { text: "Thay mặt các bạn lớp 8A6...", delay: 3000 },
+        { text: "20/11 - Ngày Nhà giáo Việt Nam", delay: 3500 },
+        { text: "Chúc Cô một ngày thật tuyệt vời!", delay: 3000 },
+        { text: "Cô hãy ấn nút bên dưới để xem món quà nhé!", delay: 0 } // delay 0 để hiện nút
+    ];
 
-    function openEnvelope() {
-        // Hiệu ứng mờ dần màn hình intro
-        introScreen.style.opacity = '0';
+    let scriptIndex = 0;
+    const subText = document.getElementById('subText');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function playScript() {
+        if (scriptIndex >= script.length) return;
+
+        let currentItem = script[scriptIndex];
         
-        // Sau 1s, ẩn hẳn intro và hiện vũ trụ
+        // Hiệu ứng mờ chữ cũ
+        subText.classList.remove('show');
+        
         setTimeout(() => {
-            introScreen.style.display = 'none';
-            universeScreen.classList.add('active');
+            subText.innerText = currentItem.text;
+            subText.classList.add('show');
             
-            // Bắt đầu bắn pháo hoa sao, trái tim
-            initUniverseEffects();
-            // Bắt đầu hiện lời chúc
-            startWishes();
-        }, 1000);
+            // Nếu là câu cuối (delay = 0), hiện nút Tiếp theo
+            if (currentItem.delay === 0) {
+                nextBtn.classList.add('show');
+            } else {
+                // Chờ delay rồi chạy câu tiếp
+                setTimeout(() => {
+                    scriptIndex++;
+                    playScript();
+                }, currentItem.delay);
+            }
+        }, 500); // Đợi 0.5s cho chữ cũ mờ hẳn
+    }
+
+    // Bắt đầu chạy kịch bản khi tải trang
+    window.onload = () => {
+        createFireflies();
+        setTimeout(playScript, 1000); // Đợi 1s rồi bắt đầu
+    };
+
+    // Hiệu ứng đom đóm ở màn 1
+    function createFireflies() {
+        const introScene = document.getElementById('scene-intro');
+        for(let i=0; i<20; i++) {
+            let f = document.createElement('div');
+            f.className = 'firefly';
+            f.style.left = Math.random() * 100 + 'vw';
+            f.style.top = Math.random() * 80 + 20 + 'vh';
+            f.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            f.style.animationDelay = (Math.random() * 3) + 's';
+            introScene.appendChild(f);
+        }
     }
 
     // ==========================================
-    // 2. HIỆU ỨNG VŨ TRỤ (SAO, TRÁI TIM, SAO BĂNG)
+    // CHUYỂN CẢNH SANG VŨ TRỤ (SCENE 2)
     // ==========================================
-    function initUniverseEffects() {
-        // Tạo các ngôi sao lấp lánh nhỏ
-        for (let i = 0; i < 80; i++) {
-            createStar();
+    const sceneIntro = document.getElementById('scene-intro');
+    const sceneUniverse = document.getElementById('scene-universe');
+    const finalBox = document.getElementById('finalBox');
+
+    function goToUniverse() {
+        // Ẩn màn 1
+        sceneIntro.style.opacity = '0';
+        
+        setTimeout(() => {
+            sceneIntro.style.display = 'none';
+            // Hiện màn 2
+            sceneUniverse.classList.add('active');
+            
+            // Bắt đầu thả hoa và sao
+            startUniverseEffects();
+            
+            // Sau 1.5s hiện hộp lời chúc
+            setTimeout(() => {
+                finalBox.classList.add('show');
+            }, 1500);
+
+        }, 1500);
+    }
+
+    // ==========================================
+    // HIỆU ỨNG HOA VÀ SAO RƠI (SCENE 2)
+    // ==========================================
+    let effectIntervals = [];
+
+    function startUniverseEffects() {
+        // Tạo sao lấp lánh tĩnh
+        for (let i = 0; i < 60; i++) {
+            createStaticStar();
         }
         
-        // Tạo trái tim bay lên liên tục
-        setInterval(createHeart, 800);
+        // Hoa rơi liên tục
+        effectIntervals.push(setInterval(createFallingFlower, 300));
         
-        // Tạo sao băng thỉnh thoảng
-        setInterval(createShootingStar, 2000);
-        
-        // Tạo thêm sao lấp lánh liên tục
-        setInterval(createStar, 300);
+        // Sao băng
+        effectIntervals.push(setInterval(createShootingStar, 2500));
     }
 
-    function createStar() {
+    const flowers = ['🌸', '🌺', '🌹', '💐', '🌷', '🏵️', '✨', '⭐'];
+    const universeScene = document.getElementById('scene-universe');
+
+    function createFallingFlower() {
+        const flower = document.createElement('div');
+        flower.className = 'particle';
+        flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+        flower.style.left = Math.random() * 100 + 'vw';
+        flower.style.fontSize = (Math.random() * 20 + 15) + 'px';
+        flower.style.animation = `fallFlower ${Math.random() * 3 + 4}s linear forwards`;
+        flower.style.opacity = Math.random() * 0.5 + 0.5;
+        
+        universeScene.appendChild(flower);
+        setTimeout(() => flower.remove(), 7000);
+    }
+
+    function createStaticStar() {
         const star = document.createElement('div');
-        star.className = 'star-particle';
-        const size = Math.random() * 3 + 1;
-        star.style.width = size + 'px';
-        star.style.height = size + 'px';
+        star.style.position = 'absolute';
+        star.style.width = Math.random() * 3 + 1 + 'px';
+        star.style.height = star.style.width;
+        star.style.background = '#fff';
+        star.style.borderRadius = '50%';
         star.style.left = Math.random() * 100 + 'vw';
         star.style.top = Math.random() * 100 + 'vh';
-        star.style.animationDuration = (Math.random() * 2 + 1) + 's';
-        star.style.animationDelay = (Math.random() * 2) + 's';
+        star.style.boxShadow = '0 0 10px #fff, 0 0 20px #ff9a9e';
+        star.style.animation = `twinkle ${Math.random() * 2 + 1}s infinite alternate`;
         
-        universeScreen.appendChild(star);
-        
-        // Tự động xóa sau khi hết hiệu ứng để tránh lag
-        setTimeout(() => star.remove(), 4000);
-    }
-
-    function createHeart() {
-        const heart = document.createElement('div');
-        heart.className = 'heart-particle';
-        heart.innerHTML = '❤️';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-        heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-        
-        universeScreen.appendChild(heart);
-        
-        setTimeout(() => heart.remove(), 10000);
+        universeScene.appendChild(star);
     }
 
     function createShootingStar() {
         const star = document.createElement('div');
-        star.className = 'shooting-star';
-        // Xuất phát từ nửa trên màn hình, bên phải
+        star.style.position = 'absolute';
+        star.style.width = '3px';
+        star.style.height = '3px';
+        star.style.background = '#fff';
+        star.style.borderRadius = '50%';
+        star.style.boxShadow = '0 0 10px 2px #fff, 0 0 20px 4px #ff9a9e';
         star.style.left = (Math.random() * 50 + 50) + 'vw';
         star.style.top = (Math.random() * 30) + 'vh';
         
-        universeScreen.appendChild(star);
+        // Đuôi sao băng
+        const tail = document.createElement('div');
+        tail.style.position = 'absolute';
+        tail.style.top = '50%';
+        tail.style.left = '0';
+        tail.style.width = '100px';
+        tail.style.height = '2px';
+        tail.style.background = 'linear-gradient(90deg, #fff, transparent)';
+        tail.style.transform = 'translateY(-50%)';
+        star.appendChild(tail);
+
+        universeScene.appendChild(star);
+
+        star.animate([
+            { transform: 'translate(0, 0) rotate(-45deg)', opacity: 1 },
+            { transform: 'translate(-300px, 300px) rotate(-45deg)', opacity: 0 }
+        ], {
+            duration: 1500,
+            easing: 'linear'
+        }).onfinish = () => star.remove();
+    }
+
+    // ==========================================
+    // CHƠI LẠI
+    // ==========================================
+    function replay() {
+        // Xóa các hiệu ứng đang chạy
+        effectIntervals.forEach(clearInterval);
+        effectIntervals = [];
         
-        // Kích hoạt animation
+        // Ẩn màn 2, hiện màn 1
+        sceneUniverse.classList.remove('active');
+        finalBox.classList.remove('show');
+        
+        // Xóa các bông hoa đang rơi
+        document.querySelectorAll('.particle').forEach(p => p.remove());
+
         setTimeout(() => {
-            star.classList.add('active');
-        }, 100);
-
-        // Xóa sau khi xong
-        setTimeout(() => star.remove(), 3000);
-    }
-
-    // ==========================================
-    // 3. HIỆU ỨNG LỜI CHÚC RƠI XUỐNG TỪ TỪ
-    // ==========================================
-    const wishes = [
-        "Cô Thảo kính mến! 🌸",
-        "Nhân ngày 20/11, chúng em muốn gửi đến cô một món quà nhỏ.",
-        "Cảm ơn cô vì đã luôn kiên nhẫn, dịu dàng và thấu hiểu chúng em.",
-        "Cô không chỉ dạy chữ, mà còn dạy chúng em cách yêu thương và trưởng thành.",
-        "Những lời dạy của cô như những vì sao sáng trên bầu trời tri thức.",
-        "Chúc cô luôn mạnh khỏe, bình an, và mãi là người mẹ hiền của bao thế hệ học trò. ❤️",
-        "Chúng em yêu cô rất nhiều! Happy 20/11! ✨"
-    ];
-
-    let wishIndex = 0;
-
-    function startWishes() {
-        wishIndex = 0;
-        showNextWish();
-    }
-
-    function showNextWish() {
-        if (wishIndex >= wishes.length) return; // Hết lời chúc thì dừng
-
-        const container = document.getElementById('messageContainer');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'floating-message';
-        msgDiv.innerText = wishes[wishIndex];
-        
-        container.appendChild(msgDiv);
-
-        // Xóa tin nhắn cũ sau 4s để không bị chồng chất
-        setTimeout(() => {
-            if(msgDiv.parentNode) msgDiv.remove();
-        }, 4500);
-
-        wishIndex++;
-        
-        // Gọi lại hàm sau 3.5 giây để hiện lời chúc tiếp theo
-        if (wishIndex < wishes.length) {
-            setTimeout(showNextWish, 3500);
-        }
-    }
-
-    // ==========================================
-    // 4. CHƠI LẠI (RESET)
-    // ==========================================
-    function replayUniverse() {
-        // Xóa tất cả lời chúc đang hiện
-        document.getElementById('messageContainer').innerHTML = '';
-        
-        // Bắt đầu lại chuỗi lời chúc
-        setTimeout(startWishes, 500);
+            sceneIntro.style.display = 'flex';
+            sceneIntro.style.opacity = '1';
+            
+            // Reset kịch bản
+            scriptIndex = 0;
+            nextBtn.classList.remove('show');
+            subText.classList.remove('show');
+            
+            setTimeout(playScript, 1000);
+        }, 1000);
     }
 </script>
 
