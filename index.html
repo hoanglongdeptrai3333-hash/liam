@@ -39,7 +39,7 @@
         align-items: center;
         z-index: 100;
         transition: opacity 1.5s ease;
-        cursor: pointer; /* Đổi con trỏ chuột thành bàn tay để biết có thể bấm */
+        cursor: pointer;
     }
 
     .grass-ground {
@@ -112,7 +112,6 @@
     }
     .subtitle-text.show { opacity: 1; }
 
-    /* Lời nhắc chạm màn hình */
     .tap-hint {
         position: absolute;
         bottom: 40px;
@@ -299,15 +298,14 @@
 </head>
 <body>
 
-<!-- ÂM THANH: LOFI PIANO FUKASHIGI NO CARTE (LINK ONLINE ỔN ĐỊNH) -->
+<!-- NHẠC MOONLIGHT (LINK ONLINE SIÊU ỔN ĐỊNH) -->
 <audio id="bgMusic" loop>
-    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2f50e2b8f4.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7d0e6df40e.mp3?filename=moonlight-110235.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ==========================================
      MÀN HÌNH 1: MỞ ĐẦU
      ========================================== -->
-<!-- Thêm sự kiện onclick vào toàn bộ màn hình 1 -->
 <div id="scene-intro" onclick="startExperience()">
     <div class="grass-ground"></div>
     
@@ -327,7 +325,6 @@
         <div class="subtitle-text" id="subText">tớ là Mầm - nàng tiên nhỏ của vườn</div>
     </div>
 
-    <!-- Lời nhắc chạm màn hình -->
     <div class="tap-hint" id="tapHint">👆 Chạm vào màn hình để bắt đầu 👆</div>
 
     <button class="next-btn" id="nextBtn" onclick="goToUniverse()">Tiếp theo ➔</button>
@@ -373,33 +370,26 @@
 </div>
 
 <script>
-    // ==========================================
-    // XỬ LÝ ÂM THANH VÀ BẮT ĐẦU
-    // ==========================================
     const bgMusic = document.getElementById('bgMusic');
     bgMusic.volume = 0.6;
     let hasStarted = false;
 
-    // Hàm được gọi khi chạm vào màn hình 1
     function startExperience() {
         if (hasStarted) return;
         hasStarted = true;
 
-        // 1. Phát nhạc ngay lập tức
-        bgMusic.play().catch(e => console.log("Lỗi phát nhạc:", e));
+        // Phát nhạc
+        bgMusic.play().catch(e => {
+            console.log("Lỗi phát nhạc:", e);
+        });
 
-        // 2. Ẩn dòng chữ "Chạm để bắt đầu"
         document.getElementById('tapHint').style.display = 'none';
 
-        // 3. Bắt đầu chạy hiệu ứng chữ
         createFireflies();
         scriptIndex = 0;
         playScript();
     }
 
-    // ==========================================
-    // KỊCH BẢN MÀN 1
-    // ==========================================
     const script = [
         { text: "tớ là Mầm - nàng tiên nhỏ của vườn", delay: 2500 },
         { text: "Hôm nay là một ngày đặc biệt...", delay: 2500 },
@@ -447,16 +437,12 @@
         }
     }
 
-    // ==========================================
-    // CHUYỂN MÀN 1 -> MÀN 2
-    // ==========================================
     const sceneIntro = document.getElementById('scene-intro');
     const sceneUniverse = document.getElementById('scene-universe');
     const finalBox = document.getElementById('finalBox');
 
-    // Ngăn sự kiện click của màn 1 lan ra ngoài khi bấm nút "Tiếp theo"
     function goToUniverse(event) {
-        if(event) event.stopPropagation(); // Ngăn chặn click đúp
+        if(event) event.stopPropagation();
         
         sceneIntro.style.opacity = '0';
         
@@ -534,9 +520,6 @@
         ], { duration: 1500, easing: 'linear' }).onfinish = () => star.remove();
     }
 
-    // ==========================================
-    // CHUYỂN MÀN 2 -> MÀN 3 (KẾT THÚC)
-    // ==========================================
     const sceneFinal = document.getElementById('scene-final');
     const bouquet = document.getElementById('bouquet');
     const text2011 = document.getElementById('text2011');
@@ -580,9 +563,6 @@
         }, 100);
     }
 
-    // ==========================================
-    // CHƠI LẠI TỪ ĐẦU
-    // ==========================================
     function replayAll() {
         sceneFinal.classList.remove('active');
         bouquet.classList.remove('rise');
@@ -598,7 +578,6 @@
             sceneIntro.style.display = 'flex';
             sceneIntro.style.opacity = '1';
             
-            // Reset lại trạng thái màn 1
             hasStarted = false;
             document.getElementById('tapHint').style.display = 'block';
             nextBtn.classList.remove('show');
