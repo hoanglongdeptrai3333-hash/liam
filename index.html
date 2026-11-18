@@ -11,7 +11,7 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent; /* Bỏ viền xanh khi bấm trên đt */
+        -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -19,42 +19,12 @@
         background-color: #000;
         color: #fff;
         height: 100vh;
-        height: 100dvh; /* Dành cho trình duyệt điện thoại */
+        height: 100dvh;
         overflow: hidden;
     }
 
-    /* ==========================================
-       TRÌNH PHÁT NHẠC
-       ========================================== */
-    .audio-player {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        z-index: 9999;
-        background: rgba(20, 10, 30, 0.85);
-        border: 1px solid #ff6b6b;
-        padding: 8px 15px;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
-        backdrop-filter: blur(5px);
-    }
-
-    .audio-player span {
-        font-size: 0.85rem;
-        color: #ff9a9e;
-        font-weight: bold;
-    }
-
-    audio { height: 30px; width: 200px; outline: none; }
-    
-    @media (max-width: 600px) {
-        .audio-player { padding: 5px 10px; }
-        audio { width: 150px; }
-        .audio-player span { display: none; }
-    }
+    /* Ẩn thanh phát nhạc */
+    #bgMusic { display: none; }
 
     /* ==========================================
        MÀN HÌNH 1: CẢNH MỞ ĐẦU
@@ -157,7 +127,7 @@
     .next-btn:hover { background: #ff6b6b; box-shadow: 0 0 20px #ff6b6b; }
 
     /* ==========================================
-       MÀN HÌNH 2: VŨ TRỤ HOA VÀ SAO (ĐÃ FIX LỖI VUỐT)
+       MÀN HÌNH 2: VŨ TRỤ HOA VÀ SAO
        ========================================== */
     #scene-universe {
         position: fixed;
@@ -166,11 +136,8 @@
         opacity: 0; visibility: hidden;
         transition: opacity 2s ease;
         z-index: 50;
-        
-        /* FIX LỖI ĐỨNG ĐƠ: Cho phép cuộn lên xuống nếu nội dung dài */
         overflow-y: auto; 
         overflow-x: hidden;
-        
         display: flex; flex-direction: column;
         align-items: center;
         padding: 40px 20px;
@@ -209,7 +176,7 @@
     @keyframes fallFlower { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
     @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
 
-    /* Nút Cảm Ơn */
+    /* Nút chuyển cảnh (Đã đổi tên) */
     .thanks-btn {
         padding: 12px 35px;
         background: linear-gradient(135deg, #ff6b6b, #b8001f);
@@ -244,10 +211,9 @@
 
     #scene-final.active { opacity: 1; visibility: visible; }
 
-    /* Bó hoa khổng lồ nhô lên */
     .giant-bouquet {
         position: absolute;
-        bottom: -100%; /* Bắt đầu từ dưới đáy */
+        bottom: -100%; 
         left: 50%;
         transform: translateX(-50%);
         width: 100%; max-width: 500px;
@@ -256,11 +222,8 @@
         z-index: 10;
     }
 
-    .giant-bouquet.rise {
-        bottom: 10%; /* Nhô lên */
-    }
+    .giant-bouquet.rise { bottom: 10%; }
 
-    /* Các bông hoa xếp thành bó */
     .flower-cluster {
         font-size: 5rem;
         line-height: 1;
@@ -269,35 +232,24 @@
         animation: floatBouquet 3s ease-in-out infinite;
     }
 
-    .flower-cluster .sub-flower {
-        font-size: 3rem;
-        position: relative;
-        top: -20px;
-    }
+    .flower-cluster .sub-flower { font-size: 3rem; position: relative; top: -20px; }
 
     @keyframes floatBouquet {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-10px); }
     }
 
-    /* Chữ 20/11 phát sáng */
     .text-2011 {
         font-family: 'Dancing Script', cursive;
-        font-size: 5rem;
-        font-weight: bold;
-        color: #fff;
+        font-size: 5rem; font-weight: bold; color: #fff;
         text-shadow: 0 0 20px #ff6b6b, 0 0 40px #b8001f, 0 0 60px #ff6b6b;
         position: absolute;
-        top: 30%;
-        left: 50%;
+        top: 30%; left: 50%;
         transform: translate(-50%, -50%) scale(0);
-        opacity: 0;
-        z-index: 20;
+        opacity: 0; z-index: 20;
     }
 
-    .text-2011.appear {
-        animation: glowText 2s ease forwards;
-    }
+    .text-2011.appear { animation: glowText 2s ease forwards; }
 
     @keyframes glowText {
         0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
@@ -305,27 +257,19 @@
         100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
     }
 
-    /* Lời nhắn cuối cùng */
     .final-thanks-text {
         position: absolute;
-        bottom: 20%;
-        width: 90%;
+        bottom: 20%; width: 90%;
         text-align: center;
-        font-size: 1.3rem;
-        font-style: italic;
-        color: #fff;
-        text-shadow: 0 0 10px #ff9a9e;
-        opacity: 0;
-        z-index: 20;
+        font-size: 1.3rem; font-style: italic;
+        color: #fff; text-shadow: 0 0 10px #ff9a9e;
+        opacity: 0; z-index: 20;
         transition: opacity 1s ease;
         pointer-events: none;
     }
 
-    .final-thanks-text.show {
-        opacity: 1;
-    }
+    .final-thanks-text.show { opacity: 1; }
 
-    /* Nút chơi lại (đặt ở góc) */
     .replay-btn {
         position: absolute;
         top: 20px; left: 20px;
@@ -334,21 +278,18 @@
         border: 1px solid rgba(255,255,255,0.3);
         color: #fff; border-radius: 20px;
         cursor: pointer; z-index: 30;
-        display: none; /* Ẩn lúc đầu, hiện ở cuối */
+        display: none;
     }
     .replay-btn.show { display: block; animation: popIn 0.5s ease; }
 </style>
 </head>
 <body>
 
-<!-- TRÌNH PHÁT NHẠC -->
-<div class="audio-player">
-    <span>🎵 Gieo Mầm Xanh:</span>
-    <audio id="bgMusic" controls loop>
-        <!-- BẠN THAY LINK NHẠC MP3 VÀO ĐÂY -->
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-</div>
+<!-- NHẠC CHILL LOFI KHÔNG LỜI (Từ Pixabay - Miễn phí bản quyền) -->
+<audio id="bgMusic" loop>
+    <!-- Link nhạc Chill Lofi mẫu, bạn có thể thay bằng link mp3 khác nếu muốn -->
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+</audio>
 
 <!-- ==========================================
      MÀN HÌNH 1: MỞ ĐẦU
@@ -389,7 +330,8 @@
         <div class="signature">- Học trò của Cô -</div>
     </div>
 
-    <button class="thanks-btn" onclick="triggerFinalScene()">Cảm ơn Cô ❤️</button>
+    <!-- Đã đổi tên nút -->
+    <button class="thanks-btn" onclick="triggerFinalScene()">Nhấn tiếp vào đây ➔</button>
 </div>
 
 <!-- ==========================================
@@ -398,10 +340,8 @@
 <div id="scene-final">
     <button class="replay-btn" id="replayBtn" onclick="replayAll()">Xem lại từ đầu ↺</button>
 
-    <!-- Chữ 20/11 -->
     <div class="text-2011" id="text2011">20/11</div>
 
-    <!-- Bó hoa khổng lồ -->
     <div class="giant-bouquet" id="bouquet">
         <div class="flower-cluster">
             🌹 <span class="sub-flower">🌻</span> 🌷 <span class="sub-flower">🌸</span> 🌺 <span class="sub-flower">🌹</span> 🌷
@@ -411,19 +351,33 @@
         </div>
     </div>
 
-    <!-- Lời nhắn cuối -->
     <div class="final-thanks-text" id="finalText">
         "Chúng em yêu Cô rất nhiều! <br> Cảm ơn Cô vì tất cả! ❤️"
     </div>
 </div>
 
 <script>
+    // ==========================================
+    // XỬ LÝ ÂM THANH TỰ ĐỘNG PHÁT
+    // ==========================================
     const bgMusic = document.getElementById('bgMusic');
-    bgMusic.volume = 0.6;
+    bgMusic.volume = 0.5; // Âm lượng 50% (đủ nghe, không quá gắt)
 
     function playMusic() {
-        bgMusic.play().catch(e => console.log("Bị chặn tự động phát nhạc."));
+        if (bgMusic.paused) {
+            bgMusic.play().catch(e => {
+                console.log("Trình duyệt chặn tự động phát nhạc.");
+            });
+        }
     }
+
+    // 1. Cố gắng phát nhạc ngay khi vừa tải trang (PC thường cho phép)
+    window.addEventListener('load', playMusic);
+
+    // 2. Nếu bị chặn, sẽ phát ngay khi có bất kỳ tương tác (chạm/click) đầu tiên
+    document.addEventListener('click', playMusic, { once: true });
+    document.addEventListener('touchstart', playMusic, { once: true });
+
 
     // ==========================================
     // KỊCH BẢN MÀN 1
@@ -488,7 +442,8 @@
     const finalBox = document.getElementById('finalBox');
 
     function goToUniverse() {
-        playMusic();
+        playMusic(); // Phát nhạc
+        
         sceneIntro.style.opacity = '0';
         
         setTimeout(() => {
@@ -575,42 +530,25 @@
     const replayBtn = document.getElementById('replayBtn');
 
     function triggerFinalScene() {
-        // Ẩn màn 2
         sceneUniverse.style.opacity = '0';
         
         setTimeout(() => {
             sceneUniverse.style.display = 'none';
             sceneUniverse.classList.remove('active');
-            
-            // Hiện màn 3
             sceneFinal.classList.add('active');
 
-            // 1. Bó hoa nhô lên sau 0.5s
-            setTimeout(() => {
-                bouquet.classList.add('rise');
-            }, 500);
-
-            // 2. Chữ 20/11 hiện ra sau 2s
-            setTimeout(() => {
-                text2011.classList.add('appear');
-            }, 2000);
-
-            // 3. Hoa bùng nổ ngập tràn màn hình & hiện lời nhắn
+            setTimeout(() => { bouquet.classList.add('rise'); }, 500);
+            setTimeout(() => { text2011.classList.add('appear'); }, 2000);
             setTimeout(() => {
                 startFinalFlowerRain();
                 finalText.classList.add('show');
             }, 3500);
-
-            // 4. Hiện nút chơi lại sau 5s
-            setTimeout(() => {
-                replayBtn.classList.add('show');
-            }, 5000);
+            setTimeout(() => { replayBtn.classList.add('show'); }, 5000);
 
         }, 1000);
     }
 
     function startFinalFlowerRain() {
-        // Tạo mưa hoa dày đặc
         setInterval(() => {
             if(sceneFinal.classList.contains('active')) {
                 const flower = document.createElement('div');
@@ -620,19 +558,18 @@
                 flower.style.fontSize = (Math.random() * 25 + 15) + 'px';
                 flower.style.animation = `fallFlower ${Math.random() * 2 + 2.5}s linear forwards`;
                 flower.style.opacity = Math.random() * 0.6 + 0.4;
-                flower.style.zIndex = '5'; // Đè lên bó hoa
+                flower.style.zIndex = '5';
                 
                 sceneFinal.appendChild(flower);
                 setTimeout(() => flower.remove(), 5000);
             }
-        }, 100); // Tốc độ rơi cực nhanh (100ms/bông)
+        }, 100);
     }
 
     // ==========================================
     // CHƠI LẠI TỪ ĐẦU
     // ==========================================
     function replayAll() {
-        // Reset màn 3
         sceneFinal.classList.remove('active');
         bouquet.classList.remove('rise');
         text2011.classList.remove('appear');
@@ -640,10 +577,9 @@
         replayBtn.classList.remove('show');
         document.querySelectorAll('#scene-final .particle').forEach(p => p.remove());
 
-        // Reset nhạc
         bgMusic.currentTime = 0;
+        playMusic(); 
 
-        // Về màn 1
         setTimeout(() => {
             sceneIntro.style.display = 'flex';
             sceneIntro.style.opacity = '1';
