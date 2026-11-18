@@ -23,7 +23,6 @@
         overflow: hidden;
     }
 
-    /* Ẩn thanh phát nhạc */
     #bgMusic { display: none; }
 
     /* ==========================================
@@ -176,7 +175,6 @@
     @keyframes fallFlower { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
     @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
 
-    /* Nút chuyển cảnh (Đã đổi tên) */
     .thanks-btn {
         padding: 12px 35px;
         background: linear-gradient(135deg, #ff6b6b, #b8001f);
@@ -285,10 +283,9 @@
 </head>
 <body>
 
-<!-- NHẠC CHILL LOFI KHÔNG LỜI (Từ Pixabay - Miễn phí bản quyền) -->
+<!-- NHẠC BUNNY GIRL SENPAI (LOFI - KHÔNG LỜI) -->
 <audio id="bgMusic" loop>
-    <!-- Link nhạc Chill Lofi mẫu, bạn có thể thay bằng link mp3 khác nếu muốn -->
-    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_9d81b3b8c1.mp3?filename=lofi-chill-112191.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ==========================================
@@ -330,7 +327,6 @@
         <div class="signature">- Học trò của Cô -</div>
     </div>
 
-    <!-- Đã đổi tên nút -->
     <button class="thanks-btn" onclick="triggerFinalScene()">Nhấn tiếp vào đây ➔</button>
 </div>
 
@@ -358,26 +354,20 @@
 
 <script>
     // ==========================================
-    // XỬ LÝ ÂM THANH TỰ ĐỘNG PHÁT
+    // XỬ LÝ ÂM THANH
     // ==========================================
     const bgMusic = document.getElementById('bgMusic');
-    bgMusic.volume = 0.5; // Âm lượng 50% (đủ nghe, không quá gắt)
+    bgMusic.volume = 0.6;
 
     function playMusic() {
         if (bgMusic.paused) {
-            bgMusic.play().catch(e => {
-                console.log("Trình duyệt chặn tự động phát nhạc.");
-            });
+            bgMusic.play().catch(e => console.log("Bị chặn tự động phát."));
         }
     }
 
-    // 1. Cố gắng phát nhạc ngay khi vừa tải trang (PC thường cho phép)
     window.addEventListener('load', playMusic);
-
-    // 2. Nếu bị chặn, sẽ phát ngay khi có bất kỳ tương tác (chạm/click) đầu tiên
     document.addEventListener('click', playMusic, { once: true });
     document.addEventListener('touchstart', playMusic, { once: true });
-
 
     // ==========================================
     // KỊCH BẢN MÀN 1
@@ -442,8 +432,7 @@
     const finalBox = document.getElementById('finalBox');
 
     function goToUniverse() {
-        playMusic(); // Phát nhạc
-        
+        playMusic();
         sceneIntro.style.opacity = '0';
         
         setTimeout(() => {
@@ -578,7 +567,7 @@
         document.querySelectorAll('#scene-final .particle').forEach(p => p.remove());
 
         bgMusic.currentTime = 0;
-        playMusic(); 
+        playMusic();
 
         setTimeout(() => {
             sceneIntro.style.display = 'flex';
