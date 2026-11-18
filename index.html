@@ -21,25 +21,49 @@
         overflow: hidden;
     }
 
-    /* Nút bật/tắt nhạc nhỏ ở góc */
-    #musicToggle {
+    /* ==========================================
+       TRÌNH PHÁT NHẠC NỔI BẬT (MỚI)
+       ========================================== */
+    .audio-player {
         position: fixed;
-        top: 20px;
-        right: 20px;
+        top: 15px;
+        right: 15px;
         z-index: 999;
-        background: rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        color: #fff;
+        background: rgba(20, 10, 30, 0.85); /* Nền tối mờ */
+        border: 1px solid #ff6b6b;
         padding: 8px 15px;
-        border-radius: 20px;
-        cursor: pointer;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
         backdrop-filter: blur(5px);
-        display: none; /* Ẩn lúc đầu, hiện khi sang màn 2 */
-        font-size: 0.9rem;
-        transition: 0.3s;
     }
-    #musicToggle:hover {
-        background: rgba(255, 255, 255, 0.4);
+
+    .audio-player span {
+        font-size: 0.85rem;
+        color: #ff9a9e;
+        font-weight: bold;
+    }
+
+    /* Tùy chỉnh thanh Audio mặc định cho đẹp hơn */
+    audio {
+        height: 30px;
+        width: 200px;
+        outline: none;
+    }
+    
+    /* Ẩn thanh audio trên điện thoại nhỏ để không che chữ, thay bằng nút bấm */
+    @media (max-width: 600px) {
+        .audio-player {
+            padding: 5px 10px;
+        }
+        audio {
+            width: 150px;
+        }
+        .audio-player span {
+            display: none;
+        }
     }
 
     /* ==========================================
@@ -312,14 +336,15 @@
 </head>
 <body>
 
-<!-- Nhạc nền ẩn (Lấy file nhacnen.mp3 bạn đã up lên GitHub) -->
-<audio id="bgMusic" loop>
-    <source src="nhacnen.mp3" type="audio/mpeg">
-    Trình duyệt của bạn không hỗ trợ phát nhạc.
-</audio>
-
-<!-- Nút bật tắt nhạc -->
-<button id="musicToggle" onclick="toggleMusic()">🎵 Tắt Nhạc</button>
+<!-- TRÌNH PHÁT NHẠC TRỰC QUAN -->
+<div class="audio-player">
+    <span>🎵 Gieo Mầm Xanh:</span>
+    <!-- Lưu ý: src="nhacnen.mp3" phải khớp chính xác với tên file bạn up lên GitHub -->
+    <audio id="bgMusic" controls loop>
+        <source src="nhacnen.mp3" type="audio/mpeg">
+        Trình duyệt không hỗ trợ.
+    </audio>
+</div>
 
 <!-- ==========================================
      MÀN HÌNH 1: MỞ ĐẦU
@@ -368,31 +393,16 @@
 
 <script>
     // ==========================================
-    // ÂM THANH (NHẠC NỀN)
+    // ÂM THANH
     // ==========================================
     const bgMusic = document.getElementById('bgMusic');
-    const musicToggle = document.getElementById('musicToggle');
-    let isMusicPlaying = false;
+    bgMusic.volume = 0.6; // Chỉnh âm lượng ở đây (0.0 đến 1.0)
 
     function playMusic() {
-        bgMusic.volume = 0.5; // Âm lượng 50% (đủ nghe, không quá gắt)
-        bgMusic.play().then(() => {
-            isMusicPlaying = true;
-            musicToggle.innerText = "🎵 Tắt Nhạc";
-        }).catch(e => {
-            console.log("Trình duyệt chặn tự động phát nhạc.");
+        // Cố gắng tự động phát, nếu bị chặn thì người dùng sẽ bấm nút Play trên thanh nhạc
+        bgMusic.play().catch(error => {
+            console.log("Trình duyệt chặn tự động phát. Cô hãy bấm nút Play trên thanh nhạc nhé.");
         });
-    }
-
-    function toggleMusic() {
-        if (isMusicPlaying) {
-            bgMusic.pause();
-            musicToggle.innerText = "🎵 Bật Nhạc";
-        } else {
-            bgMusic.play();
-            musicToggle.innerText = "🎵 Tắt Nhạc";
-        }
-        isMusicPlaying = !isMusicPlaying;
     }
 
     // ==========================================
@@ -459,7 +469,7 @@
     const finalBox = document.getElementById('finalBox');
 
     function goToUniverse() {
-        // Bật nhạc ngay khi Cô bấm nút (vì đã có tương tác)
+        // Chạy hàm phát nhạc (nếu bị chặn, người dùng sẽ thấy thanh nhạc để tự bấm)
         playMusic();
         
         sceneIntro.style.opacity = '0';
@@ -468,9 +478,6 @@
             sceneIntro.style.display = 'none';
             sceneUniverse.classList.add('active');
             
-            // Hiện nút bật tắt nhạc ở góc phải
-            musicToggle.style.display = 'block';
-
             startUniverseEffects();
             
             setTimeout(() => {
@@ -567,7 +574,7 @@
         finalBox.classList.remove('show');
         document.querySelectorAll('.particle').forEach(p => p.remove());
 
-        // Không tắt nhạc khi chơi lại, chỉ tua lại từ đầu (nếu muốn tắt thì thêm bgMusic.pause(); bgMusic.currentTime = 0;)
+        // Tua lại nhạc từ đầu
         bgMusic.currentTime = 0;
 
         setTimeout(() => {
