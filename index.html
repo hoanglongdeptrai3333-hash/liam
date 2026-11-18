@@ -21,8 +21,29 @@
         overflow: hidden;
     }
 
+    /* Nút bật/tắt nhạc nhỏ ở góc */
+    #musicToggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 999;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        backdrop-filter: blur(5px);
+        display: none; /* Ẩn lúc đầu, hiện khi sang màn 2 */
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+    #musicToggle:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+
     /* ==========================================
-       MÀN HÌNH 1: CẢNH MỞ ĐẦU (NHƯ ẢNH BẠN GỬI)
+       MÀN HÌNH 1: CẢNH MỞ ĐẦU
        ========================================== */
     #scene-intro {
         position: fixed;
@@ -88,14 +109,12 @@
         gap: 15px;
     }
 
-    /* Mắt */
     .eye {
         width: 12px; height: 20px;
         background: #fff;
         border-radius: 10px;
         box-shadow: 0 0 5px #fff;
     }
-    /* Miệng */
     .mouth {
         position: absolute;
         bottom: 25px;
@@ -103,8 +122,6 @@
         border-bottom: 2px solid #fff;
         border-radius: 50%;
     }
-
-    /* Lá mầm trên đầu */
     .leaf {
         position: absolute;
         top: -25px;
@@ -115,8 +132,6 @@
     }
     .leaf.left { transform: rotate(-30deg); left: 10px; }
     .leaf.right { transform: rotate(30deg) scaleX(-1); right: 10px; }
-
-    /* Lá hai bên má */
     .cheek-leaf {
         position: absolute;
         bottom: 10px;
@@ -297,6 +312,15 @@
 </head>
 <body>
 
+<!-- Nhạc nền ẩn (Lấy file nhacnen.mp3 bạn đã up lên GitHub) -->
+<audio id="bgMusic" loop>
+    <source src="nhacnen.mp3" type="audio/mpeg">
+    Trình duyệt của bạn không hỗ trợ phát nhạc.
+</audio>
+
+<!-- Nút bật tắt nhạc -->
+<button id="musicToggle" onclick="toggleMusic()">🎵 Tắt Nhạc</button>
+
 <!-- ==========================================
      MÀN HÌNH 1: MỞ ĐẦU
      ========================================== -->
@@ -344,16 +368,44 @@
 
 <script>
     // ==========================================
+    // ÂM THANH (NHẠC NỀN)
+    // ==========================================
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    let isMusicPlaying = false;
+
+    function playMusic() {
+        bgMusic.volume = 0.5; // Âm lượng 50% (đủ nghe, không quá gắt)
+        bgMusic.play().then(() => {
+            isMusicPlaying = true;
+            musicToggle.innerText = "🎵 Tắt Nhạc";
+        }).catch(e => {
+            console.log("Trình duyệt chặn tự động phát nhạc.");
+        });
+    }
+
+    function toggleMusic() {
+        if (isMusicPlaying) {
+            bgMusic.pause();
+            musicToggle.innerText = "🎵 Bật Nhạc";
+        } else {
+            bgMusic.play();
+            musicToggle.innerText = "🎵 Tắt Nhạc";
+        }
+        isMusicPlaying = !isMusicPlaying;
+    }
+
+    // ==========================================
     // KỊCH BẢN CHẠY CHỮ (SCENE 1)
     // ==========================================
     const script = [
-        { text: "tớ là Mầm - nàng tiên nhỏ của vườn", delay: 2000 },
+        { text: "tớ là Mầm - nàng tiên nhỏ của vườn", delay: 2500 },
         { text: "Hôm nay là một ngày đặc biệt...", delay: 2500 },
         { text: "Hello Cô Thảo! Em là Long.", delay: 3000 },
         { text: "Thay mặt các bạn lớp 8A6...", delay: 3000 },
         { text: "20/11 - Ngày Nhà giáo Việt Nam", delay: 3500 },
         { text: "Chúc Cô một ngày thật tuyệt vời!", delay: 3000 },
-        { text: "Cô hãy ấn nút bên dưới để xem món quà nhé!", delay: 0 } // delay 0 để hiện nút
+        { text: "Cô hãy ấn nút bên dưới để xem món quà nhé!", delay: 0 }
     ];
 
     let scriptIndex = 0;
@@ -364,34 +416,28 @@
         if (scriptIndex >= script.length) return;
 
         let currentItem = script[scriptIndex];
-        
-        // Hiệu ứng mờ chữ cũ
         subText.classList.remove('show');
         
         setTimeout(() => {
             subText.innerText = currentItem.text;
             subText.classList.add('show');
             
-            // Nếu là câu cuối (delay = 0), hiện nút Tiếp theo
             if (currentItem.delay === 0) {
                 nextBtn.classList.add('show');
             } else {
-                // Chờ delay rồi chạy câu tiếp
                 setTimeout(() => {
                     scriptIndex++;
                     playScript();
                 }, currentItem.delay);
             }
-        }, 500); // Đợi 0.5s cho chữ cũ mờ hẳn
+        }, 500); 
     }
 
-    // Bắt đầu chạy kịch bản khi tải trang
     window.onload = () => {
         createFireflies();
-        setTimeout(playScript, 1000); // Đợi 1s rồi bắt đầu
+        setTimeout(playScript, 1000); 
     };
 
-    // Hiệu ứng đom đóm ở màn 1
     function createFireflies() {
         const introScene = document.getElementById('scene-intro');
         for(let i=0; i<20; i++) {
@@ -413,18 +459,20 @@
     const finalBox = document.getElementById('finalBox');
 
     function goToUniverse() {
-        // Ẩn màn 1
+        // Bật nhạc ngay khi Cô bấm nút (vì đã có tương tác)
+        playMusic();
+        
         sceneIntro.style.opacity = '0';
         
         setTimeout(() => {
             sceneIntro.style.display = 'none';
-            // Hiện màn 2
             sceneUniverse.classList.add('active');
             
-            // Bắt đầu thả hoa và sao
+            // Hiện nút bật tắt nhạc ở góc phải
+            musicToggle.style.display = 'block';
+
             startUniverseEffects();
             
-            // Sau 1.5s hiện hộp lời chúc
             setTimeout(() => {
                 finalBox.classList.add('show');
             }, 1500);
@@ -438,15 +486,10 @@
     let effectIntervals = [];
 
     function startUniverseEffects() {
-        // Tạo sao lấp lánh tĩnh
         for (let i = 0; i < 60; i++) {
             createStaticStar();
         }
-        
-        // Hoa rơi liên tục
         effectIntervals.push(setInterval(createFallingFlower, 300));
-        
-        // Sao băng
         effectIntervals.push(setInterval(createShootingStar, 2500));
     }
 
@@ -492,7 +535,6 @@
         star.style.left = (Math.random() * 50 + 50) + 'vw';
         star.style.top = (Math.random() * 30) + 'vh';
         
-        // Đuôi sao băng
         const tail = document.createElement('div');
         tail.style.position = 'absolute';
         tail.style.top = '50%';
@@ -518,22 +560,20 @@
     // CHƠI LẠI
     // ==========================================
     function replay() {
-        // Xóa các hiệu ứng đang chạy
         effectIntervals.forEach(clearInterval);
         effectIntervals = [];
         
-        // Ẩn màn 2, hiện màn 1
         sceneUniverse.classList.remove('active');
         finalBox.classList.remove('show');
-        
-        // Xóa các bông hoa đang rơi
         document.querySelectorAll('.particle').forEach(p => p.remove());
+
+        // Không tắt nhạc khi chơi lại, chỉ tua lại từ đầu (nếu muốn tắt thì thêm bgMusic.pause(); bgMusic.currentTime = 0;)
+        bgMusic.currentTime = 0;
 
         setTimeout(() => {
             sceneIntro.style.display = 'flex';
             sceneIntro.style.opacity = '1';
             
-            // Reset kịch bản
             scriptIndex = 0;
             nextBtn.classList.remove('show');
             subText.classList.remove('show');
